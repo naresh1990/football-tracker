@@ -2,6 +2,7 @@ import express, { type Express } from "express";
 import { createServer, type Server } from "http";
 import multer from "multer";
 import path from "path";
+import moment from "moment-timezone";
 import { storage } from "./storage";
 import {
   insertPlayerSchema,
@@ -270,14 +271,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
         if (targetDays.includes(date.getDay())) {
-          const sessionDateTime = new Date(date);
-          const [hours, minutes] = time.split(':');
-          sessionDateTime.setHours(parseInt(hours), parseInt(minutes));
+          // Create IST datetime and convert to UTC for storage
+          const dateStr = date.toISOString().split('T')[0]; // Get YYYY-MM-DD
+          const istDateTime = moment.tz(`${dateStr} ${time}`, 'YYYY-MM-DD HH:mm', 'Asia/Kolkata');
+          const utcDateTime = istDateTime.utc().toDate();
           
           const sessionData = {
             playerId,
             type,
-            date: sessionDateTime,
+            date: utcDateTime,
             duration: parseInt(duration) || 60,
             location,
             coach,
@@ -285,7 +287,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             attendance: 'pending'
           };
           
-          console.log("Creating session for:", sessionDateTime.toISOString());
+          console.log("Creating session for:", utcDateTime.toISOString(), "(IST:", istDateTime.format('YYYY-MM-DD HH:mm'), ")");
           const session = await storage.createTrainingSession(sessionData);
           sessions.push(session);
         }
