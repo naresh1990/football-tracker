@@ -164,40 +164,63 @@ export default function Statistics() {
           </Card>
         </div>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Performance Trend */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Performance Trend (Last 10 Games)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
+        {/* Charts Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Performance Trend */}
+          <Card className="shadow-lg border-0 bg-gradient-to-br from-gray-50 to-blue-50">
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                  <TrendingUp className="w-4 h-4 text-white" />
+                </div>
+                <CardTitle className="text-gray-800">Performance Trend (Last 10 Games)</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={performanceData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="game" />
-                  <YAxis />
-                  <Tooltip />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis 
+                    dataKey="game" 
+                    tick={{ fontSize: 12, fill: '#64748b' }}
+                    axisLine={{ stroke: '#cbd5e1' }}
+                  />
+                  <YAxis 
+                    tick={{ fontSize: 12, fill: '#64748b' }}
+                    axisLine={{ stroke: '#cbd5e1' }}
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'white', 
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                    }}
+                  />
+                  <Legend 
+                    wrapperStyle={{ paddingTop: '20px' }}
+                    iconType="line"
+                  />
                   <Line 
                     type="monotone" 
                     dataKey="goals" 
-                    stroke="hsl(105, 66%, 13%)" 
+                    stroke="#10b981" 
                     strokeWidth={3}
+                    dot={{ fill: '#10b981', strokeWidth: 2, r: 4 }}
                     name="Goals"
                   />
                   <Line 
                     type="monotone" 
                     dataKey="assists" 
-                    stroke="hsl(45, 93%, 58%)" 
+                    stroke="#f59e0b" 
                     strokeWidth={3}
+                    dot={{ fill: '#f59e0b', strokeWidth: 2, r: 4 }}
                     name="Assists"
                   />
                 </LineChart>
               </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
         {/* Monthly Performance */}
         <Card>
