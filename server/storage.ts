@@ -109,19 +109,19 @@ export class MemStorage implements IStorage {
 
   constructor() {
     // Initialize with Darshil's profile and some sample data
-    this.initializeData();
+    setTimeout(() => this.initializeData(), 0);
   }
 
   private async initializeData() {
     // Create Darshil's profile
     await this.createPlayer({
       name: "Darshil",
-      age: 12,
-      position: "Midfielder",
-      teamName: "Lions FC",
-      jerseyNumber: "#9",
-      isCaptain: true,
-      division: "U12 Premier"
+      age: 8,
+      position: "Winger",
+      teamName: "Sporthood",
+      jerseyNumber: "18",
+      isCaptain: false,
+      division: "U10 Elite Squad Training"
     });
 
     // Add some sample games
@@ -237,9 +237,9 @@ export class MemStorage implements IStorage {
         duration: 90,
         location: "Main Field",
         coach: "Coach Martinez",
-        focus: "Sprint techniques and cone drills",
         notes: "Excellent improvement in sprint times. Reduced 40m sprint by 0.3 seconds.",
-        completed: true
+        completed: true,
+        attendance: "completed"
       },
       {
         playerId: 1,
@@ -248,9 +248,9 @@ export class MemStorage implements IStorage {
         duration: 75,
         location: "Training Ground A",
         coach: "Coach Thompson",
-        focus: "First touch and dribbling skills",
         notes: "Great session with significant progress on first touch. Need to work on weak foot control.",
-        completed: true
+        completed: true,
+        attendance: "completed"
       },
       {
         playerId: 1,
@@ -474,49 +474,73 @@ export class MemStorage implements IStorage {
     const squadMembersData = [
       {
         playerId: 1,
-        memberName: "Darshil Podishetty",
-        position: "Midfielder",
-        jerseyNumber: "#9",
-        picture: "/uploads/darshil-profile.jpg"
+        clubId: 1,
+        name: "Darshil Podishetty",
+        position: "Midfielder" as const,
+        jerseyNumber: 9,
+        age: 8,
+        profilePicture: "/uploads/darshil-profile.jpg",
+        notes: null
       },
       {
         playerId: 1,
-        memberName: "Abir Pathak",
-        position: "Forward",
-        jerseyNumber: "#10"
+        clubId: 1,
+        name: "Abir Pathak",
+        position: "Forward" as const,
+        jerseyNumber: 10,
+        age: 8,
+        profilePicture: null,
+        notes: null
       },
       {
         playerId: 1,
-        memberName: "Abel Binoy Samuel",
-        position: "Defender",
-        jerseyNumber: "#5",
-        picture: "/uploads/abel-binoy.jpg"
+        clubId: 1,
+        name: "Abel Binoy Samuel",
+        position: "Defender" as const,
+        jerseyNumber: 5,
+        age: 8,
+        profilePicture: "/uploads/abel-binoy.jpg",
+        notes: null
       },
       {
         playerId: 1,
-        memberName: "Jash Mitul Shah",
-        position: "Midfielder",
-        jerseyNumber: "#8"
+        clubId: 1,
+        name: "Jash Mitul Shah",
+        position: "Midfielder" as const,
+        jerseyNumber: 8,
+        age: 8,
+        profilePicture: null,
+        notes: null
       },
       {
         playerId: 1,
-        memberName: "Nihal Rajesh",
-        position: "Forward",
-        jerseyNumber: "#11",
-        picture: "/uploads/nihal-rajesh.jpg"
+        clubId: 1,
+        name: "Nihal Rajesh",
+        position: "Forward" as const,
+        jerseyNumber: 11,
+        age: 8,
+        profilePicture: "/uploads/nihal-rajesh.jpg",
+        notes: null
       },
       {
         playerId: 1,
-        memberName: "Prathyush P",
-        position: "Defender",
-        jerseyNumber: "#6"
+        clubId: 1,
+        name: "Prathyush P",
+        position: "Defender" as const,
+        jerseyNumber: 6,
+        age: 8,
+        profilePicture: null,
+        notes: null
       },
       {
         playerId: 1,
-        memberName: "Madhav Nair",
-        position: "Goalkeeper",
-        jerseyNumber: "#1",
-        picture: "/uploads/madhav-nair.jpg"
+        clubId: 1,
+        name: "Madhav Nair",
+        position: "Goalkeeper" as const,
+        jerseyNumber: 1,
+        age: 8,
+        profilePicture: "/uploads/madhav-nair.jpg",
+        notes: null
       }
     ];
 
@@ -750,9 +774,11 @@ export class MemStorage implements IStorage {
     const newMember: SquadMember = { 
       ...member, 
       id,
+      clubId: member.clubId ?? null,
       jerseyNumber: member.jerseyNumber ?? null,
-      role: member.role ?? null,
-      profilePicture: member.profilePicture ?? null
+      age: member.age ?? null,
+      profilePicture: member.profilePicture ?? null,
+      notes: member.notes ?? null
     };
     this.squadMembers.set(id, newMember);
     return newMember;
@@ -1213,4 +1239,5 @@ export class DatabaseStorage implements IStorage {
   }
 }
 
-export const storage = new DatabaseStorage();
+// Use MemStorage for now to avoid database connection issues
+export const storage = new MemStorage();
