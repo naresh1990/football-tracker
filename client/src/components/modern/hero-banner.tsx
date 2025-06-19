@@ -17,7 +17,9 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock,
-  Dumbbell
+  Dumbbell,
+  Zap,
+  Activity
 } from "lucide-react";
 
 interface HeroBannerProps {
@@ -263,12 +265,28 @@ export default function HeroBanner({ player, activeClub, squadMembers, onQuickAd
                   // Upcoming Training Slide
                   <div className="space-y-4">
                     {upcomingTraining && upcomingTraining.length > 0 ? (
-                      upcomingTraining.slice(0, 3).map((session: any) => (
+                      upcomingTraining.slice(0, 3).map((session: any) => {
+                        const getTrainingIcon = (type: string) => {
+                          switch (type.toLowerCase()) {
+                            case 'fitness training':
+                              return <Zap className="w-4 h-4 text-white" />;
+                            case 'team practice':
+                              return <Users className="w-4 h-4 text-white" />;
+                            case 'technical skills':
+                              return <Target className="w-4 h-4 text-white" />;
+                            case 'match preparation':
+                              return <Trophy className="w-4 h-4 text-white" />;
+                            default:
+                              return <Dumbbell className="w-4 h-4 text-white" />;
+                          }
+                        };
+
+                        return (
                         <div key={session.id} className="bg-white/10 rounded-2xl p-4">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
                               <div className="p-2 bg-gradient-to-br from-green-400 to-green-600 rounded-lg">
-                                <Dumbbell className="w-4 h-4 text-white" />
+                                {getTrainingIcon(session.type)}
                               </div>
                               <div>
                                 <h4 className="font-semibold text-white">{session.type}</h4>
@@ -286,7 +304,8 @@ export default function HeroBanner({ player, activeClub, squadMembers, onQuickAd
                             </div>
                           </div>
                         </div>
-                      ))
+                        );
+                      })
                     ) : (
                       <div className="text-center py-8">
                         <Dumbbell className="w-12 h-12 text-white/60 mx-auto mb-3" />
@@ -310,18 +329,7 @@ export default function HeroBanner({ player, activeClub, squadMembers, onQuickAd
                 ))}
               </div>
               
-              <motion.button
-                onClick={onQuickAdd}
-                className="bg-gradient-to-r from-white to-blue-50 text-blue-700 hover:from-blue-50 hover:to-white px-6 py-3 rounded-2xl font-semibold transition-all duration-300 flex items-center justify-center gap-3 shadow-lg w-full group"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.6, duration: 0.6 }}
-                whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(0,0,0,0.2)" }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Target className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
-                <span>Add New Performance</span>
-              </motion.button>
+              
             </div>
           </motion.div>
         </div>
