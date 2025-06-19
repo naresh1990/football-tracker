@@ -54,10 +54,10 @@ export default function CoachFeedback({ playerId }: CoachFeedbackProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 shadow-lg hover:shadow-xl transition-all duration-300">
+      <Card className="bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200 shadow-lg hover:shadow-xl transition-all duration-300">
         <CardHeader className="pb-4">
           <div className="flex items-center justify-end">
-            <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white font-semibold">
+            <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-white font-semibold">
               <Plus className="w-4 h-4 mr-1" />
               Add Feedback
             </Button>

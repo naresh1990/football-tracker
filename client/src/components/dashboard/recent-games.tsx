@@ -41,14 +41,8 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
       transition={{ duration: 0.6, delay: 0.2 }}
     >
       <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 shadow-lg hover:shadow-xl transition-all duration-300">
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-md">
-                <Calendar className="w-5 h-5 text-white" />
-              </div>
-              <CardTitle className="text-xl font-bold text-gray-900">Recent Games</CardTitle>
-            </div>
+        <CardHeader className="pb-4">
+          <div className="flex justify-end">
             <Link href="/games">
               <Button variant="ghost" className="text-green-600 hover:text-green-700 hover:bg-green-100 font-medium transition-all duration-200">
                 View All <ArrowRight className="ml-1 w-4 h-4" />

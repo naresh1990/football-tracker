@@ -44,10 +44,10 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
 
   return (
     <section>
-      <Card className="shadow-lg">
+      <Card className="bg-gradient-to-br from-orange-50 to-red-50 border-orange-200 shadow-lg hover:shadow-xl transition-all duration-300">
         <CardHeader className="pb-4">
-          <div className="flex items-center justify-between">
-            <Button size="sm" className="bg-orange-600 hover:bg-orange-700 text-white font-semibold ml-auto">
+          <div className="flex justify-end">
+            <Button size="sm" className="bg-orange-600 hover:bg-orange-700 text-white font-semibold">
               <Plus className="w-4 h-4 mr-1" />
               Add
             </Button>
