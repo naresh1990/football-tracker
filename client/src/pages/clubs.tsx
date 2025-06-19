@@ -91,32 +91,34 @@ export default function Clubs() {
           clubs?.map((club: any) => {
             const clubCoaches = getClubCoaches(club.id);
             return (
-              <Card key={club.id} className="hover:shadow-lg transition-shadow">
+              <Card key={club.id} className="shadow-lg border-0 bg-gradient-to-br from-gray-50 to-blue-50 hover:shadow-xl transition-all duration-300">
                 <CardHeader className="pb-4">
                   <div className="flex justify-between items-start">
-                    <div className="flex items-center space-x-3">
-                      {club.logo ? (
-                        <img 
-                          src={club.logo} 
-                          alt={`${club.name} logo`}
-                          className="w-12 h-12 object-cover rounded-lg border"
-                        />
-                      ) : (
-                        <div className="text-2xl">{getTypeIcon(club.type)}</div>
-                      )}
+                    <div className="flex items-center space-x-4">
+                      <div className="w-14 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                        {club.logo ? (
+                          <img 
+                            src={club.logo} 
+                            alt={`${club.name} logo`}
+                            className="w-10 h-10 object-cover rounded-lg"
+                          />
+                        ) : (
+                          <div className="text-2xl text-white">{getTypeIcon(club.type)}</div>
+                        )}
+                      </div>
                       <div>
-                        <CardTitle className="text-xl text-gray-900">
+                        <CardTitle className="text-xl font-bold text-gray-900 mb-2">
                           {club.name}
                         </CardTitle>
-                        <div className="flex items-center space-x-4 text-sm text-gray-500 mt-1">
-                          <span className={`font-medium ${getStatusColor(club.status)}`}>
+                        <div className="flex items-center space-x-3 text-sm">
+                          <span className={`font-semibold px-3 py-1 rounded-full text-xs ${getStatusColor(club.status)} bg-green-100 text-green-700`}>
                             {club.status.charAt(0).toUpperCase() + club.status.slice(1)}
                           </span>
-                          <span className="capitalize">
+                          <span className="capitalize font-medium text-gray-600">
                             {club.type} Club
                           </span>
                           {club.squadLevel && (
-                            <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">
+                            <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-medium">
                               {club.squadLevel}
                             </span>
                           )}
@@ -125,12 +127,13 @@ export default function Clubs() {
                     </div>
                     
                     <div className="flex items-center space-x-2">
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" className="text-gray-600 hover:text-blue-600 hover:bg-blue-50">
                         <Edit className="w-4 h-4" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="sm"
+                        className="text-gray-600 hover:text-red-600 hover:bg-red-50"
                         onClick={() => deleteClubMutation.mutate(club.id)}
                         disabled={deleteClubMutation.isPending}
                       >
@@ -140,50 +143,67 @@ export default function Clubs() {
                   </div>
                 </CardHeader>
                 
-                <CardContent>
+                <CardContent className="pt-0">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Club Details */}
-                    <div className="space-y-3">
-                      <h4 className="font-medium text-gray-900">Club Details</h4>
-                      {club.seasonStart && club.seasonEnd && (
-                        <div className="text-sm text-gray-600">
-                          <strong>Season:</strong> {formatDate(club.seasonStart)} - {formatDate(club.seasonEnd)}
-                        </div>
-                      )}
-                      {club.description && (
-                        <div className="text-sm text-gray-600">
-                          <strong>Description:</strong> {club.description}
-                        </div>
-                      )}
+                    <div className="bg-white/60 rounded-xl p-4 border border-blue-100">
+                      <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <Building className="w-4 h-4 text-blue-500" />
+                        Club Details
+                      </h4>
+                      <div className="space-y-3">
+                        {club.seasonStart && club.seasonEnd && (
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-gray-600 font-medium">Season:</span>
+                            <span className="text-sm font-semibold text-gray-900">
+                              {formatDate(club.seasonStart)} - {formatDate(club.seasonEnd)}
+                            </span>
+                          </div>
+                        )}
+                        {club.description && (
+                          <div>
+                            <span className="text-sm text-gray-600 font-medium">Description:</span>
+                            <p className="text-sm text-gray-900 mt-1">{club.description}</p>
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     {/* Associated Coaches */}
-                    <div className="space-y-3">
-                      <div className="flex items-center space-x-2">
-                        <Users className="h-4 w-4 text-gray-500" />
-                        <h4 className="font-medium text-gray-900">
-                          Coaches ({clubCoaches.length})
+                    <div className="bg-white/60 rounded-xl p-4 border border-blue-100">
+                      <div className="flex items-center justify-between mb-4">
+                        <h4 className="font-semibold text-gray-900 flex items-center gap-2">
+                          <Users className="w-4 h-4 text-blue-500" />
+                          Coaches
                         </h4>
+                        <div className="bg-blue-100 px-3 py-1 rounded-full">
+                          <span className="text-sm font-medium text-blue-700">
+                            {clubCoaches.length} Members
+                          </span>
+                        </div>
                       </div>
                       {clubCoaches.length > 0 ? (
-                        <div className="space-y-2">
+                        <div className="space-y-3">
                           {clubCoaches.map((coach: any) => (
-                            <div key={coach.id} className="flex items-center justify-between text-sm">
-                              <div className="flex items-center space-x-2">
-                                <Avatar className="w-6 h-6">
-                                  <AvatarImage src={coach.profilePicture} alt={coach.name} />
-                                  <AvatarFallback className="text-xs">
-                                    {coach.name.split(' ').map((n: string) => n[0]).join('')}
-                                  </AvatarFallback>
-                                </Avatar>
-                                <span className="text-gray-900">{coach.name}</span>
+                            <div key={coach.id} className="flex items-center gap-3 p-3 bg-white/80 rounded-lg border border-blue-50">
+                              <Avatar className="w-10 h-10 ring-2 ring-blue-200">
+                                <AvatarImage src={coach.profilePicture} alt={coach.name} />
+                                <AvatarFallback className="text-sm bg-gradient-to-br from-blue-500 to-purple-500 text-white">
+                                  {coach.name.split(' ').map((n: string) => n[0]).join('')}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div className="flex-1">
+                                <p className="font-semibold text-gray-900 text-sm">{coach.name}</p>
+                                <p className="text-xs text-blue-600 font-medium">{coach.title}</p>
                               </div>
-                              <span className="text-gray-500">{coach.title}</span>
                             </div>
                           ))}
                         </div>
                       ) : (
-                        <p className="text-sm text-gray-500">No coaches assigned</p>
+                        <div className="text-center py-6 text-gray-500">
+                          <Users className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+                          <p className="text-sm">No coaches assigned</p>
+                        </div>
                       )}
                     </div>
                   </div>
