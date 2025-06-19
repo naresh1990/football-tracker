@@ -274,7 +274,7 @@ export default function HeroBanner({ player, activeClub, squadMembers, onQuickAd
                   // Upcoming Training Slide
                   <div className="space-y-4">
                     {upcomingTraining && upcomingTraining.length > 0 ? (
-                      upcomingTraining.slice(0, 3).map((session: any) => {
+                      upcomingTraining.slice(0, 2).map((session: any) => {
                         const getTrainingIcon = (type: string) => {
                           switch (type.toLowerCase()) {
                             case 'fitness training':
