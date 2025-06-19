@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Target, Zap, MessageSquare, Trophy } from "lucide-react";
+import { Target, Zap, MessageSquare, Trophy, Building, User } from "lucide-react";
 import GameForm from "@/components/forms/game-form";
 import TrainingForm from "@/components/forms/training-form";
 import FeedbackForm from "@/components/forms/feedback-form";
