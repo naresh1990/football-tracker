@@ -12,7 +12,7 @@ import {
   coachFeedback, squadMembers, clubs, coaches, coachingStaff
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 
 export interface IStorage {
   // Player methods
@@ -67,6 +67,7 @@ export interface IStorage {
   deleteClub(id: number): Promise<boolean>;
   getClubsByPlayer(playerId: number): Promise<Club[]>;
   getActiveClubs(playerId: number): Promise<Club[]>;
+  getActiveClub(playerId: number): Promise<Club | undefined>;
 
   // Coach methods
   getCoach(id: number): Promise<Coach | undefined>;
@@ -810,6 +811,15 @@ export class MemStorage implements IStorage {
   }
 
   async createClub(club: InsertClub): Promise<Club> {
+    // If creating an active club, deactivate all other clubs for this player
+    if (club.status === "active") {
+      for (const [id, existingClub] of this.clubs) {
+        if (existingClub.playerId === club.playerId && existingClub.status === "active") {
+          this.clubs.set(id, { ...existingClub, status: "inactive" });
+        }
+      }
+    }
+
     const id = this.clubId++;
     const newClub: Club = { 
       ...club, 
@@ -828,6 +838,15 @@ export class MemStorage implements IStorage {
   async updateClub(id: number, club: Partial<InsertClub>): Promise<Club | undefined> {
     const existing = this.clubs.get(id);
     if (!existing) return undefined;
+    
+    // If updating to active status, deactivate all other clubs for this player
+    if (club.status === "active") {
+      for (const [clubId, existingClub] of this.clubs) {
+        if (existingClub.playerId === existing.playerId && existingClub.status === "active" && clubId !== id) {
+          this.clubs.set(clubId, { ...existingClub, status: "inactive" });
+        }
+      }
+    }
     
     // Only update logo if a new one is provided, preserve existing logo otherwise
     const updated = { 
@@ -849,6 +868,12 @@ export class MemStorage implements IStorage {
 
   async getActiveClubs(playerId: number): Promise<Club[]> {
     return Array.from(this.clubs.values()).filter(club => 
+      club.playerId === playerId && club.status === "active"
+    );
+  }
+
+  async getActiveClub(playerId: number): Promise<Club | undefined> {
+    return Array.from(this.clubs.values()).find(club => 
       club.playerId === playerId && club.status === "active"
     );
   }

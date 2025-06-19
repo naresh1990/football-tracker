@@ -102,6 +102,12 @@ This is a comprehensive football player tracking application built for monitorin
 
 ## Recent Changes
 
+- June 19, 2025: Implemented single active club constraint logic
+  - Added business logic to ensure only one club can be active at any time
+  - Updated database storage methods to automatically deactivate other clubs when setting one as active
+  - Enhanced club form interface with clear messaging about single active club policy
+  - Added visual indicators (star emoji) for active clubs in the interface
+  - Created new API endpoint for fetching the current active club
 - June 19, 2025: Implemented collapsible club interface with enhanced squad management
   - Added collapsible club cards (collapsed by default) with expand/collapse functionality
   - Enhanced squad member cards with full-width layout and better visual design

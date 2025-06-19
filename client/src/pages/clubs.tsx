@@ -198,7 +198,7 @@ export default function Clubs() {
                           </CardTitle>
                           <div className="flex items-center gap-2 mt-1">
                             <Badge variant={club.status === "active" ? "default" : "secondary"} className="text-xs">
-                              {club.status === "active" ? "Active" : "Former"}
+                              {club.status === "active" ? "🌟 Active" : "Former"}
                             </Badge>
                             <Badge variant="outline" className="text-white border-white/30 text-xs">
                               {club.type}
