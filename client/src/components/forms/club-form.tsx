@@ -189,19 +189,44 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
           </div>
 
           <div>
-            <Label htmlFor="logo">Club Logo URL (Optional)</Label>
+            <Label htmlFor="logo">Club Logo (Optional)</Label>
             <div className="flex gap-2">
               <Input
                 id="logo"
                 value={formData.logo}
                 onChange={(e) => setFormData({ ...formData, logo: e.target.value })}
-                placeholder="https://example.com/logo.png"
+                placeholder="https://example.com/logo.png or upload a file"
                 className="flex-1"
               />
-              <Button type="button" variant="outline" size="icon">
+              <Button 
+                type="button" 
+                variant="outline" 
+                size="icon"
+                onClick={handleUploadClick}
+                title="Upload logo file"
+              >
                 <Upload className="h-4 w-4" />
               </Button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleFileUpload}
+                className="hidden"
+              />
             </div>
+            {formData.logo && (
+              <div className="mt-2">
+                <img 
+                  src={formData.logo} 
+                  alt="Club logo preview" 
+                  className="w-16 h-16 object-cover rounded-lg border"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
           </div>
 
           <div className="flex gap-2 pt-4">
