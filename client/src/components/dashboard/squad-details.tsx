@@ -1,8 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Edit, User, Shield, Users, BarChart3, Plus } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Edit, User, Shield, Users, BarChart3 } from "lucide-react";
 
 interface SquadDetailsProps {
   playerId: number;
@@ -12,12 +10,6 @@ interface SquadDetailsProps {
 }
 
 export default function SquadDetails({ playerId, activeClub, coaches, squadMembers }: SquadDetailsProps) {
-  const { data: player } = useQuery({
-    queryKey: ["/api/players/1"],
-  });
-
-  // Use actual coaches and squad members passed as props
-
   return (
     <section>
       <Card className="shadow-lg">
@@ -105,48 +97,30 @@ export default function SquadDetails({ playerId, activeClub, coaches, squadMembe
               </div>
             </div>
 
-            {/* Squad Overview */}
+            {/* Season Stats */}
             <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-5 shadow-sm">
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
                   <BarChart3 className="w-4 h-4 text-white" />
                 </div>
-                <h4 className="font-semibold text-gray-900">Squad Overview</h4>
+                <h4 className="font-semibold text-gray-900">Season Stats</h4>
               </div>
               <div className="space-y-3">
                 <div className="flex items-center justify-between py-2 border-b border-green-100">
-                  <span className="text-gray-600 text-sm">Total Players:</span>
-                  <span className="font-semibold text-gray-900">
-                    {squadMembers ? squadMembers.filter(member => member.clubId === activeClub?.id).length : 0}
-                  </span>
+                  <span className="text-gray-600 text-sm">Games Played:</span>
+                  <span className="font-semibold text-gray-900">0</span>
                 </div>
                 <div className="flex items-center justify-between py-2 border-b border-green-100">
-                  <span className="text-gray-600 text-sm">Average Age:</span>
-                  <span className="font-semibold text-gray-900">
-                    {squadMembers && squadMembers.length > 0 
-                      ? `${Math.round(squadMembers.filter(member => member.clubId === activeClub?.id && member.age).reduce((sum, member) => sum + member.age, 0) / squadMembers.filter(member => member.clubId === activeClub?.id && member.age).length || 0)} years`
-                      : 'N/A'
-                    }
-                  </span>
+                  <span className="text-gray-600 text-sm">Team Wins:</span>
+                  <span className="font-semibold text-gray-900">0</span>
                 </div>
                 <div className="flex items-center justify-between py-2 border-b border-green-100">
-                  <span className="text-gray-600 text-sm">Head Coach:</span>
-                  <span className="font-semibold text-gray-900">
-                    {coaches && coaches.length > 0 
-                      ? coaches.find(coach => coach.clubId === activeClub?.id && coach.title === 'Head Coach')?.name || 
-                        coaches.find(coach => coach.clubId === activeClub?.id)?.name || 'Not assigned'
-                      : 'Not assigned'
-                    }
-                  </span>
+                  <span className="text-gray-600 text-sm">Team Draws:</span>
+                  <span className="font-semibold text-gray-900">0</span>
                 </div>
                 <div className="flex items-center justify-between py-2">
-                  <span className="text-gray-600 text-sm">Jersey #:</span>
-                  <span className="font-semibold text-gray-900">
-                    {squadMembers 
-                      ? squadMembers.find(member => member.name === 'Darshil Podishetty')?.jerseyNumber || '#9'
-                      : '#9'
-                    }
-                  </span>
+                  <span className="text-gray-600 text-sm">Team Losses:</span>
+                  <span className="font-semibold text-gray-900">0</span>
                 </div>
               </div>
             </div>
