@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { 
   Calendar as CalendarIcon, 
   Clock, 
@@ -668,7 +669,7 @@ export default function Training() {
                     variant="outline"
                     size="sm"
                     className="border-green-600 text-green-600 hover:bg-green-50"
-                    onClick={() => {/* TODO: Open gallery upload */}}
+                    onClick={() => setShowPhotoUpload(true)}
                   >
                     <Plus className="w-4 h-4 mr-1" />
                     Add Photos
@@ -725,6 +726,100 @@ export default function Training() {
                   className="flex-1 bg-green-600 hover:bg-green-700 text-white"
                 >
                   {updateFeedbackMutation.isPending ? 'Saving...' : (selectedEvent?.coachFeedback ? 'Update Feedback' : 'Save Feedback')}
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Photo Upload Modal */}
+        <Dialog open={showPhotoUpload} onOpenChange={setShowPhotoUpload}>
+          <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Upload className="w-5 h-5" />
+                Upload Session Photo
+              </DialogTitle>
+              <DialogDescription>
+                Add a photo to this training session with an optional caption.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 p-1">
+              <div>
+                <Label htmlFor="session-photo-upload">Select Photo</Label>
+                <Input
+                  id="session-photo-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      if (file.type.startsWith('image/')) {
+                        setSelectedPhoto(file);
+                      } else {
+                        toast({
+                          title: "Invalid file type",
+                          description: "Please select an image file",
+                          variant: "destructive",
+                        });
+                      }
+                    }
+                  }}
+                  className="mt-1"
+                />
+                {selectedPhoto && (
+                  <p className="text-sm text-green-600 mt-1">
+                    Selected: {selectedPhoto.name}
+                  </p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="session-caption">Caption (optional)</Label>
+                <Textarea
+                  id="session-caption"
+                  placeholder="Add a caption for your training photo..."
+                  value={photoCaption}
+                  onChange={(e) => setPhotoCaption(e.target.value)}
+                  className="mt-1"
+                  rows={3}
+                />
+              </div>
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShowPhotoUpload(false);
+                    setSelectedPhoto(null);
+                    setPhotoCaption('');
+                  }}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={() => {
+                    if (selectedPhoto && selectedEvent) {
+                      uploadPhotoMutation.mutate({
+                        photo: selectedPhoto,
+                        caption: photoCaption,
+                        sessionId: selectedEvent.id,
+                      });
+                    }
+                  }}
+                  disabled={uploadPhotoMutation.isPending || !selectedPhoto}
+                  className="flex-1 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
+                >
+                  {uploadPhotoMutation.isPending ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                      Uploading...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-4 h-4 mr-2" />
+                      Upload Photo
+                    </>
+                  )}
                 </Button>
               </div>
             </div>
