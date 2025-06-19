@@ -407,7 +407,7 @@ export default function Training() {
         >
           <div className="flex items-center gap-4 text-sm">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-blue-500 rounded"></div>
+              <div className="w-3 h-3 bg-violet-500 rounded"></div>
               <span>Pending</span>
             </div>
             <div className="flex items-center gap-2">
