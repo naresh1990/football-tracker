@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Calendar, Clock, MapPin, User, Target, Zap, Users, Activity, Trophy, Dumbbell, CheckCircle, X, AlertCircle } from "lucide-react";
+import { Plus, Calendar, Clock, MapPin, User, Target, Zap, Users, Activity, Trophy, Dumbbell, CheckCircle, X, AlertCircle, Trash2, Ban } from "lucide-react";
 import { formatShortDate, formatTime } from "@/lib/utils";
 import { motion } from "framer-motion";
 import EmptyState from "@/components/ui/empty-state";
@@ -41,6 +41,26 @@ export default function Training() {
       toast({
         title: "Error",
         description: "Failed to update attendance",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const deleteSessionMutation = useMutation({
+    mutationFn: (sessionId: number) =>
+      apiRequest("DELETE", `/api/training/${sessionId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/training"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
+      toast({
+        title: "Success",
+        description: "Training session deleted successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to delete training session",
         variant: "destructive",
       });
     },
@@ -158,6 +178,7 @@ export default function Training() {
   const pendingSessions = sessions?.filter((session: any) => session.attendance === 'pending') || [];
   const completedSessions = sessions?.filter((session: any) => session.attendance === 'completed') || [];
   const missedSessions = sessions?.filter((session: any) => session.attendance === 'missed') || [];
+  const cancelledSessions = sessions?.filter((session: any) => session.attendance === 'cancelled') || [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
