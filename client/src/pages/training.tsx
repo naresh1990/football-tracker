@@ -263,22 +263,32 @@ export default function Training() {
                             <Button 
                               variant="outline" 
                               size="sm" 
-                              className="px-4 py-2 hover:bg-green-50 text-green-600 border-green-200 rounded-full font-medium"
+                              className="px-3 py-2 hover:bg-green-50 text-green-600 border-green-200 rounded-full font-medium"
                               onClick={() => updateAttendanceMutation.mutate({ sessionId: session.id, attendance: 'completed' })}
                               disabled={updateAttendanceMutation.isPending}
                             >
                               <CheckCircle className="w-3 h-3 mr-1" />
-                              Mark Completed
+                              Completed
                             </Button>
                             <Button 
                               variant="outline" 
                               size="sm" 
-                              className="px-4 py-2 hover:bg-red-50 text-red-600 border-red-200 rounded-full font-medium"
+                              className="px-3 py-2 hover:bg-red-50 text-red-600 border-red-200 rounded-full font-medium"
                               onClick={() => updateAttendanceMutation.mutate({ sessionId: session.id, attendance: 'missed' })}
                               disabled={updateAttendanceMutation.isPending}
                             >
                               <X className="w-3 h-3 mr-1" />
-                              Missed Session
+                              Missed
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="px-3 py-2 hover:bg-orange-50 text-orange-600 border-orange-200 rounded-full font-medium"
+                              onClick={() => updateAttendanceMutation.mutate({ sessionId: session.id, attendance: 'cancelled' })}
+                              disabled={updateAttendanceMutation.isPending}
+                            >
+                              <Ban className="w-3 h-3 mr-1" />
+                              Cancelled
                             </Button>
                           </div>
                         )}
