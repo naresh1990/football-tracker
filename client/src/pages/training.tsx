@@ -252,9 +252,13 @@ export default function Training() {
     return {
       style: {
         backgroundColor,
-        borderLeft: `4px solid ${borderColor}`,
+        borderLeftWidth: '4px',
+        borderLeftStyle: 'solid',
+        borderLeftColor: borderColor,
+        borderTop: 'none',
+        borderRight: 'none',
+        borderBottom: 'none',
         color: 'white',
-        border: 'none',
         borderRadius: '4px',
         fontSize: '12px',
         padding: '2px 4px',
