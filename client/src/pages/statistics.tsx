@@ -103,7 +103,7 @@ export default function Statistics() {
                   </div>
                 </div>
                 <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
-                  <Trophy className="h-6 w-6 text-white" />
+                  <Target className="h-6 w-6 text-white" />
                 </div>
               </div>
             </CardContent>
@@ -121,7 +121,7 @@ export default function Statistics() {
                   </div>
                 </div>
                 <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
-                  <Target className="h-6 w-6 text-white" />
+                  <Users className="h-6 w-6 text-white" />
                 </div>
               </div>
             </CardContent>
