@@ -1,0 +1,274 @@
+import { useQuery } from "@tanstack/react-query";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from "recharts";
+import { Target, Trophy, Calendar, TrendingUp } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+
+export default function Statistics() {
+  const playerId = 1;
+
+  const { data: games, isLoading: gamesLoading } = useQuery({
+    queryKey: ["/api/games", { playerId }],
+  });
+
+  const { data: stats, isLoading: statsLoading } = useQuery({
+    queryKey: ["/api/stats/summary", { playerId }],
+  });
+
+  if (gamesLoading || statsLoading) {
+    return (
+      <div className="space-y-6">
+        <h1 className="text-3xl font-bold text-gray-900">Statistics</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[...Array(4)].map((_, i) => (
+            <Skeleton key={i} className="h-24 w-full" />
+          ))}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {[...Array(4)].map((_, i) => (
+            <Skeleton key={i} className="h-80 w-full" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Prepare data for charts
+  const performanceData = games?.slice(-10).map((game: any, index: number) => ({
+    game: `Game ${index + 1}`,
+    goals: game.playerGoals || 0,
+    assists: game.playerAssists || 0,
+    date: new Date(game.date).toLocaleDateString()
+  })) || [];
+
+  const monthlyData = games?.reduce((acc: any, game: any) => {
+    const month = new Date(game.date).toLocaleDateString('en-US', { month: 'short' });
+    if (!acc[month]) {
+      acc[month] = { month, goals: 0, assists: 0, games: 0 };
+    }
+    acc[month].goals += game.playerGoals || 0;
+    acc[month].assists += game.playerAssists || 0;
+    acc[month].games += 1;
+    return acc;
+  }, {});
+
+  const monthlyChartData = Object.values(monthlyData || {});
+
+  // Position analysis
+  const positionData = games?.reduce((acc: any, game: any) => {
+    const position = game.positionPlayed || 'Unknown';
+    acc[position] = (acc[position] || 0) + 1;
+    return acc;
+  }, {}) || {};
+
+  const pieData = Object.entries(positionData).map(([position, count]) => ({
+    name: position,
+    value: count,
+  }));
+
+  const COLORS = ['hsl(105, 66%, 13%)', 'hsl(142, 76%, 73%)', 'hsl(45, 93%, 58%)', '#8884d8'];
+
+  // Win/Loss analysis
+  const gameResults = games?.reduce((acc: any, game: any) => {
+    if (game.teamScore > game.opponentScore) acc.wins++;
+    else if (game.teamScore < game.opponentScore) acc.losses++;
+    else acc.draws++;
+    return acc;
+  }, { wins: 0, losses: 0, draws: 0 }) || { wins: 0, losses: 0, draws: 0 };
+
+  const resultData = [
+    { name: 'Wins', value: gameResults.wins, color: '#10B981' },
+    { name: 'Losses', value: gameResults.losses, color: '#EF4444' },
+    { name: 'Draws', value: gameResults.draws, color: '#F59E0B' },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <h1 className="text-3xl font-bold text-gray-900">Statistics</h1>
+
+      {/* Overview Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Total Goals</p>
+                <p className="text-3xl font-bold text-football-green">{stats?.totalGoals || 0}</p>
+              </div>
+              <div className="bg-field-green bg-opacity-20 p-3 rounded-full">
+                <Target className="text-field-green w-6 h-6" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Total Assists</p>
+                <p className="text-3xl font-bold text-trophy-gold">{stats?.totalAssists || 0}</p>
+              </div>
+              <div className="bg-trophy-gold bg-opacity-20 p-3 rounded-full">
+                <TrendingUp className="text-trophy-gold w-6 h-6" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Games Played</p>
+                <p className="text-3xl font-bold text-football-green">{stats?.totalGames || 0}</p>
+              </div>
+              <div className="bg-football-green bg-opacity-20 p-3 rounded-full">
+                <Calendar className="text-football-green w-6 h-6" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Win Rate</p>
+                <p className="text-3xl font-bold text-green-600">{stats?.winRate || 0}%</p>
+              </div>
+              <div className="bg-green-100 p-3 rounded-full">
+                <Trophy className="text-green-600 w-6 h-6" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Performance Trend */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Performance Trend (Last 10 Games)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={performanceData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="game" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line 
+                    type="monotone" 
+                    dataKey="goals" 
+                    stroke="hsl(105, 66%, 13%)" 
+                    strokeWidth={3}
+                    name="Goals"
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="assists" 
+                    stroke="hsl(45, 93%, 58%)" 
+                    strokeWidth={3}
+                    name="Assists"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Monthly Performance */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Monthly Performance</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={monthlyChartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="goals" fill="hsl(105, 66%, 13%)" name="Goals" />
+                  <Bar dataKey="assists" fill="hsl(45, 93%, 58%)" name="Assists" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Position Analysis */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Position Analysis</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-80">
+              {pieData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={pieData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                      outerRadius={100}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {pieData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-500">
+                  <div className="text-center">
+                    <div className="text-4xl mb-2">📊</div>
+                    <p>No position data available</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Win/Loss Distribution */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Game Results</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={resultData}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
+                    outerRadius={100}
+                    dataKey="value"
+                  >
+                    {resultData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}

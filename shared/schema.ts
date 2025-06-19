@@ -1,0 +1,126 @@
+import { pgTable, text, serial, integer, boolean, timestamp, decimal } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod";
+
+// Player profile
+export const players = pgTable("players", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  age: integer("age").notNull(),
+  position: text("position").notNull(),
+  teamName: text("team_name").notNull(),
+  jerseyNumber: text("jersey_number"),
+  isCaptain: boolean("is_captain").default(false),
+  division: text("division"),
+});
+
+// Games tracking
+export const games = pgTable("games", {
+  id: serial("id").primaryKey(),
+  playerId: integer("player_id").notNull(),
+  opponent: text("opponent").notNull(),
+  date: timestamp("date").notNull(),
+  homeAway: text("home_away").notNull(), // 'home' or 'away'
+  teamScore: integer("team_score").notNull(),
+  opponentScore: integer("opponent_score").notNull(),
+  playerGoals: integer("player_goals").default(0),
+  playerAssists: integer("player_assists").default(0),
+  positionPlayed: text("position_played").notNull(),
+  minutesPlayed: integer("minutes_played").default(0),
+  rating: decimal("rating"),
+  notes: text("notes"),
+});
+
+// Tournaments
+export const tournaments = pgTable("tournaments", {
+  id: serial("id").primaryKey(),
+  playerId: integer("player_id").notNull(),
+  name: text("name").notNull(),
+  description: text("description"),
+  startDate: timestamp("start_date"),
+  endDate: timestamp("end_date"),
+  status: text("status").notNull(), // 'upcoming', 'active', 'completed'
+  format: text("format"), // 'league', 'knockout', 'group'
+  totalTeams: integer("total_teams"),
+  currentPosition: integer("current_position"),
+  points: integer("points").default(0),
+  gamesPlayed: integer("games_played").default(0),
+  totalGames: integer("total_games"),
+  pointsTableImage: text("points_table_image"),
+});
+
+// Training sessions
+export const trainingSessions = pgTable("training_sessions", {
+  id: serial("id").primaryKey(),
+  playerId: integer("player_id").notNull(),
+  type: text("type").notNull(),
+  date: timestamp("date").notNull(),
+  duration: integer("duration").notNull(), // in minutes
+  location: text("location"),
+  coach: text("coach"),
+  notes: text("notes"),
+  completed: boolean("completed").default(false),
+});
+
+// Coach feedback
+export const coachFeedback = pgTable("coach_feedback", {
+  id: serial("id").primaryKey(),
+  playerId: integer("player_id").notNull(),
+  gameId: integer("game_id"),
+  coach: text("coach").notNull(),
+  date: timestamp("date").notNull(),
+  comment: text("comment").notNull(),
+  strengths: text("strengths").array(),
+  improvements: text("improvements").array(),
+  rating: decimal("rating"),
+});
+
+// Squad/team members
+export const squadMembers = pgTable("squad_members", {
+  id: serial("id").primaryKey(),
+  playerId: integer("player_id").notNull(),
+  playerName: text("player_name").notNull(),
+  position: text("position").notNull(),
+  jerseyNumber: text("jersey_number"),
+  role: text("role"), // 'player', 'captain', 'vice_captain'
+});
+
+// Coaching staff
+export const coachingStaff = pgTable("coaching_staff", {
+  id: serial("id").primaryKey(),
+  playerId: integer("player_id").notNull(),
+  name: text("name").notNull(),
+  role: text("role").notNull(), // 'head_coach', 'assistant_coach', 'goalkeeper_coach'
+  contact: text("contact"),
+});
+
+// Create insert schemas
+export const insertPlayerSchema = createInsertSchema(players).omit({ id: true });
+export const insertGameSchema = createInsertSchema(games).omit({ id: true });
+export const insertTournamentSchema = createInsertSchema(tournaments).omit({ id: true });
+export const insertTrainingSessionSchema = createInsertSchema(trainingSessions).omit({ id: true });
+export const insertCoachFeedbackSchema = createInsertSchema(coachFeedback).omit({ id: true });
+export const insertSquadMemberSchema = createInsertSchema(squadMembers).omit({ id: true });
+export const insertCoachingStaffSchema = createInsertSchema(coachingStaff).omit({ id: true });
+
+// Create types
+export type InsertPlayer = z.infer<typeof insertPlayerSchema>;
+export type Player = typeof players.$inferSelect;
+
+export type InsertGame = z.infer<typeof insertGameSchema>;
+export type Game = typeof games.$inferSelect;
+
+export type InsertTournament = z.infer<typeof insertTournamentSchema>;
+export type Tournament = typeof tournaments.$inferSelect;
+
+export type InsertTrainingSession = z.infer<typeof insertTrainingSessionSchema>;
+export type TrainingSession = typeof trainingSessions.$inferSelect;
+
+export type InsertCoachFeedback = z.infer<typeof insertCoachFeedbackSchema>;
+export type CoachFeedback = typeof coachFeedback.$inferSelect;
+
+export type InsertSquadMember = z.infer<typeof insertSquadMemberSchema>;
+export type SquadMember = typeof squadMembers.$inferSelect;
+
+export type InsertCoachingStaff = z.infer<typeof insertCoachingStaffSchema>;
+export type CoachingStaff = typeof coachingStaff.$inferSelect;
