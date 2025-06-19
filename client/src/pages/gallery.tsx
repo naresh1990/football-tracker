@@ -17,7 +17,9 @@ import {
   Image as ImageIcon,
   X,
   Calendar,
-  FileText
+  FileText,
+  ExternalLink,
+  Dumbbell
 } from "lucide-react";
 import type { GalleryPhoto } from "@shared/schema";
 import moment from "moment-timezone";
@@ -287,12 +289,22 @@ export default function Gallery() {
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
-                    {(photo.caption || photo.uploadedAt) && (
+                    {(photo.caption || photo.uploadedAt || photo.trainingSessionId) && (
                       <div className="p-4 space-y-2">
                         {photo.caption && (
                           <div className="flex items-start gap-2">
                             <FileText className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
                             <p className="text-sm text-gray-700 line-clamp-2">{photo.caption}</p>
+                          </div>
+                        )}
+                        {photo.trainingSessionId && (
+                          <div className="flex items-center gap-2">
+                            <Dumbbell className="w-3 h-3 text-blue-500" />
+                            <span className="text-xs text-blue-600 hover:text-blue-800 cursor-pointer flex items-center gap-1"
+                                  onClick={() => window.location.href = '/training'}>
+                              View Training Session
+                              <ExternalLink className="w-3 h-3" />
+                            </span>
                           </div>
                         )}
                         <div className="flex items-center gap-2 text-xs text-gray-500">
@@ -340,10 +352,25 @@ export default function Gallery() {
                   className="w-full h-auto max-h-[70vh] object-contain"
                 />
                 
-                {(selectedPhoto.caption || selectedPhoto.uploadedAt) && (
+                {(selectedPhoto.caption || selectedPhoto.uploadedAt || selectedPhoto.trainingSessionId) && (
                   <div className="p-6 bg-white border-t">
                     {selectedPhoto.caption && (
                       <p className="text-gray-800 mb-3 text-lg">{selectedPhoto.caption}</p>
+                    )}
+                    {selectedPhoto.trainingSessionId && (
+                      <div className="flex items-center gap-2 mb-3 p-3 bg-blue-50 rounded-lg">
+                        <Dumbbell className="w-4 h-4 text-blue-500" />
+                        <span className="text-sm text-blue-700">From Training Session</span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => window.location.href = '/training'}
+                          className="text-blue-600 hover:text-blue-800 ml-auto"
+                        >
+                          View Session
+                          <ExternalLink className="w-4 h-4 ml-1" />
+                        </Button>
+                      </div>
                     )}
                     <div className="flex items-center justify-between text-sm text-gray-500">
                       <span>

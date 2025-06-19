@@ -102,6 +102,13 @@ This is a comprehensive football player tracking application built for monitorin
 
 ## Recent Changes
 
+- June 19, 2025: Enhanced Gallery with training session integration and cross-linking functionality
+  - Training session photos now automatically appear in main gallery with session references
+  - Added trainingSessionId field to gallery photos for linking back to sessions
+  - Gallery photos show "View Training Session" links when uploaded from training sessions
+  - Photo uploads from training sessions invalidate both training and gallery caches for real-time updates
+  - Enhanced photo modal view with training session context and navigation links
+  - Improved user experience with seamless navigation between training calendar and gallery
 - June 19, 2025: Implemented complete Gallery feature with photo upload, delete, and gallery view functionality
   - Added galleryPhotos database table with player association, filename, caption, and upload timestamp
   - Created comprehensive Gallery page with responsive grid layout and modal photo viewing

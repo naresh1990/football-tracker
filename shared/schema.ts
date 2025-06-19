@@ -150,6 +150,7 @@ export const galleryPhotos = pgTable("gallery_photos", {
   filename: text("filename").notNull(),
   originalName: text("original_name").notNull(),
   caption: text("caption"),
+  trainingSessionId: integer("training_session_id").references(() => trainingSessions.id),
   uploadedAt: timestamp("uploaded_at").defaultNow(),
 });
 
