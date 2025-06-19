@@ -16,6 +16,7 @@ export default function Header({ onToggleMobileMenu, onQuickAdd }: HeaderProps) 
     { name: "Tournaments", href: "/tournaments" },
     { name: "Training", href: "/training" },
     { name: "Statistics", href: "/statistics" },
+    { name: "Clubs", href: "/clubs" },
   ];
 
   return (

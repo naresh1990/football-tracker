@@ -75,7 +75,7 @@ export default function FeedbackForm({ onSuccess, onCancel }: FeedbackFormProps)
       comment: "",
       strengths: [],
       improvements: [],
-      rating: null,
+      rating: "",
     },
   });
 

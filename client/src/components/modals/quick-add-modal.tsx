@@ -53,6 +53,18 @@ export default function QuickAddModal({ isOpen, onClose }: QuickAddModalProps) {
       icon: Trophy,
       color: "text-yellow-600",
       action: () => setCurrentForm("tournament")
+    },
+    {
+      title: "Add Club",
+      icon: Building,
+      color: "text-indigo-600",
+      action: () => setCurrentForm("club")
+    },
+    {
+      title: "Add Coach",
+      icon: User,
+      color: "text-teal-600",
+      action: () => setCurrentForm("coach")
     }
   ];
 
@@ -82,6 +94,20 @@ export default function QuickAddModal({ isOpen, onClose }: QuickAddModalProps) {
       case "tournament":
         return (
           <TournamentForm 
+            onSuccess={handleFormSuccess}
+            onCancel={() => setCurrentForm("menu")}
+          />
+        );
+      case "club":
+        return (
+          <ClubForm 
+            onSuccess={handleFormSuccess}
+            onCancel={() => setCurrentForm("menu")}
+          />
+        );
+      case "coach":
+        return (
+          <CoachForm 
             onSuccess={handleFormSuccess}
             onCancel={() => setCurrentForm("menu")}
           />

@@ -12,6 +12,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     { name: "Tournaments", href: "/tournaments" },
     { name: "Training", href: "/training" },
     { name: "Statistics", href: "/statistics" },
+    { name: "Clubs", href: "/clubs" },
   ];
 
   if (!isOpen) return null;

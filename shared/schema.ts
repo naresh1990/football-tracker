@@ -90,6 +90,29 @@ export const squadMembers = pgTable("squad_members", {
   role: text("role"), // 'player', 'captain', 'vice_captain'
 });
 
+// Club management
+export const clubs = pgTable("clubs", {
+  id: serial("id").primaryKey(),
+  playerId: integer("player_id").notNull(),
+  name: text("name").notNull(),
+  type: text("type").notNull(), // "primary", "adhoc"
+  squadLevel: text("squad_level"), // "U10 Elite Squad Training"
+  seasonStart: timestamp("season_start"),
+  seasonEnd: timestamp("season_end"),
+  status: text("status").notNull().default("active"), // "active", "inactive"
+  description: text("description"),
+});
+
+export const coaches = pgTable("coaches", {
+  id: serial("id").primaryKey(),
+  playerId: integer("player_id").notNull(),
+  clubId: integer("club_id"), // linked to club
+  name: text("name").notNull(),
+  title: text("title").notNull(), // "Head Coach", "Assistant Coach", "Adhoc Coach"
+  contact: text("contact"),
+  isActive: boolean("is_active").default(true),
+});
+
 // Coaching staff
 export const coachingStaff = pgTable("coaching_staff", {
   id: serial("id").primaryKey(),

@@ -9,6 +9,7 @@ import Games from "@/pages/games";
 import Tournaments from "@/pages/tournaments";
 import Training from "@/pages/training";
 import Statistics from "@/pages/statistics";
+import Clubs from "@/pages/clubs";
 import NotFound from "@/pages/not-found";
 import Header from "@/components/layout/header";
 import MobileMenu from "@/components/layout/mobile-menu";
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/tournaments" component={Tournaments} />
       <Route path="/training" component={Training} />
       <Route path="/statistics" component={Statistics} />
+      <Route path="/clubs" component={Clubs} />
       <Route component={NotFound} />
     </Switch>
   );

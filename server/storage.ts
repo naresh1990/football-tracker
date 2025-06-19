@@ -5,6 +5,8 @@ import {
   TrainingSession, InsertTrainingSession,
   CoachFeedback, InsertCoachFeedback,
   SquadMember, InsertSquadMember,
+  Club, InsertClub,
+  Coach, InsertCoach,
   CoachingStaff, InsertCoachingStaff
 } from "@shared/schema";
 
@@ -284,6 +286,84 @@ export class MemStorage implements IStorage {
 
     for (const feedback of sampleFeedback) {
       await this.createCoachFeedback(feedback);
+    }
+
+    // Add sample clubs
+    const sampleClubs = [
+      {
+        playerId: 1,
+        name: "Sporthood",
+        type: "primary",
+        squadLevel: "U10 Elite Squad Training",
+        seasonStart: new Date("2025-06-01"),
+        seasonEnd: new Date("2026-03-31"),
+        status: "active",
+        description: "Primary club for elite training and development"
+      },
+      {
+        playerId: 1,
+        name: "Consient Sports",
+        type: "adhoc",
+        squadLevel: null,
+        seasonStart: null,
+        seasonEnd: null,
+        status: "active",
+        description: "Adhoc tournaments and matches"
+      },
+      {
+        playerId: 1,
+        name: "Indian City Football Club",
+        type: "adhoc",
+        squadLevel: null,
+        seasonStart: null,
+        seasonEnd: null,
+        status: "active",
+        description: "Adhoc tournaments and special events"
+      }
+    ];
+
+    for (const club of sampleClubs) {
+      await this.createClub(club);
+    }
+
+    // Add sample coaches
+    const sampleCoaches = [
+      {
+        playerId: 1,
+        clubId: 1, // Sporthood
+        name: "Coach Martinez",
+        title: "Head Coach",
+        contact: "coach.martinez@sporthood.com",
+        isActive: true
+      },
+      {
+        playerId: 1,
+        clubId: 1, // Sporthood
+        name: "Sarah Johnson",
+        title: "Assistant Coach",
+        contact: "sarah.johnson@sporthood.com",
+        isActive: true
+      },
+      {
+        playerId: 1,
+        clubId: 2, // Consient Sports
+        name: "David Kumar",
+        title: "Adhoc Coach",
+        contact: "david.kumar@consient.com",
+        isActive: true
+      },
+      {
+        playerId: 1,
+        clubId: 3, // Indian City FC
+        name: "Raj Patel",
+        title: "Head Coach",
+        contact: "raj.patel@indiancityfc.com",
+        isActive: true
+      }
+    ];
+
+    for (const coach of sampleCoaches) {
+      await this.createCoach(coach);
     }
 
     // Add coaching staff
@@ -584,6 +664,91 @@ export class MemStorage implements IStorage {
 
   async deleteCoachingStaffMember(id: number): Promise<boolean> {
     return this.coachingStaff.delete(id);
+  }
+
+  // Club methods
+  async getClub(id: number): Promise<Club | undefined> {
+    return this.clubs.get(id);
+  }
+
+  async createClub(club: InsertClub): Promise<Club> {
+    const id = this.clubId++;
+    const newClub: Club = { 
+      ...club, 
+      id,
+      squadLevel: club.squadLevel ?? null,
+      seasonStart: club.seasonStart ?? null,
+      seasonEnd: club.seasonEnd ?? null,
+      description: club.description ?? null
+    };
+    this.clubs.set(id, newClub);
+    return newClub;
+  }
+
+  async updateClub(id: number, club: Partial<InsertClub>): Promise<Club | undefined> {
+    const existing = this.clubs.get(id);
+    if (!existing) return undefined;
+    const updated = { ...existing, ...club };
+    this.clubs.set(id, updated);
+    return updated;
+  }
+
+  async deleteClub(id: number): Promise<boolean> {
+    return this.clubs.delete(id);
+  }
+
+  async getClubsByPlayer(playerId: number): Promise<Club[]> {
+    return Array.from(this.clubs.values()).filter(club => club.playerId === playerId);
+  }
+
+  async getActiveClubs(playerId: number): Promise<Club[]> {
+    return Array.from(this.clubs.values()).filter(club => 
+      club.playerId === playerId && club.status === "active"
+    );
+  }
+
+  // Coach methods
+  async getCoach(id: number): Promise<Coach | undefined> {
+    return this.coaches.get(id);
+  }
+
+  async createCoach(coach: InsertCoach): Promise<Coach> {
+    const id = this.coachId++;
+    const newCoach: Coach = { 
+      ...coach, 
+      id,
+      clubId: coach.clubId ?? null,
+      contact: coach.contact ?? null,
+      isActive: coach.isActive ?? true
+    };
+    this.coaches.set(id, newCoach);
+    return newCoach;
+  }
+
+  async updateCoach(id: number, coach: Partial<InsertCoach>): Promise<Coach | undefined> {
+    const existing = this.coaches.get(id);
+    if (!existing) return undefined;
+    const updated = { ...existing, ...coach };
+    this.coaches.set(id, updated);
+    return updated;
+  }
+
+  async deleteCoach(id: number): Promise<boolean> {
+    return this.coaches.delete(id);
+  }
+
+  async getCoachesByPlayer(playerId: number): Promise<Coach[]> {
+    return Array.from(this.coaches.values()).filter(coach => coach.playerId === playerId);
+  }
+
+  async getCoachesByClub(clubId: number): Promise<Coach[]> {
+    return Array.from(this.coaches.values()).filter(coach => coach.clubId === clubId);
+  }
+
+  async getActiveCoaches(playerId: number): Promise<Coach[]> {
+    return Array.from(this.coaches.values()).filter(coach => 
+      coach.playerId === playerId && coach.isActive
+    );
   }
 
   async getCoachingStaffByPlayer(playerId: number): Promise<CoachingStaff[]> {
