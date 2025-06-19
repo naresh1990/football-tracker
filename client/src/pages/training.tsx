@@ -18,7 +18,10 @@ import {
   Trash2,
   MoreHorizontal,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  MessageSquare,
+  Camera,
+  Plus
 } from "lucide-react";
 import { motion } from "framer-motion";
 import TrainingForm from "@/components/forms/training-form";
@@ -577,6 +580,60 @@ export default function Training() {
                     <p className="text-sm text-gray-700 leading-relaxed">{selectedEvent.notes}</p>
                   </div>
                 )}
+
+                {/* Coach Feedback Section */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <MessageSquare className="w-4 h-4" />
+                    Coach Feedback
+                  </h4>
+                  {selectedEvent.coachFeedback ? (
+                    <div className="bg-white rounded-lg p-3 border">
+                      <p className="text-gray-700 text-sm">{selectedEvent.coachFeedback}</p>
+                    </div>
+                  ) : (
+                    <div className="text-gray-500 text-sm italic">No feedback provided yet</div>
+                  )}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-2"
+                    onClick={() => {/* TODO: Open feedback form */}}
+                  >
+                    {selectedEvent.coachFeedback ? 'Edit Feedback' : 'Add Feedback'}
+                  </Button>
+                </div>
+
+                {/* Gallery Section */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <Camera className="w-4 h-4" />
+                    Session Gallery
+                  </h4>
+                  {selectedEvent.gallery && selectedEvent.gallery.length > 0 ? (
+                    <div className="grid grid-cols-3 gap-2 mb-3">
+                      {selectedEvent.gallery.map((image: string, index: number) => (
+                        <div key={index} className="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                          <img 
+                            src={image} 
+                            alt={`Session photo ${index + 1}`}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform cursor-pointer"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-gray-500 text-sm italic mb-3">No photos added yet</div>
+                  )}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {/* TODO: Open gallery upload */}}
+                  >
+                    <Plus className="w-4 h-4 mr-1" />
+                    Add Photos
+                  </Button>
+                </div>
               </div>
             )}
           </DialogContent>
