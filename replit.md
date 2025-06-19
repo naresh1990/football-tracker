@@ -104,6 +104,12 @@ This is a comprehensive football player tracking application built for monitorin
 
 ```
 Changelog:
+- June 19, 2025. Enhanced game tracking with match types and post-match stats
+  - Added game types: Practice, Friendly, Tournament matches
+  - Added match formats: 2v2, 4v4, 5v5, 7v7
+  - Enhanced post-match statistics: position played, goals, assists, mistakes, coach feedback
+  - Linked tournament matches to specific tournaments
+  - Updated game forms and displays with new fields
 - June 19, 2025. Initial setup
 ```
 

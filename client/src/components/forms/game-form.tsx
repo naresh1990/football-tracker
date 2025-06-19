@@ -366,18 +366,34 @@ export default function GameForm({ onSuccess, onCancel }: GameFormProps) {
 
               <FormField
                 control={form.control}
-                name="rating"
+                name="mistakes"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Performance Rating (1-10)</FormLabel>
+                    <FormLabel>Mistakes Made</FormLabel>
                     <FormControl>
                       <Input 
                         type="number" 
-                        min="1" 
-                        max="10" 
-                        step="0.1"
-                        placeholder="Optional"
-                        {...field}
+                        {...field} 
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                        value={field.value || 0}
+                        min="0"
+                        placeholder="0"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
+              control={form.control}
+              name="rating"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Coach Rating</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="e.g., 8/10, Excellent, Good"
                       />
                     </FormControl>
                     <FormMessage />
