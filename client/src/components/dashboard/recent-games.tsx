@@ -22,14 +22,6 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
     return (
       <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 shadow-lg">
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-100 rounded-xl">
-                <Calendar className="w-5 h-5 text-green-600" />
-              </div>
-              <CardTitle className="text-xl font-bold text-gray-900">Recent Games</CardTitle>
-            </div>
-          </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">

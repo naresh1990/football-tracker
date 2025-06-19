@@ -75,13 +75,7 @@ export default function TrainingSchedule({ playerId }: TrainingScheduleProps) {
       <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 shadow-lg hover:shadow-xl transition-all duration-300">
         <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-md">
-                <Dumbbell className="w-5 h-5 text-white" />
-              </div>
-              <CardTitle className="text-xl font-bold text-gray-900">Training Schedule</CardTitle>
-            </div>
-            <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold">
+            <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold ml-auto">
               <Plus className="w-4 h-4 mr-1" />
               Add
             </Button>
