@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import darshilPhoto from "../../assets/darshil-photo.jpg";
+import { useQuery } from "@tanstack/react-query";
 import { 
   Trophy, 
   Target, 
@@ -18,6 +19,13 @@ interface HeroBannerProps {
 }
 
 export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
+  // Fetch real stats data
+  const { data: stats } = useQuery({
+    queryKey: ["/api/stats/summary"],
+    staleTime: 0,
+    cacheTime: 0,
+  });
+
   if (!player) return null;
 
   return (
@@ -157,7 +165,7 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.8, type: "spring", stiffness: 200 }}
                 >
-                  <div className="text-3xl font-bold text-white mb-1">12</div>
+                  <div className="text-3xl font-bold text-white mb-1">{stats?.totalGames || 0}</div>
                   <div className="text-blue-200 text-sm font-medium">Games</div>
                 </motion.div>
                 
@@ -167,7 +175,7 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
                   animate={{ scale: 1 }}
                   transition={{ delay: 1, type: "spring", stiffness: 200 }}
                 >
-                  <div className="text-3xl font-bold text-yellow-300 mb-1">8</div>
+                  <div className="text-3xl font-bold text-yellow-300 mb-1">{stats?.totalGoals || 0}</div>
                   <div className="text-blue-200 text-sm font-medium">Goals</div>
                 </motion.div>
                 
@@ -177,7 +185,7 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
                   animate={{ scale: 1 }}
                   transition={{ delay: 1.2, type: "spring", stiffness: 200 }}
                 >
-                  <div className="text-3xl font-bold text-green-300 mb-1">5</div>
+                  <div className="text-3xl font-bold text-green-300 mb-1">{stats?.totalAssists || 0}</div>
                   <div className="text-blue-200 text-sm font-medium">Assists</div>
                 </motion.div>
                 
@@ -187,7 +195,7 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
                   animate={{ scale: 1 }}
                   transition={{ delay: 1.4, type: "spring", stiffness: 200 }}
                 >
-                  <div className="text-3xl font-bold text-blue-300 mb-1">75%</div>
+                  <div className="text-3xl font-bold text-blue-300 mb-1">{stats?.winRate || 0}%</div>
                   <div className="text-blue-200 text-sm font-medium">Win Rate</div>
                 </motion.div>
               </div>
