@@ -131,12 +131,14 @@ export default function Dashboard() {
         <motion.div variants={itemVariants}>
           <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
             <TrendingUp className="w-6 h-6 text-blue-600" />
-            Performance & Activity
+            Performance Analytics
           </h2>
-          <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
-            <ProgressChart playerId={1} />
-            <RecentGames playerId={1} />
-          </div>
+          <ProgressChart playerId={1} />
+        </motion.div>
+
+        {/* Recent Games Section */}
+        <motion.div variants={itemVariants}>
+          <RecentGames playerId={1} />
         </motion.div>
 
         {/* Insights Section */}
