@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import darshilPhoto from "../../assets/darshil-photo.jpg";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import { 
   Trophy, 
@@ -50,6 +50,15 @@ export default function HeroBanner({ player, activeClub, squadMembers, onQuickAd
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + 2) % 2);
   };
+
+  // Auto-rotate carousel every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % 2);
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   if (!player) return null;
 
