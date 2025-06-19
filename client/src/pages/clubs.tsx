@@ -455,69 +455,69 @@ export default function Clubs() {
                           </div>
                           
                           {getClubSquadMembers(club.id).length > 0 ? (
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div className="space-y-3">
                               {getClubSquadMembers(club.id).map((member: any) => (
-                                <div key={member.id} className="bg-white rounded-xl p-4 border border-green-100 hover:border-green-200 transition-all duration-200 shadow-sm hover:shadow-md">
-                                  <div className="flex items-start gap-4">
+                                <div key={member.id} className="bg-white rounded-lg p-4 border border-green-100 hover:border-green-200 transition-all duration-200 shadow-sm hover:shadow-md w-full">
+                                  <div className="flex items-center gap-4 w-full">
                                     <div className="relative flex-shrink-0">
-                                      <Avatar className="w-16 h-16 ring-3 ring-green-200">
+                                      <Avatar className="w-14 h-14 ring-2 ring-green-200">
                                         <AvatarImage 
                                           src={member.profilePicture} 
                                           alt={member.name}
                                           className="object-cover"
                                         />
-                                        <AvatarFallback className="text-lg font-semibold bg-gradient-to-br from-green-500 to-blue-500 text-white">
+                                        <AvatarFallback className="text-sm font-semibold bg-gradient-to-br from-green-500 to-blue-500 text-white">
                                           {member.name.split(' ').map((n: string) => n[0]).join('')}
                                         </AvatarFallback>
                                       </Avatar>
                                       {member.jerseyNumber && (
-                                        <div className="absolute -top-2 -right-2 bg-blue-600 text-white rounded-full w-7 h-7 flex items-center justify-center text-xs font-bold shadow-md">
+                                        <div className="absolute -top-1 -right-1 bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow-md">
                                           #{member.jerseyNumber}
                                         </div>
                                       )}
                                     </div>
+                                    
                                     <div className="flex-1 min-w-0">
-                                      <div className="flex items-center justify-between mb-2">
-                                        <h4 className="font-semibold text-gray-900 text-base leading-tight truncate pr-2">
-                                          {member.name}
-                                        </h4>
-                                        <div className="flex gap-1 flex-shrink-0">
-                                          <SquadMemberForm
-                                            squadMember={member}
-                                            onSuccess={() => {
-                                              queryClient.invalidateQueries({ queryKey: ["/api/squad"] });
-                                            }}
-                                            trigger={
-                                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-green-100 rounded-lg">
-                                                <Edit className="h-4 w-4 text-green-600" />
-                                              </Button>
-                                            }
-                                          />
-                                          <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            className="h-8 w-8 p-0 hover:bg-red-100 rounded-lg"
-                                            onClick={() => handleDeleteSquadMember(member.id)}
-                                          >
-                                            <Trash2 className="h-4 w-4 text-red-600" />
-                                          </Button>
-                                        </div>
-                                      </div>
-                                      <div className="space-y-1">
-                                        <div className="flex items-center gap-2">
-                                          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                            {member.position}
+                                      <h4 className="font-semibold text-gray-900 text-base leading-tight mb-1">
+                                        {member.name}
+                                      </h4>
+                                      <div className="flex items-center gap-3 flex-wrap">
+                                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                          {member.position}
+                                        </span>
+                                        {member.age && (
+                                          <span className="text-sm text-gray-600 font-medium">
+                                            Age {member.age}
                                           </span>
-                                          {member.age && (
-                                            <span className="text-sm text-gray-600">
-                                              Age {member.age}
-                                            </span>
-                                          )}
-                                        </div>
+                                        )}
                                         {member.notes && (
-                                          <p className="text-xs text-gray-500 mt-2 line-clamp-2">{member.notes}</p>
+                                          <span className="text-xs text-gray-500 italic truncate max-w-xs">
+                                            {member.notes}
+                                          </span>
                                         )}
                                       </div>
+                                    </div>
+                                    
+                                    <div className="flex gap-2 flex-shrink-0">
+                                      <SquadMemberForm
+                                        squadMember={member}
+                                        onSuccess={() => {
+                                          queryClient.invalidateQueries({ queryKey: ["/api/squad"] });
+                                        }}
+                                        trigger={
+                                          <Button variant="ghost" size="sm" className="h-9 w-9 p-0 hover:bg-green-100 rounded-lg">
+                                            <Edit className="h-4 w-4 text-green-600" />
+                                          </Button>
+                                        }
+                                      />
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className="h-9 w-9 p-0 hover:bg-red-100 rounded-lg"
+                                        onClick={() => handleDeleteSquadMember(member.id)}
+                                      >
+                                        <Trash2 className="h-4 w-4 text-red-600" />
+                                      </Button>
                                     </div>
                                   </div>
                                 </div>
