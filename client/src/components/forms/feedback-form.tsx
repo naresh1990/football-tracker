@@ -25,11 +25,9 @@ function CoachDropdown({ value, onChange }: { value: string; onChange: (value: s
 
   return (
     <Select onValueChange={onChange} value={value}>
-      <FormControl>
-        <SelectTrigger>
-          <SelectValue placeholder="Select coach" />
-        </SelectTrigger>
-      </FormControl>
+      <SelectTrigger>
+        <SelectValue placeholder="Select coach" />
+      </SelectTrigger>
       <SelectContent>
         {coaches?.map((coach: any) => (
           <SelectItem key={coach.id} value={coach.name}>
@@ -154,7 +152,9 @@ export default function FeedbackForm({ onSuccess, onCancel }: FeedbackFormProps)
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Coach</FormLabel>
-                    <CoachDropdown value={field.value} onChange={field.onChange} />
+                    <FormControl>
+                      <CoachDropdown value={field.value} onChange={field.onChange} />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
