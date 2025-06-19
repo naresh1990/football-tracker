@@ -47,7 +47,7 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, type: "spring" }}
           >
-            <div className="flex flex-col items-center space-y-4">
+            <div className="flex flex-col items-center space-y-6">
               <Avatar className="w-32 h-48 sm:w-36 sm:h-56 ring-4 ring-white/40 rounded-3xl shadow-2xl">
                 <AvatarImage src={darshilPhoto} alt={player.name} className="object-cover rounded-3xl" />
                 <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-3xl h-full w-full flex items-center justify-center">
@@ -57,7 +57,7 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
               
               {/* Jersey Details Card */}
               <motion.div 
-                className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/20 shadow-sm"
+                className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/20 shadow-sm w-full max-w-[140px]"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.6 }}
