@@ -68,19 +68,15 @@ export default function SquadDetails({ playerId }: SquadDetailsProps) {
               <div className="space-y-3">
                 <div className="flex items-center justify-between py-2 border-b border-blue-100">
                   <span className="text-gray-600 text-sm">Team:</span>
-                  <span className="font-semibold text-gray-900">{player?.teamName || 'Lions FC'}</span>
+                  <span className="font-semibold text-gray-900">Sporthood</span>
                 </div>
                 <div className="flex items-center justify-between py-2 border-b border-blue-100">
                   <span className="text-gray-600 text-sm">Division:</span>
-                  <span className="font-semibold text-gray-900">{player?.division || 'U12 Premier'}</span>
-                </div>
-                <div className="flex items-center justify-between py-2 border-b border-blue-100">
-                  <span className="text-gray-600 text-sm">Jersey Number:</span>
-                  <span className="font-semibold text-gray-900">{player?.jerseyNumber || '#18'}</span>
+                  <span className="font-semibold text-gray-900">U10 Elite</span>
                 </div>
                 <div className="flex items-center justify-between py-2">
-                  <span className="text-gray-600 text-sm">Captain:</span>
-                  <span className="font-semibold text-gray-900">{player?.isCaptain ? 'Yes' : 'No'}</span>
+                  <span className="text-gray-600 text-sm">Jersey:</span>
+                  <span className="font-semibold text-gray-900">#9</span>
                 </div>
               </div>
             </div>
