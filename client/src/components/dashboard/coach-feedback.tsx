@@ -41,7 +41,7 @@ export default function CoachFeedback({ playerId }: CoachFeedbackProps) {
   }
 
   return (
-    <Card className="bg-white/70 backdrop-blur-sm border-white/50">
+    <>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-gray-900">
           <MessageSquare className="w-5 h-5 text-blue-600" />
@@ -80,6 +80,6 @@ export default function CoachFeedback({ playerId }: CoachFeedbackProps) {
           </div>
         )}
       </CardContent>
-    </Card>
+    </>
   );
 }
