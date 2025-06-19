@@ -19,6 +19,7 @@ interface ClubFormProps {
 
 export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: ClubFormProps) {
   const [open, setOpen] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     name: club?.name || "",
     type: club?.type || "",
