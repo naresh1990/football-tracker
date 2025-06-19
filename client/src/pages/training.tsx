@@ -259,11 +259,11 @@ export default function Training() {
                         )}
 
                         {session.attendance === 'pending' && (
-                          <div className="flex gap-2 pt-2">
+                          <div className="flex gap-2 pt-2 justify-center">
                             <Button 
                               variant="outline" 
                               size="sm" 
-                              className="flex-1 hover:bg-green-50 text-green-600 border-green-200"
+                              className="px-4 py-2 hover:bg-green-50 text-green-600 border-green-200 rounded-full font-medium"
                               onClick={() => updateAttendanceMutation.mutate({ sessionId: session.id, attendance: 'completed' })}
                               disabled={updateAttendanceMutation.isPending}
                             >
@@ -273,7 +273,7 @@ export default function Training() {
                             <Button 
                               variant="outline" 
                               size="sm" 
-                              className="flex-1 hover:bg-red-50 text-red-600 border-red-200"
+                              className="px-4 py-2 hover:bg-red-50 text-red-600 border-red-200 rounded-full font-medium"
                               onClick={() => updateAttendanceMutation.mutate({ sessionId: session.id, attendance: 'missed' })}
                               disabled={updateAttendanceMutation.isPending}
                             >
