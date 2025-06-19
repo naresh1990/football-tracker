@@ -65,8 +65,8 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
                     <span>{player.position}</span>
                   </div>
                   <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
-                    <Users className="w-4 h-4" />
-                    <span>{player.team}</span>
+                    <MapPin className="w-4 h-4" />
+                    <span>Team: {player.team}</span>
                   </div>
                   <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
                     <Calendar className="w-4 h-4" />
