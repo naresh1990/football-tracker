@@ -13,6 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from "react";
+import { Upload, X } from "lucide-react";
 
 const clubFormSchema = insertClubSchema.extend({
   seasonStart: z.string().optional(),
@@ -28,6 +30,8 @@ interface ClubFormProps {
 
 export default function ClubForm({ onSuccess, onCancel }: ClubFormProps) {
   const { toast } = useToast();
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
   
   const form = useForm<ClubFormData>({
     resolver: zodResolver(clubFormSchema),
@@ -45,13 +49,28 @@ export default function ClubForm({ onSuccess, onCancel }: ClubFormProps) {
 
   const createClubMutation = useMutation({
     mutationFn: (data: ClubFormData) => {
-      const clubData = {
-        ...data,
-        seasonStart: data.seasonStart ? new Date(data.seasonStart) : null,
-        seasonEnd: data.seasonEnd ? new Date(data.seasonEnd) : null,
-        squadLevel: data.squadLevel || null,
-      };
-      return apiRequest("POST", "/api/clubs", clubData);
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== "") {
+          if (key === 'seasonStart' || key === 'seasonEnd') {
+            formData.append(key, value ? new Date(value).toISOString() : '');
+          } else {
+            formData.append(key, value.toString());
+          }
+        }
+      });
+      
+      if (logoFile) {
+        formData.append('logo', logoFile);
+      }
+      
+      return fetch('/api/clubs', {
+        method: 'POST',
+        body: formData,
+      }).then(res => {
+        if (!res.ok) throw new Error('Failed to create club');
+        return res.json();
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/clubs"] });
@@ -70,6 +89,23 @@ export default function ClubForm({ onSuccess, onCancel }: ClubFormProps) {
       });
     },
   });
+
+  const handleLogoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setLogoFile(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setLogoPreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeLogo = () => {
+    setLogoFile(null);
+    setLogoPreview(null);
+  };
 
   const onSubmit = (data: ClubFormData) => {
     createClubMutation.mutate(data);
@@ -198,6 +234,42 @@ export default function ClubForm({ onSuccess, onCancel }: ClubFormProps) {
                 </FormItem>
               )}
             />
+
+            {/* Club Logo Upload */}
+            <div className="space-y-3">
+              <FormLabel>Club Logo</FormLabel>
+              <div className="flex items-center space-x-4">
+                {logoPreview ? (
+                  <div className="relative">
+                    <img 
+                      src={logoPreview} 
+                      alt="Logo preview" 
+                      className="w-20 h-20 object-cover rounded-lg border"
+                    />
+                    <button
+                      type="button"
+                      onClick={removeLogo}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="w-20 h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
+                    <Upload className="w-8 h-8 text-gray-400" />
+                  </div>
+                )}
+                <div className="flex-1">
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleLogoChange}
+                    className="cursor-pointer"
+                  />
+                  <p className="text-sm text-gray-500 mt-1">Upload club logo (PNG, JPG, max 5MB)</p>
+                </div>
+              </div>
+            </div>
 
             <div className="flex justify-end space-x-4">
               {onCancel && (

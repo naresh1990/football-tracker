@@ -298,7 +298,8 @@ export class MemStorage implements IStorage {
         seasonStart: new Date("2025-06-01"),
         seasonEnd: new Date("2026-03-31"),
         status: "active",
-        description: "Primary club for elite training and development"
+        description: "Primary club for elite training and development",
+        logo: null
       },
       {
         playerId: 1,
@@ -308,7 +309,8 @@ export class MemStorage implements IStorage {
         seasonStart: null,
         seasonEnd: null,
         status: "active",
-        description: "Adhoc tournaments and matches"
+        description: "Adhoc tournaments and matches",
+        logo: null
       },
       {
         playerId: 1,
@@ -318,7 +320,8 @@ export class MemStorage implements IStorage {
         seasonStart: null,
         seasonEnd: null,
         status: "active",
-        description: "Adhoc tournaments and special events"
+        description: "Adhoc tournaments and special events",
+        logo: null
       }
     ];
 
@@ -334,7 +337,8 @@ export class MemStorage implements IStorage {
         name: "Coach Martinez",
         title: "Head Coach",
         contact: "coach.martinez@sporthood.com",
-        isActive: true
+        isActive: true,
+        profilePicture: null
       },
       {
         playerId: 1,
@@ -342,7 +346,8 @@ export class MemStorage implements IStorage {
         name: "Sarah Johnson",
         title: "Assistant Coach",
         contact: "sarah.johnson@sporthood.com",
-        isActive: true
+        isActive: true,
+        profilePicture: null
       },
       {
         playerId: 1,
@@ -350,7 +355,8 @@ export class MemStorage implements IStorage {
         name: "David Kumar",
         title: "Adhoc Coach",
         contact: "david.kumar@consient.com",
-        isActive: true
+        isActive: true,
+        profilePicture: null
       },
       {
         playerId: 1,
@@ -358,7 +364,8 @@ export class MemStorage implements IStorage {
         name: "Raj Patel",
         title: "Head Coach",
         contact: "raj.patel@indiancityfc.com",
-        isActive: true
+        isActive: true,
+        profilePicture: null
       }
     ];
 
@@ -680,7 +687,8 @@ export class MemStorage implements IStorage {
       seasonStart: club.seasonStart ?? null,
       seasonEnd: club.seasonEnd ?? null,
       description: club.description ?? null,
-      status: club.status ?? "active"
+      status: club.status ?? "active",
+      logo: club.logo ?? null
     };
     this.clubs.set(id, newClub);
     return newClub;
@@ -720,7 +728,8 @@ export class MemStorage implements IStorage {
       id,
       clubId: coach.clubId ?? null,
       contact: coach.contact ?? null,
-      isActive: coach.isActive ?? true
+      isActive: coach.isActive ?? true,
+      profilePicture: coach.profilePicture ?? null
     };
     this.coaches.set(id, newCoach);
     return newCoach;

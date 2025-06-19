@@ -13,6 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
+import { useState } from "react";
+import { Upload, X } from "lucide-react";
 
 const coachFormSchema = insertCoachSchema.extend({
   clubId: z.number().optional(),
@@ -27,6 +29,8 @@ interface CoachFormProps {
 
 export default function CoachForm({ onSuccess, onCancel }: CoachFormProps) {
   const { toast } = useToast();
+  const [profileFile, setProfileFile] = useState<File | null>(null);
+  const [profilePreview, setProfilePreview] = useState<string | null>(null);
   
   // Get clubs for selection
   const { data: clubs } = useQuery({
@@ -47,7 +51,24 @@ export default function CoachForm({ onSuccess, onCancel }: CoachFormProps) {
 
   const createCoachMutation = useMutation({
     mutationFn: (data: CoachFormData) => {
-      return apiRequest("POST", "/api/coaches", data);
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== "") {
+          formData.append(key, value.toString());
+        }
+      });
+      
+      if (profileFile) {
+        formData.append('profilePicture', profileFile);
+      }
+      
+      return fetch('/api/coaches', {
+        method: 'POST',
+        body: formData,
+      }).then(res => {
+        if (!res.ok) throw new Error('Failed to create coach');
+        return res.json();
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/coaches"] });
@@ -66,6 +87,23 @@ export default function CoachForm({ onSuccess, onCancel }: CoachFormProps) {
       });
     },
   });
+
+  const handleProfileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setProfileFile(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfilePreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeProfile = () => {
+    setProfileFile(null);
+    setProfilePreview(null);
+  };
 
   const onSubmit = (data: CoachFormData) => {
     createCoachMutation.mutate(data);
@@ -161,6 +199,42 @@ export default function CoachForm({ onSuccess, onCancel }: CoachFormProps) {
                   </FormItem>
                 )}
               />
+            </div>
+
+            {/* Profile Picture Upload */}
+            <div className="space-y-3">
+              <FormLabel>Profile Picture</FormLabel>
+              <div className="flex items-center space-x-4">
+                {profilePreview ? (
+                  <div className="relative">
+                    <img 
+                      src={profilePreview} 
+                      alt="Profile preview" 
+                      className="w-20 h-20 object-cover rounded-full border"
+                    />
+                    <button
+                      type="button"
+                      onClick={removeProfile}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="w-20 h-20 border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center">
+                    <Upload className="w-8 h-8 text-gray-400" />
+                  </div>
+                )}
+                <div className="flex-1">
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleProfileChange}
+                    className="cursor-pointer"
+                  />
+                  <p className="text-sm text-gray-500 mt-1">Upload profile picture (PNG, JPG, max 5MB)</p>
+                </div>
+              </div>
             </div>
 
             <FormField

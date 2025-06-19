@@ -104,6 +104,12 @@ This is a comprehensive football player tracking application built for monitorin
 
 ```
 Changelog:
+- June 19, 2025. Added image/logo support for profiles and clubs
+  - Added profile picture support for players, coaches, and squad members
+  - Added club logo upload functionality
+  - Implemented file upload handling with image validation and storage
+  - Updated forms with image upload components and preview functionality
+  - Enhanced UI with avatar components and image displays throughout the app
 - June 19, 2025. Added club and coach management system
   - Added club management with primary (Sporthood) and adhoc clubs (Consient Sports, Indian City FC)
   - Implemented coach management with titles (Head Coach, Assistant Coach, Adhoc Coach)

@@ -88,6 +88,7 @@ export const squadMembers = pgTable("squad_members", {
   position: text("position").notNull(),
   jerseyNumber: text("jersey_number"),
   role: text("role"), // 'player', 'captain', 'vice_captain'
+  profilePicture: text("profile_picture"), // URL to member profile image
 });
 
 // Club management
@@ -101,6 +102,7 @@ export const clubs = pgTable("clubs", {
   seasonEnd: timestamp("season_end"),
   status: text("status").notNull().default("active"), // "active", "inactive"
   description: text("description"),
+  logo: text("logo"), // URL to club logo image
 });
 
 export const coaches = pgTable("coaches", {
@@ -111,6 +113,7 @@ export const coaches = pgTable("coaches", {
   title: text("title").notNull(), // "Head Coach", "Assistant Coach", "Adhoc Coach"
   contact: text("contact"),
   isActive: boolean("is_active").default(true),
+  profilePicture: text("profile_picture"), // URL to coach profile image
 });
 
 // Coaching staff

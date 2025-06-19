@@ -62,10 +62,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/players/:id", async (req, res) => {
+  app.put("/api/players/:id", upload.single('profilePicture'), async (req, res) => {
     try {
       const id = parseInt(req.params.id);
-      const validatedData = insertPlayerSchema.partial().parse(req.body);
+      const profilePictureUrl = handleImageUpload(req.file);
+      const validatedData = insertPlayerSchema.partial().parse({
+        ...req.body,
+        ...(profilePictureUrl && { profilePicture: profilePictureUrl })
+      });
       const player = await storage.updatePlayer(id, validatedData);
       if (!player) {
         return res.status(404).json({ error: "Player not found" });
@@ -281,9 +285,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/squad", async (req, res) => {
+  app.post("/api/squad", upload.single('profilePicture'), async (req, res) => {
     try {
-      const validatedData = insertSquadMemberSchema.parse(req.body);
+      const profilePictureUrl = handleImageUpload(req.file);
+      const validatedData = insertSquadMemberSchema.parse({
+        ...req.body,
+        profilePicture: profilePictureUrl
+      });
       const member = await storage.createSquadMember(validatedData);
       res.status(201).json(member);
     } catch (error) {
@@ -312,9 +320,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/clubs", async (req, res) => {
+  app.post("/api/clubs", upload.single('logo'), async (req, res) => {
     try {
-      const validatedData = insertClubSchema.parse(req.body);
+      const logoUrl = handleImageUpload(req.file);
+      const validatedData = insertClubSchema.parse({
+        ...req.body,
+        logo: logoUrl
+      });
       const club = await storage.createClub(validatedData);
       res.status(201).json(club);
     } catch (error) {
@@ -370,9 +382,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/coaches", async (req, res) => {
+  app.post("/api/coaches", upload.single('profilePicture'), async (req, res) => {
     try {
-      const validatedData = insertCoachSchema.parse(req.body);
+      const profilePictureUrl = handleImageUpload(req.file);
+      const validatedData = insertCoachSchema.parse({
+        ...req.body,
+        profilePicture: profilePictureUrl
+      });
       const coach = await storage.createCoach(validatedData);
       res.status(201).json(coach);
     } catch (error) {

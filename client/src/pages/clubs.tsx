@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Edit, Trash2, Building, Users } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { queryClient } from "@/lib/queryClient";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -93,7 +94,15 @@ export default function Clubs() {
                 <CardHeader className="pb-4">
                   <div className="flex justify-between items-start">
                     <div className="flex items-center space-x-3">
-                      <div className="text-2xl">{getTypeIcon(club.type)}</div>
+                      {club.logo ? (
+                        <img 
+                          src={club.logo} 
+                          alt={`${club.name} logo`}
+                          className="w-12 h-12 object-cover rounded-lg border"
+                        />
+                      ) : (
+                        <div className="text-2xl">{getTypeIcon(club.type)}</div>
+                      )}
                       <div>
                         <CardTitle className="text-xl text-gray-900">
                           {club.name}
@@ -158,8 +167,16 @@ export default function Clubs() {
                       {clubCoaches.length > 0 ? (
                         <div className="space-y-2">
                           {clubCoaches.map((coach: any) => (
-                            <div key={coach.id} className="flex justify-between items-center text-sm">
-                              <span className="text-gray-900">{coach.name}</span>
+                            <div key={coach.id} className="flex items-center justify-between text-sm">
+                              <div className="flex items-center space-x-2">
+                                <Avatar className="w-6 h-6">
+                                  <AvatarImage src={coach.profilePicture} alt={coach.name} />
+                                  <AvatarFallback className="text-xs">
+                                    {coach.name.split(' ').map((n: string) => n[0]).join('')}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <span className="text-gray-900">{coach.name}</span>
+                              </div>
                               <span className="text-gray-500">{coach.title}</span>
                             </div>
                           ))}
