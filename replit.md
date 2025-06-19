@@ -102,6 +102,13 @@ This is a comprehensive football player tracking application built for monitorin
 
 ## Recent Changes
 
+- June 19, 2025: Implemented collapsible club interface with enhanced squad management
+  - Added collapsible club cards (collapsed by default) with expand/collapse functionality
+  - Enhanced squad member cards with full-width layout and better visual design
+  - Fixed image cropping visibility with prominent "Crop Image" button
+  - Integrated tabbed interface for coaches and squad members within club cards
+  - Added comprehensive squad member management with profile pictures and jersey numbers
+  - Fixed database schema for squad members with proper field mappings
 - June 19, 2025: Migrated to persistent PostgreSQL database storage
   - Set up database connection using Neon PostgreSQL
   - Implemented DatabaseStorage class replacing in-memory storage
