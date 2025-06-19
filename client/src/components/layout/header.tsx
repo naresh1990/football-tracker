@@ -21,49 +21,104 @@ export default function Header({ onToggleMobileMenu, onQuickAdd }: HeaderProps) 
   ];
 
   return (
-    <header className="bg-football-green text-white shadow-lg">
+    <motion.header 
+      className="bg-white/95 backdrop-blur-xl shadow-lg border-b border-football/10 sticky top-0 z-50"
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
-          <div className="flex items-center space-x-3">
-            <svg className="w-8 h-8 text-field-green" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-            </svg>
-            <h1 className="text-2xl font-bold">Darshil's Football Tracker</h1>
-          </div>
-          
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
-            <nav className="flex space-x-6">
-              {navigation.map((item) => (
-                <Link
+        <div className="flex justify-between items-center h-20">
+          {/* Logo */}
+          <motion.div 
+            className="flex items-center"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 bg-football-gradient rounded-xl flex items-center justify-center shadow-football">
+                <span className="text-2xl">⚽</span>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-display text-gradient">Football Tracker</h1>
+                <p className="text-xs text-muted-foreground">Performance Analytics</p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Navigation - Desktop */}
+          <nav className="hidden lg:flex items-center space-x-2">
+            {navigation.map((item, index) => {
+              const Icon = item.icon;
+              const isActive = location === item.href;
+              
+              return (
+                <motion.div
                   key={item.name}
-                  href={item.href}
-                  className={`hover:text-field-green transition-colors ${
-                    location === item.href ? "text-field-green" : ""
-                  }`}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
                 >
-                  {item.name}
-                </Link>
-              ))}
-            </nav>
-            <Button 
-              onClick={onQuickAdd}
-              className="bg-field-green hover:bg-green-500 text-black px-4 py-2 rounded-lg transition-colors"
+                  <Link href={item.href}>
+                    <ModernButton
+                      variant={isActive ? "premium" : "ghost"}
+                      className={`relative ${isActive ? "shadow-football" : ""}`}
+                      icon={<Icon className="w-4 h-4" />}
+                    >
+                      {item.name}
+                      {isActive && (
+                        <motion.div
+                          className="absolute bottom-0 left-0 right-0 h-1 bg-football-gradient rounded-full"
+                          layoutId="activeTab"
+                          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        />
+                      )}
+                    </ModernButton>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </nav>
+
+          {/* Actions */}
+          <div className="flex items-center space-x-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 }}
             >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Game
-            </Button>
+              <ModernButton
+                variant="premium"
+                size="lg"
+                onClick={onQuickAdd}
+                icon={<Plus className="w-5 h-5" />}
+                className="hidden sm:flex shadow-football"
+              >
+                Quick Add
+              </ModernButton>
+              
+              <ModernButton
+                variant="premium"
+                size="icon"
+                onClick={onQuickAdd}
+                className="sm:hidden shadow-football"
+              >
+                <Plus className="w-5 h-5" />
+              </ModernButton>
+            </motion.div>
           </div>
           
           {/* Mobile Menu Button */}
-          <button 
+          <motion.button 
             onClick={onToggleMobileMenu}
-            className="md:hidden text-2xl"
+            className="lg:hidden p-2 rounded-xl bg-football-primary/10 text-football-primary hover:bg-football-primary/20 transition-colors"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
           >
             <Menu className="w-6 h-6" />
-          </button>
+          </motion.button>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }

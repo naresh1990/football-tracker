@@ -7,63 +7,57 @@ interface QuickStatsProps {
 }
 
 export default function QuickStats({ stats }: QuickStatsProps) {
-  if (!stats) return null;
-
-  const statsCards = [
+  const statsData = [
     {
-      title: "This Season",
-      value: stats.seasonGoals,
-      label: "Goals Scored",
-      icon: Target,
-      bgColor: "bg-field-green bg-opacity-20",
-      iconColor: "text-field-green",
+      title: "Total Goals",
+      value: stats.totalGoals,
+      subtitle: "Season performance",
+      icon: <Target className="h-6 w-6" />,
+      trend: "up" as const,
+      trendValue: "+15%",
+      variant: "gradient" as const
     },
     {
-      title: "This Month",
-      value: stats.monthAssists,
-      label: "Assists",
-      icon: HandHeart,
-      bgColor: "bg-trophy-gold bg-opacity-20",
-      iconColor: "text-trophy-gold",
+      title: "Total Assists",
+      value: stats.totalAssists,
+      subtitle: "Playmaking ability",
+      icon: <Users className="h-6 w-6" />,
+      trend: "up" as const,
+      trendValue: "+8%",
+      variant: "premium" as const
+    },
+    {
+      title: "Games Played",
+      value: stats.totalGames,
+      subtitle: "Match experience",
+      icon: <Trophy className="h-6 w-6" />,
+      trend: "neutral" as const,
+      trendValue: "3 this month",
+      variant: "premium" as const
     },
     {
       title: "Win Rate",
-      value: `${stats.winRate}%`,
-      label: "Matches Won",
-      icon: Trophy,
-      bgColor: "bg-green-100",
-      iconColor: "text-green-600",
-    },
-    {
-      title: "Next Game",
-      value: "3 Days",
-      label: "vs Eagles FC",
-      icon: Calendar,
-      bgColor: "bg-red-100",
-      iconColor: "text-red-600",
-    },
+      value: `${stats.winPercentage}%`,
+      subtitle: "Success rate",
+      icon: <TrendingUp className="h-6 w-6" />,
+      trend: "up" as const,
+      trendValue: "+12%",
+      variant: "premium" as const
+    }
   ];
 
   return (
-    <section>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statsCards.map((stat, index) => (
-          <Card key={index} className="shadow-lg">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">{stat.title}</p>
-                  <p className="text-3xl font-bold text-football-green">{stat.value}</p>
-                  <p className="text-sm text-gray-500">{stat.label}</p>
-                </div>
-                <div className={`${stat.bgColor} p-3 rounded-full`}>
-                  <stat.icon className={`${stat.iconColor} w-6 h-6`} />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </section>
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      {statsData.map((stat, index) => (
+        <motion.div
+          key={stat.title}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1, duration: 0.5 }}
+        >
+          <StatsDisplay {...stat} />
+        </motion.div>
+      ))}
+    </div>
   );
 }
