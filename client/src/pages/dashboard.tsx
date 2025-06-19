@@ -71,6 +71,8 @@ export default function Dashboard() {
   // Fetch player data
   const { data: player, isLoading: playerLoading } = useQuery({
     queryKey: ["/api/players/1"],
+    staleTime: 0,
+    cacheTime: 0,
   });
 
   // Fetch summary stats
@@ -78,6 +80,8 @@ export default function Dashboard() {
     queryKey: ["/api/stats/summary"],
     refetchOnMount: true,
     staleTime: 0,
+    cacheTime: 0,
+    refetchOnWindowFocus: true,
   });
 
   if (playerLoading || statsLoading) {
