@@ -99,7 +99,7 @@ export default function Statistics() {
                   <p className="text-2xl font-bold text-green-600">{stats?.totalGoals || 0}</p>
                   <div className="flex items-center mt-2">
                     <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
-                    <span className="text-xs text-green-600">+2 this month</span>
+                    <span className="text-xs text-green-600">{stats?.seasonGoals > 0 ? `${stats.seasonGoals} this season` : 'No goals yet'}</span>
                   </div>
                 </div>
                 <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
@@ -117,7 +117,7 @@ export default function Statistics() {
                   <p className="text-2xl font-bold text-blue-600">{stats?.totalAssists || 0}</p>
                   <div className="flex items-center mt-2">
                     <TrendingUp className="w-4 h-4 text-blue-500 mr-1" />
-                    <span className="text-xs text-blue-600">+1 this month</span>
+                    <span className="text-xs text-blue-600">{stats?.monthAssists > 0 ? `${stats.monthAssists} this month` : 'No assists yet'}</span>
                   </div>
                 </div>
                 <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
@@ -135,7 +135,7 @@ export default function Statistics() {
                   <p className="text-2xl font-bold text-purple-600">{stats?.totalGames || 0}</p>
                   <div className="flex items-center mt-2">
                     <Calendar className="w-4 h-4 text-purple-500 mr-1" />
-                    <span className="text-xs text-purple-600">6 this month</span>
+                    <span className="text-xs text-purple-600">{stats?.totalGames > 0 ? `${stats.totalGames} total` : 'No games yet'}</span>
                   </div>
                 </div>
                 <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center">
@@ -153,7 +153,7 @@ export default function Statistics() {
                   <p className="text-2xl font-bold text-orange-600">{stats?.winRate || 0}%</p>
                   <div className="flex items-center mt-2">
                     <TrendingUp className="w-4 h-4 text-orange-500 mr-1" />
-                    <span className="text-xs text-orange-600">14/18 games</span>
+                    <span className="text-xs text-orange-600">{stats?.totalGames > 0 ? `${stats.winRate}% success` : 'No games yet'}</span>
                   </div>
                 </div>
                 <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">
