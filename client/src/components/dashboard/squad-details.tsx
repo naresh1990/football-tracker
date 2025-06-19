@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Edit, User } from "lucide-react";
+import { Edit, User, Shield, Users, BarChart3 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface SquadDetailsProps {
@@ -55,43 +55,53 @@ export default function SquadDetails({ playerId }: SquadDetailsProps) {
             </Button>
           </div>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <CardContent className="p-0">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
             {/* Team Information */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h4 className="font-medium text-gray-900 mb-3">Team Information</h4>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Team:</span>
-                  <span className="font-medium">{player?.teamName || 'Lions FC'}</span>
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-5 shadow-sm">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                  <Shield className="w-4 h-4 text-white" />
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Division:</span>
-                  <span className="font-medium">{player?.division || 'U12 Premier'}</span>
+                <h4 className="font-semibold text-gray-900">Team Information</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between py-2 border-b border-blue-100">
+                  <span className="text-gray-600 text-sm">Team:</span>
+                  <span className="font-semibold text-gray-900">{player?.teamName || 'Lions FC'}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Jersey Number:</span>
-                  <span className="font-medium">{player?.jerseyNumber || '#10'}</span>
+                <div className="flex items-center justify-between py-2 border-b border-blue-100">
+                  <span className="text-gray-600 text-sm">Division:</span>
+                  <span className="font-semibold text-gray-900">{player?.division || 'U12 Premier'}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Captain:</span>
-                  <span className="font-medium">{player?.isCaptain ? 'Yes' : 'No'}</span>
+                <div className="flex items-center justify-between py-2 border-b border-blue-100">
+                  <span className="text-gray-600 text-sm">Jersey Number:</span>
+                  <span className="font-semibold text-gray-900">{player?.jerseyNumber || '#18'}</span>
+                </div>
+                <div className="flex items-center justify-between py-2">
+                  <span className="text-gray-600 text-sm">Captain:</span>
+                  <span className="font-semibold text-gray-900">{player?.isCaptain ? 'Yes' : 'No'}</span>
                 </div>
               </div>
             </div>
 
             {/* Coaching Staff */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h4 className="font-medium text-gray-900 mb-3">Coaching Staff</h4>
-              <div className="space-y-3">
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-xl p-5 shadow-sm">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
+                  <Users className="w-4 h-4 text-white" />
+                </div>
+                <h4 className="font-semibold text-gray-900">Coaching Staff</h4>
+              </div>
+              <div className="space-y-4">
                 {defaultCoaches.map((coach: any, index: number) => (
-                  <div key={index} className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-football-green rounded-full flex items-center justify-center">
-                      <User className="text-white w-4 h-4" />
+                  <div key={index} className="flex items-center gap-3 p-3 bg-white/60 rounded-lg border border-purple-100">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-sm">
+                      <User className="text-white w-5 h-5" />
                     </div>
-                    <div>
-                      <p className="font-medium text-gray-900 text-sm">{coach.name}</p>
-                      <p className="text-xs text-gray-500">{coach.role}</p>
+                    <div className="flex-1">
+                      <p className="font-semibold text-gray-900 text-sm">{coach.name}</p>
+                      <p className="text-xs text-purple-600 font-medium">{coach.role}</p>
                     </div>
                   </div>
                 ))}
@@ -99,24 +109,29 @@ export default function SquadDetails({ playerId }: SquadDetailsProps) {
             </div>
 
             {/* Season Stats */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h4 className="font-medium text-gray-900 mb-3">Season Stats</h4>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Games Played:</span>
-                  <span className="font-medium">18</span>
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-5 shadow-sm">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
+                  <BarChart3 className="w-4 h-4 text-white" />
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Minutes Played:</span>
-                  <span className="font-medium">1,440</span>
+                <h4 className="font-semibold text-gray-900">Season Stats</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between py-2 border-b border-green-100">
+                  <span className="text-gray-600 text-sm">Games Played:</span>
+                  <span className="font-semibold text-gray-900">18</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Avg Rating:</span>
-                  <span className="font-medium">8.2/10</span>
+                <div className="flex items-center justify-between py-2 border-b border-green-100">
+                  <span className="text-gray-600 text-sm">Minutes Played:</span>
+                  <span className="font-semibold text-gray-900">1,440</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Team Wins:</span>
-                  <span className="font-medium">14</span>
+                <div className="flex items-center justify-between py-2 border-b border-green-100">
+                  <span className="text-gray-600 text-sm">Avg Rating:</span>
+                  <span className="font-semibold text-gray-900">8.2/10</span>
+                </div>
+                <div className="flex items-center justify-between py-2">
+                  <span className="text-gray-600 text-sm">Team Wins:</span>
+                  <span className="font-semibold text-gray-900">14</span>
                 </div>
               </div>
             </div>
