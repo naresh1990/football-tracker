@@ -53,10 +53,35 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
   };
 
   const createClubMutation = useMutation({
-    mutationFn: (data: any) => 
-      mode === 'edit' && club 
-        ? apiRequest("PUT", `/api/clubs/${club.id}`, data)
-        : apiRequest("POST", "/api/clubs", data),
+    mutationFn: async (data: any) => {
+      const formDataToSend = new FormData();
+      
+      // Add all form fields to FormData
+      Object.keys(data).forEach(key => {
+        if (key !== 'logoFile' && data[key] !== null && data[key] !== undefined) {
+          formDataToSend.append(key, data[key]);
+        }
+      });
+      
+      // Handle logo file upload
+      if (data.logoFile) {
+        formDataToSend.append('logo', data.logoFile);
+      }
+      
+      const url = mode === 'edit' && club ? `/api/clubs/${club.id}` : "/api/clubs";
+      const method = mode === 'edit' && club ? "PUT" : "POST";
+      
+      const response = await fetch(url, {
+        method: method,
+        body: formDataToSend,
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      return response.json();
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/clubs"] });
       toast({
@@ -75,6 +100,8 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
           description: "",
           logo: ""
         });
+        setLogoFile(null);
+        setLogoPreview("");
       }
       onSuccess?.();
     },
