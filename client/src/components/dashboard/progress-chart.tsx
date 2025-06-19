@@ -16,22 +16,18 @@ export default function ProgressChart({ playerId }: ProgressChartProps) {
 
   if (isLoading) {
     return (
-      <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 shadow-lg">
-        <CardHeader>
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-100 rounded-xl">
-              <TrendingUp className="w-5 h-5 text-blue-600" />
-            </div>
-            <CardTitle className="text-xl font-bold text-gray-900">Performance Trends</CardTitle>
+      <div>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 bg-indigo-100 rounded-xl">
+            <TrendingUp className="w-5 h-5 text-indigo-600" />
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Skeleton className="h-64 w-full rounded-xl" />
-            <Skeleton className="h-64 w-full rounded-xl" />
-          </div>
-        </CardContent>
-      </Card>
+          <h3 className="text-xl font-bold text-gray-900">Performance Trends</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Skeleton className="h-64 w-full rounded-xl" />
+          <Skeleton className="h-64 w-full rounded-xl" />
+        </div>
+      </div>
     );
   }
 
