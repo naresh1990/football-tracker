@@ -67,76 +67,7 @@ export default function CoachFeedback({ playerId }: CoachFeedbackProps) {
           Coach Feedback
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Upcoming Training Carousel */}
-        {upcomingSessions && upcomingSessions.length > 0 && (
-          <div className="space-y-3">
-            <h3 className="font-medium text-gray-900 text-sm flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-green-600" />
-              Upcoming Training
-            </h3>
-            <div className="relative bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4 border border-green-200">
-              <div className="flex items-center justify-between">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={prevSlide}
-                  disabled={upcomingSessions.length <= 1}
-                  className="h-8 w-8 p-0 text-gray-600 hover:text-gray-900"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </Button>
-                
-                <div className="flex-1 mx-4 text-center">
-                  <div className="space-y-2">
-                    <h4 className="font-semibold text-gray-900">{upcomingSessions[currentSlide]?.type}</h4>
-                    <div className="flex items-center justify-center gap-4 text-sm text-gray-600">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
-                        {moment.tz(upcomingSessions[currentSlide]?.date, 'Asia/Kolkata').format('MMM DD, YYYY')}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {moment.tz(upcomingSessions[currentSlide]?.date, 'Asia/Kolkata').format('h:mm A')}
-                      </div>
-                    </div>
-                    {upcomingSessions[currentSlide]?.location && (
-                      <div className="flex items-center justify-center gap-1 text-xs text-gray-500">
-                        <MapPin className="w-3 h-3" />
-                        {upcomingSessions[currentSlide].location}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={nextSlide}
-                  disabled={upcomingSessions.length <= 1}
-                  className="h-8 w-8 p-0 text-gray-600 hover:text-gray-900"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
-              </div>
-              
-              {upcomingSessions.length > 1 && (
-                <div className="flex justify-center gap-1 mt-3">
-                  {upcomingSessions.map((_: any, index: number) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentSlide(index)}
-                      className={`w-2 h-2 rounded-full transition-colors ${
-                        index === currentSlide ? 'bg-green-600' : 'bg-gray-300'
-                      }`}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
+      <CardContent className="space-y-3">
         {/* Recent Feedback */}
         <div className="space-y-3">
           <h3 className="font-medium text-gray-900 text-sm flex items-center gap-2">
