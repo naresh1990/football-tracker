@@ -67,7 +67,7 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
                   </div>
                   <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
                     <MapPin className="w-4 h-4" />
-                    <span>Team: {player.team}</span>
+                    <span>Sporthood Center of Excellence, HAL Sports Club</span>
                   </div>
                   <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
                     <Calendar className="w-4 h-4" />
