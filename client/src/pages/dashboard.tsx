@@ -13,7 +13,7 @@ import SquadDetails from "@/components/dashboard/squad-details";
 import QuickAddModal from "@/components/modals/quick-add-modal";
 import { 
   Goal, 
-  Users2, 
+  Circle, 
   Users, 
   TrendingUp,
   Calendar,
@@ -107,7 +107,7 @@ export default function Dashboard() {
             <ColorfulCard
               title="Total Assists"
               value={stats?.totalAssists || 0}
-              icon={<Users2 />}
+              icon={<Circle />}
               color="info"
               trend={{ value: "+8%", isPositive: true }}
             />

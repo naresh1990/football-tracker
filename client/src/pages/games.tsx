@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Edit, Trash2, Check, X, Calendar, MapPin, Users, Clock, Goal, Users2 } from "lucide-react";
+import { Plus, Edit, Trash2, Check, X, Calendar, MapPin, Users, Clock, Goal, Circle } from "lucide-react";
 import { formatDate, getGameResult } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { queryClient } from "@/lib/queryClient";
@@ -168,7 +168,7 @@ export default function Games() {
                             className="flex items-center gap-1 bg-orange-100 px-3 py-1 rounded-lg cursor-help relative group"
                             title="Assists made by Darshil in this game"
                           >
-                            <Users2 className="w-4 h-4 text-orange-600" />
+                            <Circle className="w-4 h-4 text-orange-600" />
                             <span className="text-orange-700 font-semibold">{game.playerAssists}</span>
                             <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-50">
                               Assists made by Darshil
