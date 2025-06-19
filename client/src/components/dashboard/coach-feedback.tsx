@@ -61,7 +61,7 @@ export default function CoachFeedback({ playerId }: CoachFeedbackProps) {
             Add Feedback
           </Button>
         </div>
-        <CardContent>
+        <div>
           {feedback && feedback.length === 0 ? (
             <div className="text-center py-8">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -114,8 +114,8 @@ export default function CoachFeedback({ playerId }: CoachFeedbackProps) {
               ))}
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </motion.div>
   );
 }

@@ -101,8 +101,8 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
               ))
             )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </section>
   );
 }

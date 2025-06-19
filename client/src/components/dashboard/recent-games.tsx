@@ -162,8 +162,8 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
               );
             })}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </motion.section>
   );
 }
