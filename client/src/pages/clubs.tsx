@@ -73,6 +73,39 @@ export default function Clubs() {
     }
   };
 
+  const deleteCoachMutation = useMutation({
+    mutationFn: (coachId: number) => {
+      return fetch(`/api/coaches/${coachId}`, {
+        method: 'DELETE',
+      }).then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.status === 204 ? null : res.json();
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/coaches"] });
+      toast({
+        title: "Success",
+        description: "Coach deleted successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error", 
+        description: "Failed to delete coach",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleDeleteCoach = (coachId: number) => {
+    if (window.confirm("Are you sure you want to delete this coach?")) {
+      deleteCoachMutation.mutate(coachId);
+    }
+  };
+
   const getClubCoaches = (clubId: number) => {
     return coaches?.filter((coach: any) => coach.clubId === clubId) || [];
   };
