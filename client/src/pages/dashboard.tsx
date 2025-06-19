@@ -1,13 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import HeroSection from "@/components/modern/hero-section";
 import PlayerProfile from "@/components/dashboard/player-profile";
 import QuickStats from "@/components/dashboard/quick-stats";
 import RecentGames from "@/components/dashboard/recent-games";
 import TrainingSchedule from "@/components/dashboard/training-schedule";
+import ProgressChart from "@/components/dashboard/progress-chart";
 import CoachFeedback from "@/components/dashboard/coach-feedback";
 import TournamentTracking from "@/components/dashboard/tournament-tracking";
-import ProgressChart from "@/components/dashboard/progress-chart";
 import SquadDetails from "@/components/dashboard/squad-details";
-import { Skeleton } from "@/components/ui/skeleton";
+import QuickAddModal from "@/components/modals/quick-add-modal";
 
 export default function Dashboard() {
   const playerId = 1; // Darshil's ID

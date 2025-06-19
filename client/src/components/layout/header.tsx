@@ -1,6 +1,7 @@
 import { Link, useLocation } from "wouter";
-import { Button } from "@/components/ui/button";
-import { Menu, Plus } from "lucide-react";
+import { motion } from "framer-motion";
+import { ModernButton } from "@/components/ui/modern-button";
+import { Menu, Plus, Trophy, BarChart3, Calendar, Target, Building, Users } from "lucide-react";
 
 interface HeaderProps {
   onToggleMobileMenu: () => void;

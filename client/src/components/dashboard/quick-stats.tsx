@@ -1,5 +1,6 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Calendar, Trophy, Target, HandHeart } from "lucide-react";
+import { motion } from "framer-motion";
+import StatsDisplay from "@/components/ui/stats-display";
+import { Trophy, Target, TrendingUp, Users } from "lucide-react";
 
 interface QuickStatsProps {
   stats: any;
