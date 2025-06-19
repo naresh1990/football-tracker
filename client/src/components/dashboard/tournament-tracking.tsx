@@ -58,16 +58,16 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
               </div>
             ) : (
               tournaments?.map((tournament: any) => (
-                <div key={tournament.id} className="border border-gray-200 rounded-lg p-4">
-                  <div className="flex justify-between items-start mb-3">
-                    <h4 className="font-bold text-gray-900">{tournament.name}</h4>
-                    <Badge className={getStatusColor(tournament.status)} variant="secondary">
+                <div key={tournament.id} className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-6 hover:bg-white/90 transition-all duration-200 shadow-sm">
+                  <div className="flex justify-between items-start mb-4">
+                    <h3 className="text-lg font-bold text-gray-900 leading-tight">{tournament.name}</h3>
+                    <Badge className={`${getStatusColor(tournament.status)} text-xs px-2 py-1 font-medium`} variant="secondary">
                       {tournament.status}
                     </Badge>
                   </div>
-                  <p className="text-sm text-gray-600 mb-3">{tournament.description}</p>
+                  <p className="text-sm text-gray-600 mb-4 leading-relaxed">{tournament.description}</p>
                   
-                  <div className="space-y-2 mb-4">
+                  <div className="space-y-3 mb-5">
                     {tournament.currentPosition && (
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Position:</span>
@@ -86,13 +86,13 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
                     </div>
                   </div>
 
-                  <div className="flex justify-between items-center">
-                    <Button variant="ghost" size="sm" className="text-football-green hover:text-green-700">
-                      <Eye className="w-4 h-4 mr-1" />
+                  <div className="flex gap-2 pt-3 border-t border-gray-100">
+                    <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                      <Eye className="w-4 h-4 mr-2" />
                       View Details
                     </Button>
-                    <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-700">
-                      <Upload className="w-4 h-4 mr-1" />
+                    <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                      <Upload className="w-4 h-4 mr-2" />
                       Upload Points Table
                     </Button>
                   </div>
