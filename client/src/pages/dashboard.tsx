@@ -48,6 +48,7 @@ const itemVariants = {
 
 export default function Dashboard() {
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
+  const playerId = 1; // Define playerId variable
 
   // Fetch player data
   const { data: player, isLoading: playerLoading } = useQuery({
