@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import darshilPhoto from "@assets/aa76083e-a3c3-414a-bdaf-a0a1404820ec_1750331355860.JPG";
+import darshilPhoto from "../../assets/darshil-photo.jpg";
 import { 
   Trophy, 
   Target, 
@@ -43,7 +43,7 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
           >
             <div className="flex items-center space-x-4 mb-6">
               <Avatar className="w-16 h-16 sm:w-20 sm:h-20 ring-4 ring-white/30">
-                <AvatarImage src={player.profilePicture} alt={player.name} />
+                <AvatarImage src={darshilPhoto} alt={player.name} className="object-cover" />
                 <AvatarFallback className="text-xl font-bold bg-white/20 text-white">
                   {player.name.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
