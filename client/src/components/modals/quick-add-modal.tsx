@@ -35,7 +35,7 @@ export default function QuickAddModal({ isOpen, onClose }: QuickAddModalProps) {
       title: "Record Game",
       description: "Track match performance",
       icon: Target,
-      color: "from-football-primary to-football-secondary",
+      color: "from-green-500 to-emerald-600",
       action: () => setCurrentForm("game")
     },
     {
@@ -128,10 +128,13 @@ export default function QuickAddModal({ isOpen, onClose }: QuickAddModalProps) {
             transition={{ duration: 0.3 }}
           >
             <DialogHeader className="mb-8 text-center">
-              <DialogTitle className="text-3xl font-bold text-display text-gradient mb-2">
+              <DialogTitle className="text-3xl font-bold text-gray-900 flex items-center justify-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center">
+                  <Zap className="w-6 h-6 text-white" />
+                </div>
                 Quick Actions
               </DialogTitle>
-              <p className="text-muted-foreground">
+              <p className="text-gray-600">
                 Choose an action to record your football journey
               </p>
             </DialogHeader>
@@ -197,8 +200,10 @@ export default function QuickAddModal({ isOpen, onClose }: QuickAddModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className={currentForm === "menu" ? "max-w-md" : "max-w-4xl max-h-[90vh] overflow-y-auto"}>
-        {renderContent()}
+      <DialogContent className="max-w-4xl w-full max-h-[90vh] overflow-hidden bg-white border-0 shadow-2xl">
+        <div className="max-h-[85vh] overflow-y-auto p-6">
+          {renderContent()}
+        </div>
       </DialogContent>
     </Dialog>
   );
