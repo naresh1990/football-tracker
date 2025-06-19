@@ -153,27 +153,6 @@ export default function Clubs() {
     return squadMembers?.filter((member: any) => member.clubId === clubId) || [];
   };
 
-  const handleDeleteSquadMember = async (memberId: number) => {
-    try {
-      await apiRequest("DELETE", `/api/squad/${memberId}`);
-      queryClient.invalidateQueries({ queryKey: ["/api/squad"] });
-      toast({
-        title: "Success",
-        description: "Squad member deleted successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to delete squad member",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const getClubSquadMembers = (clubId: number) => {
-    return squadMembers?.filter((member: any) => member.clubId === clubId) || [];
-  };
-
   const getStatusColor = (status: string) => {
     return status === "active" ? "text-green-600" : "text-gray-500";
   };

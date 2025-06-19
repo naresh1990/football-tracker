@@ -387,6 +387,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.delete("/api/squad/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.deleteSquadMember(id);
+      if (!success) {
+        return res.status(404).json({ error: "Squad member not found" });
+      }
+      res.json({ message: "Squad member deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting squad member:", error);
+      res.status(500).json({ error: "Failed to delete squad member" });
+    }
+  });
+
   app.post("/api/squad", upload.single('profilePicture'), async (req, res) => {
     try {
       const profilePictureUrl = handleImageUpload(req.file);
