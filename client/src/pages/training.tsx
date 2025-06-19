@@ -57,6 +57,8 @@ export default function Training() {
   const [date, setDate] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [showEventDetails, setShowEventDetails] = useState(false);
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [feedbackText, setFeedbackText] = useState('');
 
   const { data: sessions, isLoading } = useQuery({
     queryKey: ["/api/training", { playerId }],
@@ -87,6 +89,35 @@ export default function Training() {
       toast({
         title: "Error",
         description: "Failed to update attendance. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const updateFeedbackMutation = useMutation({
+    mutationFn: async ({ id, coachFeedback }: { id: number; coachFeedback: string }) => {
+      const response = await fetch(`/api/training/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ coachFeedback }),
+      });
+      if (!response.ok) throw new Error('Failed to update feedback');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/training"] });
+      toast({
+        title: "Feedback Added",
+        description: "Coach feedback has been added successfully.",
+      });
+      setShowFeedbackForm(false);
+      setFeedbackText('');
+      setShowEventDetails(false);
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to add feedback. Please try again.",
         variant: "destructive",
       });
     },
@@ -598,7 +629,10 @@ export default function Training() {
                     variant="outline"
                     size="sm"
                     className="mt-2"
-                    onClick={() => {/* TODO: Open feedback form */}}
+                    onClick={() => {
+                      setFeedbackText(selectedEvent.coachFeedback || '');
+                      setShowFeedbackForm(true);
+                    }}
                   >
                     {selectedEvent.coachFeedback ? 'Edit Feedback' : 'Add Feedback'}
                   </Button>
@@ -636,6 +670,53 @@ export default function Training() {
                 </div>
               </div>
             )}
+          </DialogContent>
+        </Dialog>
+
+        {/* Feedback Form Modal */}
+        <Dialog open={showFeedbackForm} onOpenChange={setShowFeedbackForm}>
+          <DialogContent className="max-w-md bg-white">
+            <DialogHeader>
+              <DialogTitle>
+                {selectedEvent?.coachFeedback ? 'Edit Coach Feedback' : 'Add Coach Feedback'}
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="feedback">Feedback</Label>
+                <Textarea
+                  id="feedback"
+                  placeholder="Enter coach feedback for this training session..."
+                  value={feedbackText}
+                  onChange={(e) => setFeedbackText(e.target.value)}
+                  rows={4}
+                  className="mt-1"
+                />
+              </div>
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowFeedbackForm(false)}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => {
+                    if (selectedEvent && feedbackText.trim()) {
+                      updateFeedbackMutation.mutate({
+                        id: selectedEvent.id,
+                        coachFeedback: feedbackText.trim()
+                      });
+                    }
+                  }}
+                  disabled={!feedbackText.trim() || updateFeedbackMutation.isPending}
+                  className="flex-1"
+                >
+                  {updateFeedbackMutation.isPending ? 'Saving...' : 'Save Feedback'}
+                </Button>
+              </div>
+            </div>
           </DialogContent>
         </Dialog>
 
