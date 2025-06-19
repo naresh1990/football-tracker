@@ -89,12 +89,21 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    createClubMutation.mutate({
-      ...formData,
+    
+    const submitData = {
       playerId: 1,
+      name: formData.name,
+      type: formData.type,
+      squadLevel: formData.level || null,
       seasonStart: formData.seasonStart ? new Date(formData.seasonStart).toISOString() : null,
       seasonEnd: formData.seasonEnd ? new Date(formData.seasonEnd).toISOString() : null,
-    });
+      status: formData.status.toLowerCase(), // Convert to lowercase to match database default
+      description: formData.description || null,
+      logo: formData.logo || null,
+    };
+    
+    console.log("Submitting club data:", submitData);
+    createClubMutation.mutate(submitData);
   };
 
   return (
