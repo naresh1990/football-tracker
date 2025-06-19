@@ -346,8 +346,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const id = parseInt(req.params.id);
       const logoUrl = handleImageUpload(req.file);
       
-      // Only include logo in update if a new file was uploaded
+      // Transform and validate data
       const updateData: any = { ...req.body };
+      
+      // Convert playerId to number if present
+      if (updateData.playerId) {
+        updateData.playerId = parseInt(updateData.playerId);
+      }
+      
+      // Convert date strings to Date objects if present
+      if (updateData.seasonStart && updateData.seasonStart !== '') {
+        updateData.seasonStart = new Date(updateData.seasonStart);
+      }
+      if (updateData.seasonEnd && updateData.seasonEnd !== '') {
+        updateData.seasonEnd = new Date(updateData.seasonEnd);
+      }
+      
+      // Only include logo in update if a new file was uploaded
       if (logoUrl) {
         updateData.logo = logoUrl;
       }

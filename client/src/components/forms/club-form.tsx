@@ -161,7 +161,7 @@ export default function ClubForm({ onSuccess, onCancel, editData }: ClubFormProp
                           <SelectValue placeholder="Select club type" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
+                      <SelectContent className="z-[60]" position="popper" sideOffset={4}>
                         <SelectItem value="primary">Primary Club</SelectItem>
                         <SelectItem value="adhoc">Adhoc Club</SelectItem>
                       </SelectContent>
@@ -197,7 +197,7 @@ export default function ClubForm({ onSuccess, onCancel, editData }: ClubFormProp
                           <SelectValue placeholder="Select status" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
+                      <SelectContent className="z-[60]" position="popper" sideOffset={4}>
                         <SelectItem value="active">Active</SelectItem>
                         <SelectItem value="inactive">Inactive</SelectItem>
                       </SelectContent>
