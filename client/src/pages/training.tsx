@@ -455,7 +455,7 @@ export default function Training() {
 
         {/* Event Details Modal */}
         <Dialog open={showEventDetails} onOpenChange={setShowEventDetails}>
-          <DialogContent className="max-w-2xl" aria-describedby="training-event-details">
+          <DialogContent className="max-w-2xl bg-white" aria-describedby="training-event-details">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-3">
                 {selectedEvent && (
@@ -487,13 +487,13 @@ export default function Training() {
                           Update Status
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent>
+                      <DropdownMenuContent className="bg-white shadow-lg border border-gray-200 rounded-md min-w-[160px] z-50">
                         <DropdownMenuItem 
                           onClick={() => {
                             updateAttendance(selectedEvent.id, 'completed');
                             setShowEventDetails(false);
                           }}
-                          className="text-green-600"
+                          className="text-green-600 hover:bg-green-50 cursor-pointer"
                         >
                           <CheckCircle2 className="w-4 h-4 mr-2" />
                           Mark Completed
@@ -503,7 +503,7 @@ export default function Training() {
                             updateAttendance(selectedEvent.id, 'missed');
                             setShowEventDetails(false);
                           }}
-                          className="text-red-600"
+                          className="text-red-600 hover:bg-red-50 cursor-pointer"
                         >
                           <X className="w-4 h-4 mr-2" />
                           Mark Missed
@@ -513,7 +513,7 @@ export default function Training() {
                             updateAttendance(selectedEvent.id, 'cancelled');
                             setShowEventDetails(false);
                           }}
-                          className="text-yellow-600"
+                          className="text-yellow-600 hover:bg-yellow-50 cursor-pointer"
                         >
                           <X className="w-4 h-4 mr-2" />
                           Mark Cancelled
