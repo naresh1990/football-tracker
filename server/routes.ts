@@ -355,6 +355,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post("/api/clubs/:id/logo", upload.single('logo'), async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (!req.file) {
+        return res.status(400).json({ error: "No logo file provided" });
+      }
+      
+      const logoUrl = handleImageUpload(req.file);
+      const club = await storage.updateClub(id, { logo: logoUrl });
+      
+      if (!club) {
+        return res.status(404).json({ error: "Club not found" });
+      }
+      
+      res.json(club);
+    } catch (error) {
+      console.error("Logo upload error:", error);
+      res.status(500).json({ error: "Failed to upload logo" });
+    }
+  });
+
   app.delete("/api/clubs/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
