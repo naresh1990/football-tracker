@@ -5,7 +5,7 @@ import HeroBanner from "@/components/modern/hero-banner";
 import ColorfulCard from "@/components/modern/colorful-card";
 import PlayerProfile from "@/components/dashboard/player-profile";
 import RecentGames from "@/components/dashboard/recent-games";
-import UpcomingTraining from "@/components/dashboard/training-schedule";
+
 import ProgressChart from "@/components/dashboard/progress-chart";
 import CoachFeedback from "@/components/dashboard/coach-feedback";
 import TournamentTracking from "@/components/dashboard/tournament-tracking";
