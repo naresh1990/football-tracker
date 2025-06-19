@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,6 +30,11 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // Fetch coaches for dropdown
+  const { data: coaches } = useQuery({
+    queryKey: ["/api/coaches"],
+  });
 
   const createTrainingMutation = useMutation({
     mutationFn: (data: any) => apiRequest("POST", "/api/training", data),
