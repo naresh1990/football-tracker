@@ -23,21 +23,29 @@ export default function TrainingSchedule({ playerId }: TrainingScheduleProps) {
         return Target;
       case 'team practice':
         return Users;
+      case 'fitness training':
+        return Activity;
+      case 'shooting practice':
+        return Trophy;
       default:
-        return Target;
+        return Dumbbell;
     }
   };
 
   const getTrainingColor = (type: string) => {
     switch (type.toLowerCase()) {
       case 'speed & agility':
-        return 'bg-football-green bg-opacity-20 text-football-green';
+        return 'from-yellow-400 to-orange-500';
       case 'ball control':
-        return 'bg-trophy-gold bg-opacity-20 text-trophy-gold';
+        return 'from-blue-400 to-blue-500';
       case 'team practice':
-        return 'bg-field-green bg-opacity-20 text-field-green';
+        return 'from-green-400 to-green-500';
+      case 'fitness training':
+        return 'from-red-400 to-red-500';
+      case 'shooting practice':
+        return 'from-purple-400 to-purple-500';
       default:
-        return 'bg-gray-100 text-gray-600';
+        return 'from-green-400 to-green-500';
     }
   };
 
