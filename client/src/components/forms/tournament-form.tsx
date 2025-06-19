@@ -103,7 +103,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto bg-white">
+      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto bg-white z-[9998]">
         <DialogHeader>
           <DialogTitle>Add New Tournament</DialogTitle>
           <DialogDescription>
@@ -193,7 +193,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
               <SelectTrigger>
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="z-[9999] max-h-[200px]" position="popper" sideOffset={4}>
                 <SelectItem value="upcoming">Upcoming</SelectItem>
                 <SelectItem value="active">Active</SelectItem>
                 <SelectItem value="completed">Completed</SelectItem>

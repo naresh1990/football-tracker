@@ -92,7 +92,7 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto bg-white">
+      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto bg-white z-[9998]">
         <DialogHeader>
           <DialogTitle>{mode === 'edit' ? 'Edit Club' : 'Add New Club'}</DialogTitle>
           <DialogDescription>
@@ -120,7 +120,7 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
                 <SelectTrigger>
                   <SelectValue placeholder="Select club type" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="z-[9999] max-h-[200px]" position="popper" sideOffset={4}>
                   <SelectItem value="Academy">Academy</SelectItem>
                   <SelectItem value="School Team">School Team</SelectItem>
                   <SelectItem value="Local Club">Local Club</SelectItem>

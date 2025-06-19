@@ -96,7 +96,7 @@ export default function GameForm({ trigger, onSuccess }: GameFormProps) {
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto bg-white">
+      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto bg-white z-[9998]">
         <DialogHeader>
           <DialogTitle>Add New Game</DialogTitle>
           <DialogDescription>

@@ -92,7 +92,7 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto bg-white">
+      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto bg-white z-[9998]">
         <DialogHeader>
           <DialogTitle>Add New Training Session</DialogTitle>
           <DialogDescription>
@@ -106,7 +106,7 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
               <SelectTrigger>
                 <SelectValue placeholder="Select training type" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="z-[9999] max-h-[200px]" position="popper" sideOffset={4}>
                 <SelectItem value="Speed & Agility">Speed & Agility</SelectItem>
                 <SelectItem value="Ball Control">Ball Control</SelectItem>
                 <SelectItem value="Team Practice">Team Practice</SelectItem>
@@ -160,7 +160,7 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
                 <SelectTrigger>
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="z-[9999] max-h-[200px]" position="popper" sideOffset={4}>
                   <SelectItem value="false">Scheduled</SelectItem>
                   <SelectItem value="true">Completed</SelectItem>
                 </SelectContent>
