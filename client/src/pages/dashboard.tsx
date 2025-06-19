@@ -94,12 +94,6 @@ export default function Dashboard() {
   // Extract the first club from the array response
   const activeClub = activeClubData && activeClubData.length > 0 ? activeClubData[0] : null;
 
-  // Set default selected squad member to Darshil Podishetty
-  const defaultSquadMember = squadMembers?.find(member => member.name === 'Darshil Podishetty');
-  const selectedSquadMember = selectedSquadMemberId 
-    ? squadMembers?.find(member => member.id === selectedSquadMemberId)
-    : defaultSquadMember;
-
   // Fetch coaches for active club
   const { data: coaches } = useQuery({
     queryKey: ["/api/coaches", { playerId: 1 }],
@@ -132,11 +126,8 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gray-50">
       {/* Hero Banner */}
       <HeroBanner 
-        player={selectedSquadMember || player} 
+        player={player} 
         activeClub={activeClub}
-        squadMembers={squadMembers}
-        selectedSquadMemberId={selectedSquadMemberId}
-        onSquadMemberChange={setSelectedSquadMemberId}
         onQuickAdd={() => setIsQuickAddOpen(true)} 
       />
 
