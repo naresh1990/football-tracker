@@ -1079,11 +1079,28 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createClub(club: InsertClub): Promise<Club> {
+    // If creating an active club, deactivate all other clubs for this player
+    if (club.status === "active") {
+      await db.update(clubs)
+        .set({ status: "inactive" })
+        .where(eq(clubs.playerId, club.playerId));
+    }
+    
     const [newClub] = await db.insert(clubs).values(club).returning();
     return newClub;
   }
 
   async updateClub(id: number, club: Partial<InsertClub>): Promise<Club | undefined> {
+    // If updating to active status, deactivate all other clubs for this player
+    if (club.status === "active") {
+      const currentClub = await db.select().from(clubs).where(eq(clubs.id, id)).limit(1);
+      if (currentClub.length > 0) {
+        await db.update(clubs)
+          .set({ status: "inactive" })
+          .where(eq(clubs.playerId, currentClub[0].playerId));
+      }
+    }
+    
     const [updated] = await db.update(clubs).set(club).where(eq(clubs.id, id)).returning();
     return updated || undefined;
   }
@@ -1098,7 +1115,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getActiveClubs(playerId: number): Promise<Club[]> {
-    return await db.select().from(clubs).where(eq(clubs.playerId, playerId));
+    return await db.select().from(clubs)
+      .where(and(eq(clubs.playerId, playerId), eq(clubs.status, "active")));
   }
 
   async getCoach(id: number): Promise<Coach | undefined> {
@@ -1159,6 +1177,14 @@ export class DatabaseStorage implements IStorage {
 
   async getCoachingStaffByPlayer(playerId: number): Promise<CoachingStaff[]> {
     return await db.select().from(coachingStaff).where(eq(coachingStaff.playerId, playerId));
+  }
+
+  // Method to get active club for a player
+  async getActiveClub(playerId: number): Promise<Club | undefined> {
+    const [activeClub] = await db.select().from(clubs)
+      .where(and(eq(clubs.playerId, playerId), eq(clubs.status, "active")))
+      .limit(1);
+    return activeClub || undefined;
   }
 }
 
