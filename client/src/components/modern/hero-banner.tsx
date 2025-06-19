@@ -166,7 +166,7 @@ export default function HeroBanner({ player, activeClub, squadMembers, onQuickAd
                 <div className="p-2 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl">
                   <TrendingUp className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-white font-bold text-xl">Season Highlights</h3>
+                <h3 className="text-white font-bold text-xl">Darshil's Season Highlights</h3>
               </div>
               
               <div className="grid grid-cols-2 gap-6 mb-8">
