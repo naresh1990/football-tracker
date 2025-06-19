@@ -177,7 +177,7 @@ export default function Dashboard() {
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="overflow-hidden"
                 >
-                  <div className="px-6 pb-6 bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl">
+                  <div className="p-6 m-4 bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl shadow-sm">
                     <ProgressChart playerId={1} />
                   </div>
                 </motion.div>
@@ -214,7 +214,7 @@ export default function Dashboard() {
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="overflow-hidden"
                 >
-                  <div className="px-6 pb-6 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl">
+                  <div className="p-6 m-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl shadow-sm">
                     <RecentGames playerId={1} />
                   </div>
                 </motion.div>
@@ -253,7 +253,7 @@ export default function Dashboard() {
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="overflow-hidden"
                   >
-                    <div className="px-6 pb-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 rounded-xl">
+                    <div className="p-6 m-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl shadow-sm">
                       <UpcomingTraining playerId={playerId} />
                     </div>
                   </motion.div>
@@ -290,7 +290,7 @@ export default function Dashboard() {
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="overflow-hidden"
                   >
-                    <div className="px-6 pb-6 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-xl">
+                    <div className="p-6 m-4 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-xl shadow-sm">
                       <TournamentTracking playerId={playerId} />
                     </div>
                   </motion.div>
@@ -328,7 +328,7 @@ export default function Dashboard() {
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="overflow-hidden"
                 >
-                  <div className="px-6 pb-6 bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-xl">
+                  <div className="p-6 m-4 bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-xl shadow-sm">
                     <CoachFeedback playerId={playerId} />
                   </div>
                 </motion.div>
