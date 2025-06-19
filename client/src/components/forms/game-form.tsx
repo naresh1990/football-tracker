@@ -16,6 +16,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const gameFormSchema = insertGameSchema.extend({
   date: z.string().min(1, "Date is required"),
+  gameType: z.enum(["practice", "friendly", "tournament"]).default("practice"),
+  matchFormat: z.enum(["2v2", "4v4", "5v5", "7v7"]).default("7v7"),
+  tournamentId: z.number().optional(),
+  homeAway: z.enum(["home", "away"]).default("home"),
+  mistakes: z.number().min(0).optional(),
+  coachFeedback: z.string().optional(),
 });
 
 type GameFormData = z.infer<typeof gameFormSchema>;
@@ -37,6 +43,9 @@ export default function GameForm({ onSuccess, onCancel }: GameFormProps) {
     resolver: zodResolver(gameFormSchema),
     defaultValues: {
       playerId: 1, // Darshil's ID
+      gameType: "practice",
+      matchFormat: "7v7",
+      tournamentId: undefined,
       opponent: "",
       date: "",
       homeAway: "home",
@@ -45,8 +54,10 @@ export default function GameForm({ onSuccess, onCancel }: GameFormProps) {
       playerGoals: 0,
       playerAssists: 0,
       positionPlayed: "",
-      minutesPlayed: 0,
+      minutesPlayed: 90,
+      mistakes: 0,
       rating: "",
+      coachFeedback: "",
       notes: "",
     },
   });
@@ -80,8 +91,15 @@ export default function GameForm({ onSuccess, onCancel }: GameFormProps) {
   });
 
   const onSubmit = (data: GameFormData) => {
-    createGameMutation.mutate(data);
+    const gameData = {
+      ...data,
+      date: new Date(data.date),
+      tournamentId: data.gameType === "tournament" ? data.tournamentId : undefined,
+    };
+    createGameMutation.mutate(gameData);
   };
+  
+  const gameType = form.watch("gameType");
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -144,11 +162,90 @@ export default function GameForm({ onSuccess, onCancel }: GameFormProps) {
 
               <FormField
                 control={form.control}
+                name="gameType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Game Type</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select game type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="practice">Practice Game</SelectItem>
+                        <SelectItem value="friendly">Friendly Match</SelectItem>
+                        <SelectItem value="tournament">Tournament Match</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="matchFormat"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Match Format</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select match format" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="2v2">2v2</SelectItem>
+                        <SelectItem value="4v4">4v4</SelectItem>
+                        <SelectItem value="5v5">5v5</SelectItem>
+                        <SelectItem value="7v7">7v7</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {gameType === "tournament" && (
+              <FormField
+                control={form.control}
+                name="tournamentId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tournament</FormLabel>
+                    <Select 
+                      onValueChange={(value) => field.onChange(parseInt(value))} 
+                      value={field.value?.toString()}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select tournament" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {tournaments?.map((tournament: any) => (
+                          <SelectItem key={tournament.id} value={tournament.id.toString()}>
+                            {tournament.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
                 name="positionPlayed"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Position Played</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select position" />

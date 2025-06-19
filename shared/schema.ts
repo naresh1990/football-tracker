@@ -18,6 +18,9 @@ export const players = pgTable("players", {
 export const games = pgTable("games", {
   id: serial("id").primaryKey(),
   playerId: integer("player_id").notNull(),
+  gameType: text("game_type").notNull(), // "practice", "friendly", "tournament"
+  matchFormat: text("match_format").notNull(), // "2v2", "4v4", "5v5", "7v7"
+  tournamentId: integer("tournament_id"), // linked to tournament if game_type is "tournament"
   opponent: text("opponent").notNull(),
   date: timestamp("date").notNull(),
   homeAway: text("home_away").notNull(), // 'home' or 'away'
@@ -27,7 +30,9 @@ export const games = pgTable("games", {
   playerAssists: integer("player_assists").default(0),
   positionPlayed: text("position_played").notNull(),
   minutesPlayed: integer("minutes_played").default(0),
-  rating: decimal("rating"),
+  mistakes: integer("mistakes").default(0), // number of mistakes made
+  rating: text("rating"), // coach rating
+  coachFeedback: text("coach_feedback"), // immediate post-match feedback
   notes: text("notes"),
 });
 

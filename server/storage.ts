@@ -100,6 +100,9 @@ export class MemStorage implements IStorage {
     const sampleGames = [
       {
         playerId: 1,
+        gameType: "tournament" as const,
+        matchFormat: "7v7" as const,
+        tournamentId: 1,
         opponent: "Panthers FC",
         date: new Date("2024-03-15T15:00:00"),
         homeAway: "home" as const,
@@ -109,11 +112,16 @@ export class MemStorage implements IStorage {
         playerAssists: 1,
         positionPlayed: "Midfielder",
         minutesPlayed: 90,
-        rating: "8.5",
+        mistakes: 1,
+        rating: "8/10",
+        coachFeedback: "Great performance, scored winning goal. Work on first touch under pressure.",
         notes: "Great performance, scored winning goal"
       },
       {
         playerId: 1,
+        gameType: "friendly" as const,
+        matchFormat: "5v5" as const,
+        tournamentId: null,
         opponent: "Wolves FC",
         date: new Date("2024-03-08T14:00:00"),
         homeAway: "away" as const,
@@ -123,11 +131,16 @@ export class MemStorage implements IStorage {
         playerAssists: 0,
         positionPlayed: "Midfielder",
         minutesPlayed: 80,
-        rating: "7.0",
+        mistakes: 2,
+        rating: "7/10",
+        coachFeedback: "Tough game, good effort. Focus on defensive positioning and communication.",
         notes: "Tough game, good effort"
       },
       {
         playerId: 1,
+        gameType: "practice" as const,
+        matchFormat: "4v4" as const,
+        tournamentId: null,
         opponent: "Bears FC",
         date: new Date("2024-03-01T16:00:00"),
         homeAway: "home" as const,
@@ -137,7 +150,9 @@ export class MemStorage implements IStorage {
         playerAssists: 2,
         positionPlayed: "Midfielder",
         minutesPlayed: 90,
-        rating: "9.0",
+        mistakes: 0,
+        rating: "9/10",
+        coachFeedback: "Excellent passing and vision. Perfect game understanding. Keep it up!",
         notes: "Excellent passing and vision"
       }
     ];
