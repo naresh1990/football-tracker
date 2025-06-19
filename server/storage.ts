@@ -8,8 +8,9 @@ import {
   Club, InsertClub,
   Coach, InsertCoach,
   CoachingStaff, InsertCoachingStaff,
+  GalleryPhoto, InsertGalleryPhoto,
   players, games, tournaments, trainingSessions,
-  coachFeedback, squadMembers, clubs, coaches, coachingStaff
+  coachFeedback, squadMembers, clubs, coaches, coachingStaff, galleryPhotos
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";

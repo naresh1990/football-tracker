@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
@@ -178,6 +178,9 @@ export default function Gallery() {
                   <Upload className="w-5 h-5" />
                   Upload Photo
                 </DialogTitle>
+                <DialogDescription>
+                  Select a photo to add to your gallery and optionally add a caption.
+                </DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
                 <div>

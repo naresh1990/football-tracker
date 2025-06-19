@@ -143,6 +143,21 @@ export const insertClubSchema = createInsertSchema(clubs).omit({ id: true });
 export const insertCoachSchema = createInsertSchema(coaches).omit({ id: true });
 export const insertCoachingStaffSchema = createInsertSchema(coachingStaff).omit({ id: true });
 
+// Gallery photos
+export const galleryPhotos = pgTable("gallery_photos", {
+  id: serial("id").primaryKey(),
+  playerId: integer("player_id").notNull().references(() => players.id), 
+  filename: text("filename").notNull(),
+  originalName: text("original_name").notNull(),
+  caption: text("caption"),
+  uploadedAt: timestamp("uploaded_at").defaultNow(),
+});
+
+export const insertGalleryPhotoSchema = createInsertSchema(galleryPhotos).omit({
+  id: true,
+  uploadedAt: true,
+});
+
 // Create types
 export type InsertPlayer = z.infer<typeof insertPlayerSchema>;
 export type Player = typeof players.$inferSelect;
@@ -170,3 +185,6 @@ export type Coach = typeof coaches.$inferSelect;
 
 export type InsertCoachingStaff = z.infer<typeof insertCoachingStaffSchema>;
 export type CoachingStaff = typeof coachingStaff.$inferSelect;
+
+export type InsertGalleryPhoto = z.infer<typeof insertGalleryPhotoSchema>;
+export type GalleryPhoto = typeof galleryPhotos.$inferSelect;
