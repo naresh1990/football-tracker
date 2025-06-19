@@ -253,7 +253,7 @@ export default function Dashboard() {
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="overflow-hidden"
                   >
-                    <div className="px-6 pb-6">
+                    <div className="px-6 pb-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 rounded-xl">
                       <UpcomingTraining playerId={playerId} />
                     </div>
                   </motion.div>
