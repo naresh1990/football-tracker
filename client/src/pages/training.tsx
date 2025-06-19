@@ -230,19 +230,15 @@ export default function Training() {
 
   // Transform sessions into calendar events
   const events = sessions?.map((session: any) => {
-    // Parse the UTC date and convert to IST
+    // Parse UTC date and convert to IST for display
     const startMoment = moment.utc(session.date).tz('Asia/Kolkata');
     const endMoment = startMoment.clone().add(session.duration || 90, 'minutes');
-    
-    // Ensure event stays within the same day in IST
-    const dayEnd = startMoment.clone().endOf('day');
-    const finalEndMoment = endMoment.isAfter(dayEnd) ? dayEnd : endMoment;
     
     return {
       id: session.id,
       title: session.type,
       start: startMoment.toDate(),
-      end: finalEndMoment.toDate(),
+      end: endMoment.toDate(),
       resource: session,
       allDay: false,
     };
