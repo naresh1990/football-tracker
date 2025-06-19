@@ -44,13 +44,13 @@ export default function FeedbackForm({ onSuccess, onCancel }: FeedbackFormProps)
     resolver: zodResolver(feedbackFormSchema),
     defaultValues: {
       playerId: 1, // Darshil's ID
-      gameId: undefined,
+      gameId: null,
       coach: "",
       date: "",
       comment: "",
       strengths: [],
       improvements: [],
-      rating: "",
+      rating: null,
     },
   });
 
@@ -61,7 +61,7 @@ export default function FeedbackForm({ onSuccess, onCancel }: FeedbackFormProps)
       const feedbackData = {
         ...data,
         date: new Date(data.date),
-        rating: data.rating ? data.rating : null,
+        rating: data.rating || null,
         gameId: data.gameId || null,
       };
       return apiRequest("POST", "/api/feedback", feedbackData);
@@ -157,14 +157,14 @@ export default function FeedbackForm({ onSuccess, onCancel }: FeedbackFormProps)
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Related Game (Optional)</FormLabel>
-                    <Select onValueChange={(value) => field.onChange(value ? parseInt(value) : undefined)}>
+                    <Select onValueChange={(value) => field.onChange(value === "none" ? null : parseInt(value))}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select a game" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="">No specific game</SelectItem>
+                        <SelectItem value="none">No specific game</SelectItem>
                         {games?.map((game: any) => (
                           <SelectItem key={game.id} value={game.id.toString()}>
                             vs {game.opponent} - {new Date(game.date).toLocaleDateString()}
