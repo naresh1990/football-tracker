@@ -5,6 +5,7 @@ import { Plus, Calendar, Clock, MapPin, Dumbbell, Zap, Target, Users, Activity, 
 import { formatShortDate, formatTime } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
+import moment from "moment-timezone";
 
 interface TrainingScheduleProps {
   playerId: number;
@@ -142,8 +143,8 @@ export default function TrainingSchedule({ playerId }: TrainingScheduleProps) {
                       <div className="flex items-center gap-1 text-gray-500 mb-1">
                         <Clock className="w-3 h-3" />
                       </div>
-                      <span className="font-semibold text-gray-900">{session.duration || 90}</span>
-                      <span className="text-xs text-gray-500">min</span>
+                      <span className="font-semibold text-gray-900">{moment.tz(session.date, 'Asia/Kolkata').format('h:mm A')}</span>
+                      <span className="text-xs text-gray-500">{session.duration || 90} min</span>
                     </div>
                     <div className="flex flex-col items-center text-center">
                       <div className="flex items-center gap-1 text-gray-500 mb-1">
