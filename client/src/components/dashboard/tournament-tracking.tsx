@@ -2,9 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Upload, Eye } from "lucide-react";
+import { Plus, Trophy, Eye, Calendar, Target, Upload } from "lucide-react";
 import { formatShortDate } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import { motion } from "framer-motion";
 
 interface TournamentTrackingProps {
   playerId: number;
