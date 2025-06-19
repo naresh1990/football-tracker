@@ -297,6 +297,98 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/squad", upload.single('profilePicture'), async (req, res) => {
     try {
+      console.log("Squad member data received:", req.body);
+      console.log("Profile picture file:", req.file);
+      
+      let profilePictureUrl = null;
+      
+      // Handle file upload if provided
+      if (req.file) {
+        profilePictureUrl = handleImageUpload(req.file);
+      }
+      
+      // Transform and validate data
+      const squadData: any = { ...req.body };
+      
+      // Convert numeric fields
+      if (squadData.playerId) {
+        squadData.playerId = parseInt(squadData.playerId);
+      }
+      if (squadData.clubId) {
+        squadData.clubId = parseInt(squadData.clubId);
+      }
+      if (squadData.jerseyNumber) {
+        squadData.jerseyNumber = parseInt(squadData.jerseyNumber);
+      }
+      if (squadData.age) {
+        squadData.age = parseInt(squadData.age);
+      }
+      
+      // Add profile picture URL
+      if (profilePictureUrl) {
+        squadData.profilePicture = profilePictureUrl;
+      }
+      
+      console.log("Processing squad member data:", squadData);
+      const validatedData = insertSquadMemberSchema.parse(squadData);
+      const member = await storage.createSquadMember(validatedData);
+      res.status(201).json(member);
+    } catch (error) {
+      console.error("Error creating squad member:", error);
+      res.status(400).json({ error: "Invalid squad member data", details: error.message });
+    }
+  });
+
+  app.put("/api/squad/:id", upload.single('profilePicture'), async (req, res) => {
+    try {
+      console.log("Updating squad member ID:", req.params.id);
+      console.log("Update data received:", req.body);
+      console.log("Profile picture file:", req.file);
+      
+      const id = parseInt(req.params.id);
+      let profilePictureUrl = null;
+      
+      // Handle file upload if provided
+      if (req.file) {
+        profilePictureUrl = handleImageUpload(req.file);
+      }
+      
+      // Transform and validate data
+      const squadData: any = { ...req.body };
+      
+      // Convert numeric fields
+      if (squadData.playerId) {
+        squadData.playerId = parseInt(squadData.playerId);
+      }
+      if (squadData.clubId) {
+        squadData.clubId = parseInt(squadData.clubId);
+      }
+      if (squadData.jerseyNumber) {
+        squadData.jerseyNumber = parseInt(squadData.jerseyNumber);
+      }
+      if (squadData.age) {
+        squadData.age = parseInt(squadData.age);
+      }
+      
+      // Add profile picture URL if new file uploaded
+      if (profilePictureUrl) {
+        squadData.profilePicture = profilePictureUrl;
+      }
+      
+      console.log("Processing squad member update data:", squadData);
+      const member = await storage.updateSquadMember(id, squadData);
+      if (!member) {
+        return res.status(404).json({ error: "Squad member not found" });
+      }
+      res.json(member);
+    } catch (error) {
+      console.error("Error updating squad member:", error);
+      res.status(400).json({ error: "Invalid squad member data", details: error.message });
+    }
+  });
+
+  app.post("/api/squad", upload.single('profilePicture'), async (req, res) => {
+    try {
       const profilePictureUrl = handleImageUpload(req.file);
       const validatedData = insertSquadMemberSchema.parse({
         ...req.body,

@@ -25,6 +25,10 @@ export default function Clubs() {
     queryKey: ["/api/coaches", { playerId: 1 }],
   });
 
+  const { data: squadMembers } = useQuery({
+    queryKey: ["/api/squad"],
+  });
+
   const deleteClubMutation = useMutation({
     mutationFn: (clubId: number) => apiRequest("DELETE", `/api/clubs/${clubId}`),
     onSuccess: () => {

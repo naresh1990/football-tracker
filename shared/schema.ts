@@ -84,11 +84,13 @@ export const coachFeedback = pgTable("coach_feedback", {
 export const squadMembers = pgTable("squad_members", {
   id: serial("id").primaryKey(),
   playerId: integer("player_id").notNull(),
-  playerName: text("player_name").notNull(),
-  position: text("position").notNull(),
-  jerseyNumber: text("jersey_number"),
-  role: text("role"), // 'player', 'captain', 'vice_captain'
-  profilePicture: text("profile_picture"), // URL to member profile image
+  clubId: integer("club_id"), // linked to club
+  name: text("name").notNull(),
+  position: text("position").notNull(), // "Goalkeeper", "Defender", "Midfielder", "Forward"
+  jerseyNumber: integer("jersey_number"),
+  age: integer("age"),
+  profilePicture: text("profile_picture"), // URL to player profile image
+  notes: text("notes"),
 });
 
 // Club management
