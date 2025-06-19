@@ -49,8 +49,8 @@ export default function CleanHeader({ onToggleMobileMenu, onQuickAdd }: CleanHea
               <span className="text-white text-xl">⚽</span>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-heading text-gray-900">Football Tracker</h1>
-              <p className="text-xs text-gray-500">Performance Analytics</p>
+              <h1 className="text-xl font-bold text-gray-900">Football Tracker</h1>
+              <p className="text-xs text-gray-500 -mt-1">Performance Analytics</p>
             </div>
           </motion.div>
 
@@ -91,11 +91,11 @@ export default function CleanHeader({ onToggleMobileMenu, onQuickAdd }: CleanHea
           <div className="flex items-center space-x-3">
             <motion.button
               onClick={onQuickAdd}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 shadow-md"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-5 py-2.5 rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl border-0"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, y: -1 }}
               whileTap={{ scale: 0.95 }}
             >
               <Plus className="w-4 h-4" />

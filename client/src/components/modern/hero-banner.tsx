@@ -19,13 +19,16 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
   if (!player) return null;
 
   return (
-    <div className="bg-gradient-to-br from-blue-600 to-blue-800 text-white relative overflow-hidden">
+    <div className="bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-900 text-white relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-10 left-10 w-20 h-20 border border-white/20 rounded-full"></div>
         <div className="absolute top-20 right-20 w-32 h-32 border border-white/20 rounded-full"></div>
         <div className="absolute bottom-10 left-1/3 w-16 h-16 border border-white/20 rounded-full"></div>
       </div>
+      
+      {/* Dark overlay for better text contrast */}
+      <div className="absolute inset-0 bg-black/20"></div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
@@ -45,23 +48,26 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
               </Avatar>
               <div>
                 <motion.h1 
-                  className="text-3xl sm:text-4xl lg:text-5xl font-bold text-heading mb-2"
+                  className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2, duration: 0.6 }}
+                  style={{
+                    textShadow: '2px 2px 8px rgba(0, 0, 0, 0.7), 1px 1px 4px rgba(0, 0, 0, 0.5)'
+                  }}
                 >
                   {player.name}
                 </motion.h1>
-                <div className="flex flex-wrap items-center gap-4 text-white/90">
-                  <div className="flex items-center gap-1">
+                <div className="flex flex-wrap items-center gap-4 text-white">
+                  <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
                     <Target className="w-4 h-4" />
                     <span>{player.position}</span>
                   </div>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
                     <Users className="w-4 h-4" />
                     <span>{player.team}</span>
                   </div>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
                     <Calendar className="w-4 h-4" />
                     <span>Age {player.age}</span>
                   </div>
@@ -70,10 +76,13 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
             </div>
 
             <motion.p 
-              className="text-lg text-white/90 mb-6 max-w-2xl"
+              className="text-lg text-white mb-6 max-w-2xl"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
+              style={{
+                textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)'
+              }}
             >
               Track your football journey with comprehensive analytics and performance insights.
             </motion.p>
