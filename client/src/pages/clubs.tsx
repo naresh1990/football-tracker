@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Edit, Trash2, Building, Users } from "lucide-react";
 import { formatDate } from "@/lib/utils";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 import { queryClient } from "@/lib/queryClient";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -54,12 +54,12 @@ export default function Clubs() {
     return (
       <div className="container mx-auto p-6">
         <div className="flex justify-between items-center mb-8">
-          <Skeleton className="h-8 w-32" />
-          <Skeleton className="h-10 w-24" />
+          <div className="h-8 w-32 bg-gray-200 rounded animate-pulse" />
+          <div className="h-10 w-24 bg-gray-200 rounded animate-pulse" />
         </div>
         <div className="grid gap-6">
           {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-48 w-full" />
+            <div key={i} className="h-48 w-full bg-gray-200 rounded animate-pulse" />
           ))}
         </div>
       </div>

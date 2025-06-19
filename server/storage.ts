@@ -679,7 +679,8 @@ export class MemStorage implements IStorage {
       squadLevel: club.squadLevel ?? null,
       seasonStart: club.seasonStart ?? null,
       seasonEnd: club.seasonEnd ?? null,
-      description: club.description ?? null
+      description: club.description ?? null,
+      status: club.status ?? "active"
     };
     this.clubs.set(id, newClub);
     return newClub;
