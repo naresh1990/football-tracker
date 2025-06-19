@@ -1042,8 +1042,10 @@ export class DatabaseStorage implements IStorage {
     return member || undefined;
   }
 
-  async createSquadMember(member: InsertSquadMember): Promise<SquadMember> {
+  async createSquadMember(member: any): Promise<any> {
+    console.log("Creating squad member with data:", member);
     const [newMember] = await db.insert(squadMembers).values(member).returning();
+    console.log("Created squad member:", newMember);
     return newMember;
   }
 
@@ -1059,8 +1061,16 @@ export class DatabaseStorage implements IStorage {
     return (result.rowCount || 0) > 0;
   }
 
-  async getSquadByPlayer(playerId: number): Promise<SquadMember[]> {
-    return await db.select().from(squadMembers).where(eq(squadMembers.playerId, playerId));
+  async getSquadByPlayer(playerId: number): Promise<any[]> {
+    console.log("Fetching squad members for player:", playerId);
+    try {
+      const members = await db.select().from(squadMembers).where(eq(squadMembers.playerId, playerId));
+      console.log("Found squad members:", members);
+      return members;
+    } catch (error) {
+      console.error("Error fetching squad members:", error);
+      throw error;
+    }
   }
 
   async getClub(id: number): Promise<Club | undefined> {
