@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -31,6 +32,8 @@ interface FeedbackFormProps {
 
 export default function FeedbackForm({ onSuccess, onCancel }: FeedbackFormProps) {
   const { toast } = useToast();
+  const [newStrength, setNewStrength] = useState("");
+  const [newImprovement, setNewImprovement] = useState("");
   
   // Get recent games for selection
   const { data: games } = useQuery({
@@ -51,8 +54,7 @@ export default function FeedbackForm({ onSuccess, onCancel }: FeedbackFormProps)
     },
   });
 
-  const [newStrength, setNewStrength] = useState("");
-  const [newImprovement, setNewImprovement] = useState("");
+
 
   const createFeedbackMutation = useMutation({
     mutationFn: (data: FeedbackFormData) => {

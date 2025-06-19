@@ -278,7 +278,13 @@ export class MemStorage implements IStorage {
 
   async createPlayer(player: InsertPlayer): Promise<Player> {
     const id = this.playerId++;
-    const newPlayer: Player = { ...player, id };
+    const newPlayer: Player = { 
+      ...player, 
+      id,
+      jerseyNumber: player.jerseyNumber ?? null,
+      isCaptain: player.isCaptain ?? null,
+      division: player.division ?? null
+    };
     this.players.set(id, newPlayer);
     return newPlayer;
   }
@@ -303,7 +309,15 @@ export class MemStorage implements IStorage {
 
   async createGame(game: InsertGame): Promise<Game> {
     const id = this.gameId++;
-    const newGame: Game = { ...game, id };
+    const newGame: Game = { 
+      ...game, 
+      id,
+      playerGoals: game.playerGoals ?? null,
+      playerAssists: game.playerAssists ?? null,
+      minutesPlayed: game.minutesPlayed ?? null,
+      rating: game.rating ?? null,
+      notes: game.notes ?? null
+    };
     this.games.set(id, newGame);
     return newGame;
   }
@@ -339,7 +353,20 @@ export class MemStorage implements IStorage {
 
   async createTournament(tournament: InsertTournament): Promise<Tournament> {
     const id = this.tournamentId++;
-    const newTournament: Tournament = { ...tournament, id };
+    const newTournament: Tournament = { 
+      ...tournament, 
+      id,
+      description: tournament.description ?? null,
+      startDate: tournament.startDate ?? null,
+      endDate: tournament.endDate ?? null,
+      format: tournament.format ?? null,
+      totalTeams: tournament.totalTeams ?? null,
+      currentPosition: tournament.currentPosition ?? null,
+      points: tournament.points ?? null,
+      gamesPlayed: tournament.gamesPlayed ?? null,
+      totalGames: tournament.totalGames ?? null,
+      pointsTableImage: tournament.pointsTableImage ?? null
+    };
     this.tournaments.set(id, newTournament);
     return newTournament;
   }
@@ -374,7 +401,14 @@ export class MemStorage implements IStorage {
 
   async createTrainingSession(session: InsertTrainingSession): Promise<TrainingSession> {
     const id = this.trainingId++;
-    const newSession: TrainingSession = { ...session, id };
+    const newSession: TrainingSession = { 
+      ...session, 
+      id,
+      location: session.location ?? null,
+      coach: session.coach ?? null,
+      notes: session.notes ?? null,
+      completed: session.completed ?? null
+    };
     this.trainingSessions.set(id, newSession);
     return newSession;
   }
@@ -413,7 +447,14 @@ export class MemStorage implements IStorage {
 
   async createCoachFeedback(feedback: InsertCoachFeedback): Promise<CoachFeedback> {
     const id = this.feedbackId++;
-    const newFeedback: CoachFeedback = { ...feedback, id };
+    const newFeedback: CoachFeedback = { 
+      ...feedback, 
+      id,
+      gameId: feedback.gameId ?? null,
+      strengths: feedback.strengths ?? null,
+      improvements: feedback.improvements ?? null,
+      rating: feedback.rating ?? null
+    };
     this.coachFeedback.set(id, newFeedback);
     return newFeedback;
   }
@@ -449,7 +490,12 @@ export class MemStorage implements IStorage {
 
   async createSquadMember(member: InsertSquadMember): Promise<SquadMember> {
     const id = this.squadId++;
-    const newMember: SquadMember = { ...member, id };
+    const newMember: SquadMember = { 
+      ...member, 
+      id,
+      jerseyNumber: member.jerseyNumber ?? null,
+      role: member.role ?? null
+    };
     this.squadMembers.set(id, newMember);
     return newMember;
   }
@@ -479,7 +525,11 @@ export class MemStorage implements IStorage {
 
   async createCoachingStaffMember(coach: InsertCoachingStaff): Promise<CoachingStaff> {
     const id = this.coachId++;
-    const newCoach: CoachingStaff = { ...coach, id };
+    const newCoach: CoachingStaff = { 
+      ...coach, 
+      id,
+      contact: coach.contact ?? null
+    };
     this.coachingStaff.set(id, newCoach);
     return newCoach;
   }
