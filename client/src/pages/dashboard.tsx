@@ -24,7 +24,8 @@ import {
   Clock,
   MessageSquare,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Plus
 } from "lucide-react";
 
 const containerVariants = {
