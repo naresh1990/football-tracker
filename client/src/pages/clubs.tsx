@@ -121,9 +121,12 @@ export default function Clubs() {
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No clubs added yet</h3>
             <p className="text-gray-600 mb-6">Add the football clubs you're part of to track your journey</p>
             <ClubForm trigger={
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                <Plus className="mr-2 h-4 w-4" />
-                Add Your First Club
+              <Button 
+                className="bg-blue-600 hover:bg-blue-700 font-bold px-4 py-2 w-auto inline-flex items-center whitespace-nowrap"
+                style={{ color: 'white' }}
+              >
+                <Plus className="mr-2 h-4 w-4 text-white" />
+                <span className="text-white">Add Your First Club</span>
               </Button>
             } />
           </motion.div>
@@ -190,7 +193,7 @@ export default function Clubs() {
                           <Button 
                             variant="ghost" 
                             size="sm" 
-                            className="text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                            className="text-gray-600 hover:text-blue-600 hover:bg-blue-50 w-auto inline-flex items-center"
                           >
                             <Edit className="w-4 h-4" />
                           </Button>

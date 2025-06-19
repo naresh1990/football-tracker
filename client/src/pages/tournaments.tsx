@@ -65,9 +65,12 @@ export default function Tournaments() {
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No tournaments yet</h3>
             <p className="text-gray-600 mb-6">Join tournaments to compete and track your progress</p>
             <TournamentForm trigger={
-              <Button className="bg-yellow-500 hover:bg-yellow-600 text-white">
-                <Plus className="mr-2 h-4 w-4" />
-                Add Tournament
+              <Button 
+                className="bg-yellow-500 hover:bg-yellow-600 font-bold px-4 py-2 w-auto inline-flex items-center whitespace-nowrap"
+                style={{ color: 'white' }}
+              >
+                <Plus className="mr-2 h-4 w-4 text-white" />
+                <span className="text-white">Add Tournament</span>
               </Button>
             } />
           </motion.div>

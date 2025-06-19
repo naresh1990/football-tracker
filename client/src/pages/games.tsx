@@ -73,9 +73,12 @@ export default function Games() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">No games recorded yet</h3>
                 <p className="text-gray-600 mb-6">Start tracking your football matches and performance</p>
                 <GameForm trigger={
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Add Your First Game
+                  <Button 
+                    className="bg-blue-600 hover:bg-blue-700 font-bold px-4 py-2 w-auto inline-flex items-center whitespace-nowrap"
+                    style={{ color: 'white' }}
+                  >
+                    <Plus className="mr-2 h-4 w-4 text-white" />
+                    <span className="text-white">Add Your First Game</span>
                   </Button>
                 } />
               </motion.div>
