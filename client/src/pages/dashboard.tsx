@@ -252,82 +252,42 @@ export default function Dashboard() {
           </div>
         </motion.div>
 
-        {/* Training & Tournaments Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* Training Schedule */}
-          <motion.div variants={itemVariants}>
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border-0">
-              <button
-                onClick={() => toggleSection('training')}
-                className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50/50 transition-colors rounded-t-xl"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-md">
-                    <Clock className="w-6 h-6 text-white" />
-                  </div>
-                  <h2 className="text-xl font-bold text-gray-900">Upcoming Training Schedule</h2>
+        {/* Tournament Section */}
+        <motion.div variants={itemVariants}>
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border-0 mb-8">
+            <button
+              onClick={() => toggleSection('tournaments')}
+              className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50/50 transition-colors rounded-t-xl"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-md">
+                  <Trophy className="w-6 h-6 text-white" />
                 </div>
-                {collapsedSections.training ? (
-                  <ChevronDown className="w-5 h-5 text-gray-500" />
-                ) : (
-                  <ChevronUp className="w-5 h-5 text-gray-500" />
-                )}
-              </button>
-              <AnimatePresence>
-                {!collapsedSections.training && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="overflow-hidden"
-                  >
-                    <div className="p-6 m-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl shadow-sm">
-                      <UpcomingTraining playerId={playerId} />
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
-          
-          {/* Tournament Tracking */}
-          <motion.div variants={itemVariants}>
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border-0">
-              <button
-                onClick={() => toggleSection('tournaments')}
-                className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50/50 transition-colors rounded-t-xl"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-md">
-                    <Trophy className="w-6 h-6 text-white" />
+                <h2 className="text-xl font-bold text-gray-900">Current Tournaments</h2>
+              </div>
+              {collapsedSections.tournaments ? (
+                <ChevronDown className="w-5 h-5 text-gray-500" />
+              ) : (
+                <ChevronUp className="w-5 h-5 text-gray-500" />
+              )}
+            </button>
+            <AnimatePresence>
+              {!collapsedSections.tournaments && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="p-6 m-4 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-xl shadow-sm">
+                    <TournamentTracking playerId={playerId} />
                   </div>
-                  <h2 className="text-xl font-bold text-gray-900">Current Tournaments</h2>
-                </div>
-                {collapsedSections.tournaments ? (
-                  <ChevronDown className="w-5 h-5 text-gray-500" />
-                ) : (
-                  <ChevronUp className="w-5 h-5 text-gray-500" />
-                )}
-              </button>
-              <AnimatePresence>
-                {!collapsedSections.tournaments && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="overflow-hidden"
-                  >
-                    <div className="p-6 m-4 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-xl shadow-sm">
-                      <TournamentTracking playerId={playerId} />
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
-        </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
 
         {/* Coach Feedback Section */}
         <motion.div variants={itemVariants}>
