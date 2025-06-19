@@ -58,16 +58,14 @@ export default function ProgressChart({ playerId }: ProgressChartProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 shadow-lg hover:shadow-xl transition-all duration-300">
-        <CardHeader>
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-md">
-              <TrendingUp className="w-5 h-5 text-white" />
-            </div>
-            <CardTitle className="text-xl font-bold text-gray-900">Performance Trends</CardTitle>
+      <div>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 bg-indigo-100 rounded-xl">
+            <TrendingUp className="w-5 h-5 text-indigo-600" />
           </div>
-        </CardHeader>
-        <CardContent>
+          <h3 className="text-xl font-bold text-gray-900">Performance Trends</h3>
+        </div>
+        <div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Goals & Assists Chart */}
             <motion.div 
@@ -205,8 +203,8 @@ export default function ProgressChart({ playerId }: ProgressChartProps) {
               </div>
             </motion.div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </motion.section>
   );
 }

@@ -53,7 +53,6 @@ export default function Dashboard() {
   
   // Collapsible sections state
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({
-    performanceAnalytics: false,
     training: false,
     tournaments: false,
     recentGames: false,
@@ -149,7 +148,9 @@ export default function Dashboard() {
           </div>
         </motion.div>
 
-        {/* Performance Charts */}
+        
+
+        {/* Performance Analytics Section */}
         <motion.div variants={itemVariants}>
           <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border-0 mb-8">
             <button
