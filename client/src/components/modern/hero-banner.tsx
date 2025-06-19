@@ -57,19 +57,16 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
               
               {/* Jersey Details Card */}
               <motion.div 
-                className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-2xl p-4 shadow-lg border-2 border-white/20"
+                className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/20 shadow-sm"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.6 }}
               >
                 <div className="text-center">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <Trophy className="w-5 h-5 text-white" />
-                    <span className="text-white font-bold text-lg">Jersey</span>
-                  </div>
-                  <div className="bg-white/20 rounded-xl px-4 py-2">
-                    <div className="text-white font-black text-2xl">#18</div>
-                    <div className="text-white/90 font-semibold text-sm">"Darsh"</div>
+                  <div className="flex items-center justify-center gap-2 text-white/90">
+                    <Trophy className="w-4 h-4" />
+                    <span className="text-lg font-bold">#18</span>
+                    <span className="text-sm font-medium">"Darsh"</span>
                   </div>
                 </div>
               </motion.div>
