@@ -496,7 +496,8 @@ export class MemStorage implements IStorage {
         playerId: 1,
         memberName: "Nihal Rajesh",
         position: "Forward",
-        jerseyNumber: "#11"
+        jerseyNumber: "#11",
+        picture: "/uploads/nihal-rajesh.jpg"
       },
       {
         playerId: 1,
