@@ -65,6 +65,7 @@ export const trainingSessions = pgTable("training_sessions", {
   coach: text("coach"),
   notes: text("notes"),
   completed: boolean("completed").default(false),
+  attendance: text("attendance").default("pending"), // "pending", "completed", "missed"
 });
 
 // Coach feedback

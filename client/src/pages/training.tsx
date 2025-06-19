@@ -1,12 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Calendar, Clock, MapPin, User, Target, Zap, Users, Activity, Trophy, Dumbbell, CheckCircle } from "lucide-react";
+import { Plus, Calendar, Clock, MapPin, User, Target, Zap, Users, Activity, Trophy, Dumbbell, CheckCircle, X, AlertCircle } from "lucide-react";
 import { formatShortDate, formatTime } from "@/lib/utils";
 import { motion } from "framer-motion";
 import EmptyState from "@/components/ui/empty-state";
 import TrainingForm from "@/components/forms/training-form";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 
 export default function Training() {
   const { data: sessions, isLoading } = useQuery({
@@ -19,6 +21,29 @@ export default function Training() {
 
   const { data: clubs } = useQuery({
     queryKey: ["/api/clubs"],
+  });
+
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const updateAttendanceMutation = useMutation({
+    mutationFn: ({ sessionId, attendance }: { sessionId: number; attendance: string }) =>
+      apiRequest("PUT", `/api/training/${sessionId}/attendance`, { attendance }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/training"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
+      toast({
+        title: "Success",
+        description: "Attendance updated successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to update attendance",
+        variant: "destructive",
+      });
+    },
   });
 
   const getTrainingIcon = (type: string) => {
@@ -63,6 +88,32 @@ export default function Training() {
     return club?.logo || null;
   };
 
+  const getAttendanceBadge = (attendance: string) => {
+    switch (attendance) {
+      case 'completed':
+        return (
+          <Badge className="bg-green-100 text-green-700 border-green-200">
+            <CheckCircle className="w-3 h-3 mr-1" />
+            Completed
+          </Badge>
+        );
+      case 'missed':
+        return (
+          <Badge className="bg-red-100 text-red-700 border-red-200">
+            <X className="w-3 h-3 mr-1" />
+            Missed
+          </Badge>
+        );
+      default:
+        return (
+          <Badge className="bg-blue-100 text-blue-700 border-blue-200">
+            <Clock className="w-3 h-3 mr-1" />
+            Pending
+          </Badge>
+        );
+    }
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -104,8 +155,9 @@ export default function Training() {
     );
   }
 
-  const upcomingSessions = sessions?.filter((session: any) => !session.completed) || [];
-  const completedSessions = sessions?.filter((session: any) => session.completed) || [];
+  const pendingSessions = sessions?.filter((session: any) => session.attendance === 'pending') || [];
+  const completedSessions = sessions?.filter((session: any) => session.attendance === 'completed') || [];
+  const missedSessions = sessions?.filter((session: any) => session.attendance === 'missed') || [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
@@ -170,10 +222,7 @@ export default function Training() {
                                 />
                               </div>
                             )}
-                            <Badge className="bg-blue-100 text-blue-700 border-blue-200">
-                              <Clock className="w-3 h-3 mr-1" />
-                              Upcoming
-                            </Badge>
+                            {getAttendanceBadge(session.attendance || 'pending')}
                           </div>
                         </div>
                       </CardHeader>
@@ -209,11 +258,120 @@ export default function Training() {
                           </div>
                         )}
 
-                        <div className="flex gap-2 pt-2">
-                          <Button variant="outline" size="sm" className="flex-1 hover:bg-blue-50">
-                            View Details
-                          </Button>
+                        {session.attendance === 'pending' && (
+                          <div className="flex gap-2 pt-2">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="flex-1 hover:bg-green-50 text-green-600 border-green-200"
+                              onClick={() => updateAttendanceMutation.mutate({ sessionId: session.id, attendance: 'completed' })}
+                              disabled={updateAttendanceMutation.isPending}
+                            >
+                              <CheckCircle className="w-3 h-3 mr-1" />
+                              Mark Completed
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="flex-1 hover:bg-red-50 text-red-600 border-red-200"
+                              onClick={() => updateAttendanceMutation.mutate({ sessionId: session.id, attendance: 'missed' })}
+                              disabled={updateAttendanceMutation.isPending}
+                            >
+                              <X className="w-3 h-3 mr-1" />
+                              Missed Session
+                            </Button>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          </motion.div>
+        )}
+
+        {/* Missed Sessions Section */}
+        {missedSessions.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <X className="w-6 h-6 text-red-600" />
+              Missed Sessions
+            </h2>
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {missedSessions.map((session: any, index: number) => {
+                const TrainingIcon = getTrainingIcon(session.type);
+                const colorClass = getTrainingColor(session.type);
+                const clubLogo = getClubLogo(session.coach);
+                
+                return (
+                  <motion.div key={session.id} variants={itemVariants}>
+                    <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-md hover:shadow-lg transition-all duration-300 h-full opacity-90 border-l-4 border-red-400">
+                      <CardHeader className="pb-4">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            <div className={`w-14 h-14 bg-gradient-to-br ${colorClass} rounded-xl flex items-center justify-center shadow-md opacity-80`}>
+                              <TrainingIcon className="w-7 h-7 text-white" />
+                            </div>
+                            <div>
+                              <CardTitle className="text-xl font-bold text-gray-900">{session.type}</CardTitle>
+                              <p className="text-sm text-gray-600 mt-1">{session.focus || 'Training session'}</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {clubLogo && (
+                              <div className="w-8 h-8 rounded-full overflow-hidden bg-white shadow-sm border border-gray-200">
+                                <img 
+                                  src={clubLogo} 
+                                  alt="Club logo"
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                            )}
+                            {getAttendanceBadge(session.attendance || 'missed')}
+                          </div>
                         </div>
+                      </CardHeader>
+                      
+                      <CardContent className="space-y-4">
+                        <div className="grid grid-cols-3 gap-3">
+                          <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <Calendar className="w-4 h-4 mx-auto text-gray-500 mb-1" />
+                            <div className="font-semibold text-gray-900 text-sm">{formatShortDate(session.date).split(',')[0]}</div>
+                            <div className="text-xs text-gray-500">{formatTime(session.date)}</div>
+                          </div>
+                          <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <Clock className="w-4 h-4 mx-auto text-gray-500 mb-1" />
+                            <div className="font-semibold text-gray-900 text-sm">{session.duration || 90}</div>
+                            <div className="text-xs text-gray-500">min</div>
+                          </div>
+                          <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <MapPin className="w-4 h-4 mx-auto text-gray-500 mb-1" />
+                            <div className="font-semibold text-gray-900 text-xs leading-tight">{session.location || 'Training Ground'}</div>
+                          </div>
+                        </div>
+
+                        {session.coach && (
+                          <div className="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 p-2 rounded-lg">
+                            <User className="w-4 h-4 text-gray-400" />
+                            <span className="font-medium">{session.coach}</span>
+                          </div>
+                        )}
+
+                        {session.notes && (
+                          <div className="bg-red-50 p-3 rounded-lg border-l-4 border-red-400">
+                            <p className="text-sm text-gray-700 leading-relaxed">{session.notes}</p>
+                          </div>
+                        )}
                       </CardContent>
                     </Card>
                   </motion.div>
@@ -269,10 +427,7 @@ export default function Training() {
                                 />
                               </div>
                             )}
-                            <Badge className="bg-green-100 text-green-700 border-green-200">
-                              <CheckCircle className="w-3 h-3 mr-1" />
-                              Completed
-                            </Badge>
+                            {getAttendanceBadge(session.attendance || 'completed')}
                           </div>
                         </div>
                       </CardHeader>
@@ -308,11 +463,7 @@ export default function Training() {
                           </div>
                         )}
 
-                        <div className="flex gap-2 pt-2">
-                          <Button variant="outline" size="sm" className="flex-1 hover:bg-gray-50">
-                            View Details
-                          </Button>
-                        </div>
+
                       </CardContent>
                     </Card>
                   </motion.div>

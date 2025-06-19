@@ -260,6 +260,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.put("/api/training/:id/attendance", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { attendance } = req.body;
+      
+      if (!["completed", "missed"].includes(attendance)) {
+        return res.status(400).json({ error: "Invalid attendance status" });
+      }
+
+      const session = await storage.updateTrainingSession(id, { 
+        attendance,
+        completed: attendance === "completed"
+      });
+      
+      if (!session) {
+        return res.status(404).json({ error: "Training session not found" });
+      }
+      
+      res.json(session);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to update attendance" });
+    }
+  });
+
   // Coach feedback routes
   app.get("/api/feedback", async (req, res) => {
     try {
