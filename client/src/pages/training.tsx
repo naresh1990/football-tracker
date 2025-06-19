@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Plus, Calendar, Clock, MapPin, User, Target, Zap, Users, Activity, Trophy, Dumbbell, CheckCircle, X, AlertCircle, Trash2, Ban, MoreVertical } from "lucide-react";
 import { formatShortDate, formatTime } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -245,27 +245,24 @@ export default function Training() {
                               </div>
                             )}
                             {getAttendanceBadge(session.attendance || 'pending')}
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm" 
-                                  className="h-6 w-6 p-0 text-gray-400 hover:text-gray-600 hover:bg-gray-100"
-                                >
-                                  <MoreVertical className="w-4 h-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end" className="w-32">
-                                <DropdownMenuItem 
-                                  className="text-red-600 focus:text-red-600 focus:bg-red-50 cursor-pointer"
-                                  onClick={() => deleteSessionMutation.mutate(session.id)}
-                                  disabled={deleteSessionMutation.isPending}
-                                >
-                                  <Trash2 className="w-3 h-3 mr-2" />
-                                  Delete
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-6 w-6 p-0 text-gray-400 hover:text-red-500 hover:bg-red-50"
+                                    onClick={() => deleteSessionMutation.mutate(session.id)}
+                                    disabled={deleteSessionMutation.isPending}
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Delete Session</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
                           </div>
                         </div>
                       </CardHeader>
@@ -301,84 +298,81 @@ export default function Training() {
                           </div>
                         )}
 
-                        {session.attendance === 'pending' && (
+                        <TooltipProvider>
                           <div className="flex gap-2 pt-2 justify-center">
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              className="px-3 py-1 hover:bg-green-50 text-green-600 border-green-200 rounded-full"
-                              onClick={() => updateAttendanceMutation.mutate({ sessionId: session.id, attendance: 'completed' })}
-                              disabled={updateAttendanceMutation.isPending}
-                            >
-                              <CheckCircle className="w-3 h-3" />
-                            </Button>
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              className="px-3 py-1 hover:bg-red-50 text-red-600 border-red-200 rounded-full"
-                              onClick={() => updateAttendanceMutation.mutate({ sessionId: session.id, attendance: 'missed' })}
-                              disabled={updateAttendanceMutation.isPending}
-                            >
-                              <X className="w-3 h-3" />
-                            </Button>
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              className="px-3 py-1 hover:bg-orange-50 text-orange-600 border-orange-200 rounded-full"
-                              onClick={() => updateAttendanceMutation.mutate({ sessionId: session.id, attendance: 'cancelled' })}
-                              disabled={updateAttendanceMutation.isPending}
-                            >
-                              <Ban className="w-3 h-3" />
-                            </Button>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
+                            {session.attendance === 'pending' && (
+                              <>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button 
+                                      variant="outline" 
+                                      size="sm" 
+                                      className="px-3 py-1 hover:bg-green-50 text-green-600 border-green-200 rounded-full"
+                                      onClick={() => updateAttendanceMutation.mutate({ sessionId: session.id, attendance: 'completed' })}
+                                      disabled={updateAttendanceMutation.isPending}
+                                    >
+                                      <CheckCircle className="w-3 h-3" />
+                                    </Button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Mark as Completed</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                                
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button 
+                                      variant="outline" 
+                                      size="sm" 
+                                      className="px-3 py-1 hover:bg-red-50 text-red-600 border-red-200 rounded-full"
+                                      onClick={() => updateAttendanceMutation.mutate({ sessionId: session.id, attendance: 'missed' })}
+                                      disabled={updateAttendanceMutation.isPending}
+                                    >
+                                      <X className="w-3 h-3" />
+                                    </Button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Mark as Missed</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                                
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button 
+                                      variant="outline" 
+                                      size="sm" 
+                                      className="px-3 py-1 hover:bg-orange-50 text-orange-600 border-orange-200 rounded-full"
+                                      onClick={() => updateAttendanceMutation.mutate({ sessionId: session.id, attendance: 'cancelled' })}
+                                      disabled={updateAttendanceMutation.isPending}
+                                    >
+                                      <Ban className="w-3 h-3" />
+                                    </Button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Mark as Cancelled</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </>
+                            )}
+                            
+                            <Tooltip>
+                              <TooltipTrigger asChild>
                                 <Button 
                                   variant="outline" 
                                   size="sm" 
-                                  className="px-2 py-1 hover:bg-gray-50 text-gray-500 border-gray-200 rounded-full"
-                                >
-                                  <MoreVertical className="w-3 h-3" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end" className="w-32">
-                                <DropdownMenuItem 
-                                  className="text-red-600 focus:text-red-600 focus:bg-red-50 cursor-pointer"
+                                  className="px-3 py-1 hover:bg-red-50 text-red-500 border-red-200 rounded-full"
                                   onClick={() => deleteSessionMutation.mutate(session.id)}
                                   disabled={deleteSessionMutation.isPending}
                                 >
-                                  <Trash2 className="w-3 h-3 mr-2" />
-                                  Delete
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
-                        )}
-
-                        {session.attendance !== 'pending' && (
-                          <div className="flex justify-end pt-2">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button 
-                                  variant="outline" 
-                                  size="sm" 
-                                  className="px-2 py-1 hover:bg-gray-50 text-gray-500 border-gray-200 rounded-full"
-                                >
-                                  <MoreVertical className="w-3 h-3" />
+                                  <Trash2 className="w-3 h-3" />
                                 </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end" className="w-32">
-                                <DropdownMenuItem 
-                                  className="text-red-600 focus:text-red-600 focus:bg-red-50 cursor-pointer"
-                                  onClick={() => deleteSessionMutation.mutate(session.id)}
-                                  disabled={deleteSessionMutation.isPending}
-                                >
-                                  <Trash2 className="w-3 h-3 mr-2" />
-                                  Delete
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Delete Session</p>
+                              </TooltipContent>
+                            </Tooltip>
                           </div>
-                        )}
+                        </TooltipProvider>
                       </CardContent>
                     </Card>
                   </motion.div>
