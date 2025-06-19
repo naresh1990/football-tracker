@@ -38,7 +38,7 @@ export default function CleanHeader({ onToggleMobileMenu, onQuickAdd }: CleanHea
       transition={{ duration: 0.3 }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 sm:h-20">
+        <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <motion.div 
             className="flex items-center space-x-2 sm:space-x-3"
@@ -48,12 +48,8 @@ export default function CleanHeader({ onToggleMobileMenu, onQuickAdd }: CleanHea
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
               <span className="text-white text-lg sm:text-xl">⚽</span>
             </div>
-            <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-gray-900">Football Tracker</h1>
-              <p className="text-xs text-gray-500 -mt-0.5">Performance Analytics</p>
-            </div>
-            <div className="block sm:hidden">
-              <h1 className="text-lg font-bold text-gray-900">Football Tracker</h1>
+            <div>
+              <h1 className="text-lg sm:text-xl font-bold text-gray-900">Football Tracker</h1>
             </div>
           </motion.div>
 
