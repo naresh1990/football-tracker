@@ -55,6 +55,14 @@ export default function Training() {
     }
   };
 
+  const getClubLogo = (coachName: string) => {
+    const coach = coaches?.find((c: any) => c.name === coachName);
+    if (!coach) return null;
+    
+    const club = clubs?.find((c: any) => c.id === coach.clubId);
+    return club?.logo || null;
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -136,6 +144,7 @@ export default function Training() {
               {upcomingSessions.map((session: any, index: number) => {
                 const TrainingIcon = getTrainingIcon(session.type);
                 const colorClass = getTrainingColor(session.type);
+                const clubLogo = getClubLogo(session.coach);
                 
                 return (
                   <motion.div key={session.id} variants={itemVariants}>
@@ -151,10 +160,21 @@ export default function Training() {
                               <p className="text-sm text-gray-600 mt-1">{session.focus || 'Training session'}</p>
                             </div>
                           </div>
-                          <Badge className="bg-blue-100 text-blue-700 border-blue-200">
-                            <Clock className="w-3 h-3 mr-1" />
-                            Upcoming
-                          </Badge>
+                          <div className="flex items-center gap-2">
+                            {clubLogo && (
+                              <div className="w-8 h-8 rounded-full overflow-hidden bg-white shadow-sm border border-gray-200">
+                                <img 
+                                  src={clubLogo} 
+                                  alt="Club logo"
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                            )}
+                            <Badge className="bg-blue-100 text-blue-700 border-blue-200">
+                              <Clock className="w-3 h-3 mr-1" />
+                              Upcoming
+                            </Badge>
+                          </div>
                         </div>
                       </CardHeader>
                       
@@ -223,6 +243,7 @@ export default function Training() {
               {completedSessions.map((session: any, index: number) => {
                 const TrainingIcon = getTrainingIcon(session.type);
                 const colorClass = getTrainingColor(session.type);
+                const clubLogo = getClubLogo(session.coach);
                 
                 return (
                   <motion.div key={session.id} variants={itemVariants}>
@@ -238,10 +259,21 @@ export default function Training() {
                               <p className="text-sm text-gray-600 mt-1">{session.focus || 'Training session'}</p>
                             </div>
                           </div>
-                          <Badge className="bg-green-100 text-green-700 border-green-200">
-                            <CheckCircle className="w-3 h-3 mr-1" />
-                            Completed
-                          </Badge>
+                          <div className="flex items-center gap-2">
+                            {clubLogo && (
+                              <div className="w-8 h-8 rounded-full overflow-hidden bg-white shadow-sm border border-gray-200">
+                                <img 
+                                  src={clubLogo} 
+                                  alt="Club logo"
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                            )}
+                            <Badge className="bg-green-100 text-green-700 border-green-200">
+                              <CheckCircle className="w-3 h-3 mr-1" />
+                              Completed
+                            </Badge>
+                          </div>
                         </div>
                       </CardHeader>
                       
