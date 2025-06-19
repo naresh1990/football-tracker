@@ -85,11 +85,14 @@ export default function Dashboard() {
   });
 
   // Fetch active club data
-  const { data: activeClub, isLoading: activeClubLoading } = useQuery({
+  const { data: activeClubData, isLoading: activeClubLoading } = useQuery({
     queryKey: ["/api/clubs/active", { playerId: 1 }],
     staleTime: 0,
     cacheTime: 0,
   });
+
+  // Extract the first club from the array response
+  const activeClub = activeClubData && activeClubData.length > 0 ? activeClubData[0] : null;
 
   // Fetch coaches for active club
   const { data: coaches } = useQuery({

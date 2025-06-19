@@ -31,29 +31,36 @@ export default function SquadDetails({ playerId, activeClub, coaches, squadMembe
                 </div>
                 <h4 className="font-semibold text-gray-900">Team Information</h4>
               </div>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between py-2 border-b border-blue-100">
-                  <span className="text-gray-600 text-sm">Team:</span>
-                  <span className="font-semibold text-gray-900">{activeClub?.name || 'No Active Club'}</span>
+              <div className="space-y-4">
+                <div className="text-center">
+                  <div className="text-lg font-bold text-gray-900 mb-1">
+                    {activeClub?.name || 'No'}
+                  </div>
+                  <div className="text-sm text-gray-600">Team: <span className="font-semibold">Active Club</span></div>
                 </div>
-                <div className="flex items-center justify-between py-2 border-b border-blue-100">
-                  <span className="text-gray-600 text-sm">Squad Level:</span>
-                  <span className="font-semibold text-gray-900">{activeClub?.squadLevel || 'Not specified'}</span>
+
+                <div className="text-center">
+                  <div className="text-lg font-bold text-gray-900 mb-1">
+                    {activeClub?.squadLevel || 'Not'}
+                  </div>
+                  <div className="text-sm text-gray-600">Squad Level: <span className="font-semibold">specified</span></div>
                 </div>
-                <div className="flex items-center justify-between py-2 border-b border-blue-100">
-                  <span className="text-gray-600 text-sm">Season:</span>
-                  <span className="font-semibold text-gray-900">
+
+                <div className="text-center">
+                  <div className="text-lg font-bold text-gray-900 mb-1">
                     {activeClub && activeClub.seasonStart && activeClub.seasonEnd 
                       ? `${new Date(activeClub.seasonStart).getFullYear()}-${new Date(activeClub.seasonEnd).getFullYear().toString().slice(2)}`
-                      : 'Current Season'
+                      : 'Current'
                     }
-                  </span>
+                  </div>
+                  <div className="text-sm text-gray-600">Season: <span className="font-semibold">Season</span></div>
                 </div>
-                <div className="flex items-center justify-between py-2">
-                  <span className="text-gray-600 text-sm">Status:</span>
-                  <span className="font-semibold text-gray-900">
+
+                <div className="text-center">
+                  <div className="text-lg font-bold text-gray-900 mb-1">
                     {activeClub?.status === 'active' ? 'Active' : 'Inactive'}
-                  </span>
+                  </div>
+                  <div className="text-sm text-gray-600">Status: <span className="font-semibold"></span></div>
                 </div>
               </div>
             </div>
@@ -66,11 +73,11 @@ export default function SquadDetails({ playerId, activeClub, coaches, squadMembe
                 </div>
                 <h4 className="font-semibold text-gray-900">Coaching Staff</h4>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {coaches && coaches.length > 0 ? (
                   coaches.filter(coach => coach.clubId === activeClub?.id).map((coach: any, index: number) => (
                     <div key={index} className="flex items-center gap-3 p-3 bg-white/60 rounded-lg border border-purple-100">
-                      <div className="w-12 h-12 rounded-full overflow-hidden shadow-sm border-2 border-purple-200">
+                      <div className="w-10 h-10 rounded-full overflow-hidden shadow-sm border-2 border-purple-200">
                         {coach.profilePicture ? (
                           <img 
                             src={coach.profilePicture} 
@@ -79,7 +86,7 @@ export default function SquadDetails({ playerId, activeClub, coaches, squadMembe
                           />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                            <User className="text-white w-6 h-6" />
+                            <User className="text-white w-5 h-5" />
                           </div>
                         )}
                       </div>
@@ -90,7 +97,8 @@ export default function SquadDetails({ playerId, activeClub, coaches, squadMembe
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-4 text-gray-500">
+                  <div className="text-center py-8 text-gray-500">
+                    <Users className="w-8 h-8 mx-auto mb-2 text-gray-300" />
                     <p className="text-sm">No coaches assigned</p>
                   </div>
                 )}
@@ -105,22 +113,25 @@ export default function SquadDetails({ playerId, activeClub, coaches, squadMembe
                 </div>
                 <h4 className="font-semibold text-gray-900">Season Stats</h4>
               </div>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between py-2 border-b border-green-100">
-                  <span className="text-gray-600 text-sm">Games Played:</span>
-                  <span className="font-semibold text-gray-900">0</span>
+              <div className="space-y-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900 mb-1">0</div>
+                  <div className="text-sm text-gray-600">Games Played:</div>
                 </div>
-                <div className="flex items-center justify-between py-2 border-b border-green-100">
-                  <span className="text-gray-600 text-sm">Team Wins:</span>
-                  <span className="font-semibold text-gray-900">0</span>
+
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900 mb-1">0</div>
+                  <div className="text-sm text-gray-600">Team Wins:</div>
                 </div>
-                <div className="flex items-center justify-between py-2 border-b border-green-100">
-                  <span className="text-gray-600 text-sm">Team Draws:</span>
-                  <span className="font-semibold text-gray-900">0</span>
+
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900 mb-1">0</div>
+                  <div className="text-sm text-gray-600">Team Draws:</div>
                 </div>
-                <div className="flex items-center justify-between py-2">
-                  <span className="text-gray-600 text-sm">Team Losses:</span>
-                  <span className="font-semibold text-gray-900">0</span>
+
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900 mb-1">0</div>
+                  <div className="text-sm text-gray-600">Team Losses:</div>
                 </div>
               </div>
             </div>
