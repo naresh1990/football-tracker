@@ -11,7 +11,7 @@ import Training from "@/pages/training";
 import Statistics from "@/pages/statistics";
 import Clubs from "@/pages/clubs";
 import NotFound from "@/pages/not-found";
-import Header from "@/components/layout/header";
+import CleanHeader from "@/components/modern/clean-header";
 import MobileMenu from "@/components/layout/mobile-menu";
 import QuickAddModal from "@/components/modals/quick-add-modal";
 
@@ -38,7 +38,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
-          <Header 
+          <CleanHeader 
             onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             onQuickAdd={() => setIsQuickAddModalOpen(true)}
           />
