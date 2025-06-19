@@ -13,7 +13,8 @@ import {
   insertSquadMemberSchema,
   insertCoachingStaffSchema,
   insertClubSchema,
-  insertCoachSchema
+  insertCoachSchema,
+  insertGalleryPhotoSchema
 } from "@shared/schema";
 
 // Configure multer for file uploads

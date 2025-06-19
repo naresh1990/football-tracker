@@ -10,7 +10,8 @@ import {
   Users, 
   Calendar,
   Home,
-  Settings
+  Settings,
+  Camera
 } from "lucide-react";
 
 interface CleanHeaderProps {
@@ -28,6 +29,7 @@ export default function CleanHeader({ onToggleMobileMenu, onQuickAdd }: CleanHea
     { name: "Training", href: "/training", icon: Calendar },
     { name: "Statistics", href: "/statistics", icon: BarChart3 },
     { name: "Clubs", href: "/clubs", icon: Building },
+    { name: "Gallery", href: "/gallery", icon: Camera },
   ];
 
   return (

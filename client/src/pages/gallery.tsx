@@ -172,7 +172,7 @@ export default function Gallery() {
                 Add Photos
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
                   <Upload className="w-5 h-5" />
@@ -182,7 +182,7 @@ export default function Gallery() {
                   Select a photo to add to your gallery and optionally add a caption.
                 </DialogDescription>
               </DialogHeader>
-              <div className="space-y-4">
+              <div className="space-y-4 p-1">
                 <div>
                   <Label htmlFor="photo-upload">Select Photo</Label>
                   <Input
@@ -206,6 +206,7 @@ export default function Gallery() {
                     value={uploadForm.caption}
                     onChange={(e) => setUploadForm(prev => ({ ...prev, caption: e.target.value }))}
                     className="mt-1"
+                    rows={3}
                   />
                 </div>
                 <Button 
@@ -242,14 +243,13 @@ export default function Gallery() {
             </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No photos added yet</h3>
             <p className="text-gray-600 mb-6">Start building your football memories by uploading photos</p>
-            <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
-              <DialogTrigger asChild>
-                <Button className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Photos
-                </Button>
-              </DialogTrigger>
-            </Dialog>
+            <Button 
+              onClick={() => setIsUploadDialogOpen(true)}
+              className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Photos
+            </Button>
           </motion.div>
         ) : (
           <motion.div

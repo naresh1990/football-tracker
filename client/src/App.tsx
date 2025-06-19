@@ -10,6 +10,7 @@ import Tournaments from "@/pages/tournaments";
 import Training from "@/pages/training";
 import Statistics from "@/pages/statistics";
 import Clubs from "@/pages/clubs";
+import Gallery from "@/pages/gallery";
 import NotFound from "@/pages/not-found";
 import CleanHeader from "@/components/modern/clean-header";
 import MobileMenu from "@/components/layout/mobile-menu";
@@ -25,6 +26,7 @@ function Router() {
       <Route path="/training" component={Training} />
       <Route path="/statistics" component={Statistics} />
       <Route path="/clubs" component={Clubs} />
+      <Route path="/gallery" component={Gallery} />
       <Route component={NotFound} />
     </Switch>
   );
