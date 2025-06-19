@@ -468,21 +468,45 @@ export class MemStorage implements IStorage {
     const squadMembersData = [
       {
         playerId: 1,
-        memberName: "Darshil",
+        memberName: "Darshil Podishetty",
         position: "Midfielder",
         jerseyNumber: "#9"
       },
       {
         playerId: 1,
-        memberName: "Aarav",
+        memberName: "Abir Pathak",
         position: "Forward",
         jerseyNumber: "#10"
       },
       {
         playerId: 1,
-        memberName: "Rohan",
+        memberName: "Abel Binoy Samuel",
         position: "Defender",
         jerseyNumber: "#5"
+      },
+      {
+        playerId: 1,
+        memberName: "Jash Mitul Shah",
+        position: "Midfielder",
+        jerseyNumber: "#8"
+      },
+      {
+        playerId: 1,
+        memberName: "Nihal Rajesh",
+        position: "Forward",
+        jerseyNumber: "#11"
+      },
+      {
+        playerId: 1,
+        memberName: "Prathyush P",
+        position: "Defender",
+        jerseyNumber: "#6"
+      },
+      {
+        playerId: 1,
+        memberName: "Madhav Nair",
+        position: "Goalkeeper",
+        jerseyNumber: "#1"
       }
     ];
 
