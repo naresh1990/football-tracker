@@ -341,10 +341,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/clubs/:id", async (req, res) => {
+  app.put("/api/clubs/:id", upload.single('logo'), async (req, res) => {
     try {
       const id = parseInt(req.params.id);
-      const validatedData = insertClubSchema.partial().parse(req.body);
+      const logoUrl = handleImageUpload(req.file);
+      const validatedData = insertClubSchema.partial().parse({
+        ...req.body,
+        logo: logoUrl || undefined
+      });
       const club = await storage.updateClub(id, validatedData);
       if (!club) {
         return res.status(404).json({ error: "Club not found" });

@@ -171,7 +171,12 @@ export default function Clubs() {
                     </div>
                     
                     <div className="flex items-center space-x-2">
-                      <Button variant="ghost" size="sm" className="text-gray-600 hover:text-blue-600 hover:bg-blue-50">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                        onClick={() => setEditingClub(club)}
+                      >
                         <Edit className="w-4 h-4" />
                       </Button>
                       <Button
@@ -257,6 +262,28 @@ export default function Clubs() {
           })
         )}
         </div>
+
+        {/* Edit Club Modal */}
+        <Dialog open={!!editingClub} onOpenChange={() => setEditingClub(null)}>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Edit Club</DialogTitle>
+            </DialogHeader>
+            {editingClub && (
+              <ClubForm 
+                editData={editingClub}
+                onSuccess={() => {
+                  setEditingClub(null);
+                  toast({
+                    title: "Success",
+                    description: "Club updated successfully",
+                  });
+                }}
+                onCancel={() => setEditingClub(null)}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

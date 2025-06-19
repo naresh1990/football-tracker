@@ -26,16 +26,26 @@ type ClubFormData = z.infer<typeof clubFormSchema>;
 interface ClubFormProps {
   onSuccess?: () => void;
   onCancel?: () => void;
+  editData?: any;
 }
 
-export default function ClubForm({ onSuccess, onCancel }: ClubFormProps) {
+export default function ClubForm({ onSuccess, onCancel, editData }: ClubFormProps) {
   const { toast } = useToast();
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   
   const form = useForm<ClubFormData>({
     resolver: zodResolver(clubFormSchema),
-    defaultValues: {
+    defaultValues: editData ? {
+      playerId: editData.playerId || 1,
+      name: editData.name || "",
+      type: editData.type || "primary",
+      squadLevel: editData.squadLevel || "",
+      seasonStart: editData.seasonStart ? new Date(editData.seasonStart).toISOString().split('T')[0] : "",
+      seasonEnd: editData.seasonEnd ? new Date(editData.seasonEnd).toISOString().split('T')[0] : "",
+      status: editData.status || "active",
+      description: editData.description || "",
+    } : {
       playerId: 1,
       name: "",
       type: "primary",
@@ -47,7 +57,7 @@ export default function ClubForm({ onSuccess, onCancel }: ClubFormProps) {
     },
   });
 
-  const createClubMutation = useMutation({
+  const clubMutation = useMutation({
     mutationFn: (data: ClubFormData) => {
       const formData = new FormData();
       Object.entries(data).forEach(([key, value]) => {
@@ -64,11 +74,14 @@ export default function ClubForm({ onSuccess, onCancel }: ClubFormProps) {
         formData.append('logo', logoFile);
       }
       
-      return fetch('/api/clubs', {
-        method: 'POST',
+      const url = editData ? `/api/clubs/${editData.id}` : '/api/clubs';
+      const method = editData ? 'PUT' : 'POST';
+      
+      return fetch(url, {
+        method,
         body: formData,
       }).then(res => {
-        if (!res.ok) throw new Error('Failed to create club');
+        if (!res.ok) throw new Error(`Failed to ${editData ? 'update' : 'create'} club`);
         return res.json();
       });
     },
@@ -76,15 +89,15 @@ export default function ClubForm({ onSuccess, onCancel }: ClubFormProps) {
       queryClient.invalidateQueries({ queryKey: ["/api/clubs"] });
       toast({
         title: "Success",
-        description: "Club added successfully",
+        description: `Club ${editData ? 'updated' : 'added'} successfully`,
       });
-      form.reset();
+      if (!editData) form.reset();
       onSuccess?.();
     },
     onError: () => {
       toast({
         title: "Error",
-        description: "Failed to add club",
+        description: `Failed to ${editData ? 'update' : 'add'} club`,
         variant: "destructive",
       });
     },
@@ -108,7 +121,7 @@ export default function ClubForm({ onSuccess, onCancel }: ClubFormProps) {
   };
 
   const onSubmit = (data: ClubFormData) => {
-    createClubMutation.mutate(data);
+    clubMutation.mutate(data);
   };
 
   return (
