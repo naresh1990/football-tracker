@@ -393,27 +393,35 @@ export default function GameForm({ onSuccess, onCancel }: GameFormProps) {
                 <FormItem>
                   <FormLabel>Coach Rating</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="e.g., 8/10, Excellent, Good"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                    <Input {...field} placeholder="e.g., 8/10, Excellent, Good" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
+            <FormField
+              control={form.control}
+              name="coachFeedback"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Coach Feedback</FormLabel>
+                  <FormControl>
+                    <Textarea {...field} placeholder="Post-match feedback from coach..." rows={3} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
             <FormField
               control={form.control}
               name="notes"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Notes</FormLabel>
+                  <FormLabel>Additional Notes</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder="Any additional notes about the game..."
-                      className="min-h-20"
-                      {...field}
-                    />
+                    <Textarea {...field} placeholder="General match observations..." rows={3} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

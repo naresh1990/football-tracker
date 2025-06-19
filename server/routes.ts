@@ -77,10 +77,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Game routes
   app.get("/api/games", async (req, res) => {
     try {
-      const playerId = parseInt(req.query.playerId as string);
-      if (!playerId) {
-        return res.status(400).json({ error: "Player ID is required" });
-      }
+      const playerId = 1; // Default to Darshil's ID
       const games = await storage.getGamesByPlayer(playerId);
       res.json(games);
     } catch (error) {
@@ -90,11 +87,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/games/recent", async (req, res) => {
     try {
-      const playerId = parseInt(req.query.playerId as string);
+      const playerId = 1; // Default to Darshil's ID
       const limit = parseInt(req.query.limit as string) || 5;
-      if (!playerId) {
-        return res.status(400).json({ error: "Player ID is required" });
-      }
       const games = await storage.getRecentGames(playerId, limit);
       res.json(games);
     } catch (error) {
@@ -142,10 +136,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Tournament routes
   app.get("/api/tournaments", async (req, res) => {
     try {
-      const playerId = parseInt(req.query.playerId as string);
-      if (!playerId) {
-        return res.status(400).json({ error: "Player ID is required" });
-      }
+      const playerId = 1; // Default to Darshil's ID
       const tournaments = await storage.getTournamentsByPlayer(playerId);
       res.json(tournaments);
     } catch (error) {
@@ -155,10 +146,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/tournaments/active", async (req, res) => {
     try {
-      const playerId = parseInt(req.query.playerId as string);
-      if (!playerId) {
-        return res.status(400).json({ error: "Player ID is required" });
-      }
+      const playerId = 1; // Default to Darshil's ID
       const tournaments = await storage.getActiveTournaments(playerId);
       res.json(tournaments);
     } catch (error) {
@@ -214,10 +202,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Training routes
   app.get("/api/training", async (req, res) => {
     try {
-      const playerId = parseInt(req.query.playerId as string);
-      if (!playerId) {
-        return res.status(400).json({ error: "Player ID is required" });
-      }
+      const playerId = 1; // Default to Darshil's ID
       const sessions = await storage.getTrainingSessionsByPlayer(playerId);
       res.json(sessions);
     } catch (error) {
@@ -227,10 +212,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/training/upcoming", async (req, res) => {
     try {
-      const playerId = parseInt(req.query.playerId as string);
-      if (!playerId) {
-        return res.status(400).json({ error: "Player ID is required" });
-      }
+      const playerId = 1; // Default to Darshil's ID
       const sessions = await storage.getUpcomingTraining(playerId);
       res.json(sessions);
     } catch (error) {
@@ -265,11 +247,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Coach feedback routes
   app.get("/api/feedback", async (req, res) => {
     try {
-      const playerId = parseInt(req.query.playerId as string);
+      const playerId = 1; // Default to Darshil's ID
       const limit = parseInt(req.query.limit as string);
-      if (!playerId) {
-        return res.status(400).json({ error: "Player ID is required" });
-      }
       const feedback = limit 
         ? await storage.getRecentFeedback(playerId, limit)
         : await storage.getFeedbackByPlayer(playerId);
@@ -292,10 +271,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Squad routes
   app.get("/api/squad", async (req, res) => {
     try {
-      const playerId = parseInt(req.query.playerId as string);
-      if (!playerId) {
-        return res.status(400).json({ error: "Player ID is required" });
-      }
+      const playerId = 1; // Default to Darshil's ID
       const squad = await storage.getSquadByPlayer(playerId);
       res.json(squad);
     } catch (error) {
@@ -316,10 +292,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Coaching staff routes
   app.get("/api/coaching-staff", async (req, res) => {
     try {
-      const playerId = parseInt(req.query.playerId as string);
-      if (!playerId) {
-        return res.status(400).json({ error: "Player ID is required" });
-      }
+      const playerId = 1; // Default to Darshil's ID
       const staff = await storage.getCoachingStaffByPlayer(playerId);
       res.json(staff);
     } catch (error) {
@@ -340,10 +313,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Statistics endpoints
   app.get("/api/stats/summary", async (req, res) => {
     try {
-      const playerId = parseInt(req.query.playerId as string);
-      if (!playerId) {
-        return res.status(400).json({ error: "Player ID is required" });
-      }
+      const playerId = 1; // Default to Darshil's ID
 
       const games = await storage.getGamesByPlayer(playerId);
       const totalGoals = games.reduce((sum, game) => sum + (game.playerGoals || 0), 0);
