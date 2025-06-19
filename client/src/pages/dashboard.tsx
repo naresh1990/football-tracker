@@ -391,10 +391,12 @@ export default function Dashboard() {
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="overflow-hidden"
                 >
-                  <div className="lg:col-span-2">
-                    <SquadDetails playerId={1} />
+                  <div className="p-6 m-4 bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl shadow-sm">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                      <PlayerProfile playerId={playerId} activeClub={activeClub} />
+                      <SquadDetails playerId={playerId} activeClub={activeClub} coaches={coaches} squadMembers={squadMembers} />
+                    </div>
                   </div>
-                  <PlayerProfile player={player} stats={stats} />
                 </motion.div>
               )}
             </AnimatePresence>

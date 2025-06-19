@@ -530,6 +530,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get active club for a player
+  app.get("/api/clubs/active", async (req, res) => {
+    try {
+      const playerId = parseInt(req.query.playerId as string) || 1;
+      const activeClub = await storage.getActiveClub(playerId);
+      res.json(activeClub);
+    } catch (error) {
+      console.error("Error fetching active club:", error);
+      res.status(500).json({ error: "Failed to fetch active club" });
+    }
+  });
+
   app.post("/api/clubs/:id/logo", upload.single('logo'), async (req, res) => {
     try {
       const id = parseInt(req.params.id);

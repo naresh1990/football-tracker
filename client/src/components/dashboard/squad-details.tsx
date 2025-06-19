@@ -16,36 +16,7 @@ export default function SquadDetails({ playerId, activeClub, coaches, squadMembe
     queryKey: ["/api/players/1"],
   });
 
-  const { data: squadMembers, isLoading: squadLoading } = useQuery({
-    queryKey: ["/api/squad", { playerId }],
-  });
-
-  const { data: coaches, isLoading: coachesLoading } = useQuery({
-    queryKey: ["/api/coaching-staff", { playerId }],
-  });
-
-  if (squadLoading || coachesLoading) {
-    return (
-      <Card className="shadow-lg">
-        <CardHeader>
-          <CardTitle>Squad Details</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[...Array(3)].map((_, i) => (
-              <Skeleton key={i} className="h-32 w-full" />
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  // Mock coaching staff if none exists
-  const defaultCoaches = coaches?.length > 0 ? coaches : [
-    { name: "Coach Martinez", role: "Head Coach" },
-    { name: "Coach Thompson", role: "Assistant Coach" }
-  ];
+  // Use actual coaches and squad members passed as props
 
   return (
     <section>
@@ -74,12 +45,23 @@ export default function SquadDetails({ playerId, activeClub, coaches, squadMembe
                   <span className="font-semibold text-gray-900">{activeClub?.name || 'No Active Club'}</span>
                 </div>
                 <div className="flex items-center justify-between py-2 border-b border-blue-100">
-                  <span className="text-gray-600 text-sm">Division:</span>
-                  <span className="font-semibold text-gray-900">U10 Elite</span>
+                  <span className="text-gray-600 text-sm">Squad Level:</span>
+                  <span className="font-semibold text-gray-900">{activeClub?.squadLevel || 'Not specified'}</span>
+                </div>
+                <div className="flex items-center justify-between py-2 border-b border-blue-100">
+                  <span className="text-gray-600 text-sm">Season:</span>
+                  <span className="font-semibold text-gray-900">
+                    {activeClub && activeClub.seasonStart && activeClub.seasonEnd 
+                      ? `${new Date(activeClub.seasonStart).getFullYear()}-${new Date(activeClub.seasonEnd).getFullYear().toString().slice(2)}`
+                      : 'Current Season'
+                    }
+                  </span>
                 </div>
                 <div className="flex items-center justify-between py-2">
-                  <span className="text-gray-600 text-sm">Jersey:</span>
-                  <span className="font-semibold text-gray-900">#9</span>
+                  <span className="text-gray-600 text-sm">Status:</span>
+                  <span className="font-semibold text-gray-900">
+                    {activeClub?.status === 'active' ? 'Active' : 'Inactive'}
+                  </span>
                 </div>
               </div>
             </div>
@@ -93,119 +75,81 @@ export default function SquadDetails({ playerId, activeClub, coaches, squadMembe
                 <h4 className="font-semibold text-gray-900">Coaching Staff</h4>
               </div>
               <div className="space-y-4">
-                {coaches?.map((coach: any, index: number) => (
-                  <div key={index} className="flex items-center gap-3 p-3 bg-white/60 rounded-lg border border-purple-100">
-                    <div className="w-12 h-12 rounded-full overflow-hidden shadow-sm border-2 border-purple-200">
-                      {coach.picture ? (
-                        <img 
-                          src={coach.picture} 
-                          alt={coach.name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                          <User className="text-white w-6 h-6" />
-                        </div>
-                      )}
+                {coaches && coaches.length > 0 ? (
+                  coaches.filter(coach => coach.clubId === activeClub?.id).map((coach: any, index: number) => (
+                    <div key={index} className="flex items-center gap-3 p-3 bg-white/60 rounded-lg border border-purple-100">
+                      <div className="w-12 h-12 rounded-full overflow-hidden shadow-sm border-2 border-purple-200">
+                        {coach.profilePicture ? (
+                          <img 
+                            src={coach.profilePicture} 
+                            alt={coach.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                            <User className="text-white w-6 h-6" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-semibold text-gray-900 text-sm">{coach.name}</p>
+                        <p className="text-xs text-purple-600 font-medium">{coach.title}</p>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <p className="font-semibold text-gray-900 text-sm">{coach.name}</p>
-                      <p className="text-xs text-purple-600 font-medium">{coach.role}</p>
-                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-4 text-gray-500">
+                    <p className="text-sm">No coaches assigned</p>
                   </div>
-                ))}
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="w-full mt-2 border-purple-200 text-purple-600 hover:bg-purple-50"
-                >
-                  <User className="w-4 h-4 mr-2" />
-                  Add Coach
-                </Button>
+                )}
               </div>
             </div>
 
-            {/* Season Stats */}
+            {/* Squad Overview */}
             <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-5 shadow-sm">
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
                   <BarChart3 className="w-4 h-4 text-white" />
                 </div>
-                <h4 className="font-semibold text-gray-900">Season Stats</h4>
+                <h4 className="font-semibold text-gray-900">Squad Overview</h4>
               </div>
               <div className="space-y-3">
                 <div className="flex items-center justify-between py-2 border-b border-green-100">
-                  <span className="text-gray-600 text-sm">Games Played:</span>
-                  <span className="font-semibold text-gray-900">18</span>
+                  <span className="text-gray-600 text-sm">Total Players:</span>
+                  <span className="font-semibold text-gray-900">
+                    {squadMembers ? squadMembers.filter(member => member.clubId === activeClub?.id).length : 0}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between py-2 border-b border-green-100">
-                  <span className="text-gray-600 text-sm">Team Wins:</span>
-                  <span className="font-semibold text-gray-900">14</span>
+                  <span className="text-gray-600 text-sm">Average Age:</span>
+                  <span className="font-semibold text-gray-900">
+                    {squadMembers && squadMembers.length > 0 
+                      ? `${Math.round(squadMembers.filter(member => member.clubId === activeClub?.id && member.age).reduce((sum, member) => sum + member.age, 0) / squadMembers.filter(member => member.clubId === activeClub?.id && member.age).length || 0)} years`
+                      : 'N/A'
+                    }
+                  </span>
                 </div>
                 <div className="flex items-center justify-between py-2 border-b border-green-100">
-                  <span className="text-gray-600 text-sm">Team Draws:</span>
-                  <span className="font-semibold text-gray-900">2</span>
+                  <span className="text-gray-600 text-sm">Head Coach:</span>
+                  <span className="font-semibold text-gray-900">
+                    {coaches && coaches.length > 0 
+                      ? coaches.find(coach => coach.clubId === activeClub?.id && coach.title === 'Head Coach')?.name || 
+                        coaches.find(coach => coach.clubId === activeClub?.id)?.name || 'Not assigned'
+                      : 'Not assigned'
+                    }
+                  </span>
                 </div>
                 <div className="flex items-center justify-between py-2">
-                  <span className="text-gray-600 text-sm">Team Losses:</span>
-                  <span className="font-semibold text-gray-900">2</span>
+                  <span className="text-gray-600 text-sm">Jersey #:</span>
+                  <span className="font-semibold text-gray-900">
+                    {squadMembers 
+                      ? squadMembers.find(member => member.name === 'Darshil Podishetty')?.jerseyNumber || '#9'
+                      : '#9'
+                    }
+                  </span>
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Squad Members Section */}
-          <div className="mt-6 mx-4 p-6 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-xl shadow-sm">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                  <Users className="w-4 h-4 text-white" />
-                </div>
-                <h4 className="font-semibold text-gray-900">Squad Members</h4>
-              </div>
-              <div className="bg-orange-100 px-3 py-1 rounded-full">
-                <span className="text-sm font-medium text-orange-700">
-                  {squadMembers?.length || 0} Players
-                </span>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {squadMembers?.map((member: any, index: number) => (
-                <div key={index} className="flex items-center gap-3 p-4 bg-white/60 rounded-lg border border-orange-100">
-                  <div className="w-12 h-12 rounded-full overflow-hidden shadow-sm border-2 border-orange-200">
-                    {member.picture ? (
-                      <img 
-                        src={member.picture} 
-                        alt={member.memberName}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
-                        <User className="text-white w-6 h-6" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-gray-900 text-sm">{member.memberName}</p>
-                    <p className="text-xs text-orange-600 font-medium">{member.position}</p>
-                    <p className="text-xs text-gray-500">{member.jerseyNumber}</p>
-                  </div>
-                </div>
-              )) || (
-                <div className="col-span-full text-center py-8 text-gray-500">
-                  <Users className="w-12 h-12 mx-auto mb-2 text-gray-300" />
-                  <p>No squad members added yet</p>
-                </div>
-              )}
-            </div>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="w-full mt-4 border-orange-200 text-orange-600 hover:bg-orange-50"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Squad Member
-            </Button>
           </div>
         </CardContent>
       </Card>
