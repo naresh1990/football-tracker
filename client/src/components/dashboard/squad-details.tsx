@@ -136,16 +136,16 @@ export default function SquadDetails({ playerId }: SquadDetailsProps) {
                   <span className="font-semibold text-gray-900">18</span>
                 </div>
                 <div className="flex items-center justify-between py-2 border-b border-green-100">
-                  <span className="text-gray-600 text-sm">Minutes Played:</span>
-                  <span className="font-semibold text-gray-900">1,440</span>
-                </div>
-                <div className="flex items-center justify-between py-2 border-b border-green-100">
-                  <span className="text-gray-600 text-sm">Avg Rating:</span>
-                  <span className="font-semibold text-gray-900">8.2/10</span>
-                </div>
-                <div className="flex items-center justify-between py-2">
                   <span className="text-gray-600 text-sm">Team Wins:</span>
                   <span className="font-semibold text-gray-900">14</span>
+                </div>
+                <div className="flex items-center justify-between py-2 border-b border-green-100">
+                  <span className="text-gray-600 text-sm">Team Draws:</span>
+                  <span className="font-semibold text-gray-900">2</span>
+                </div>
+                <div className="flex items-center justify-between py-2">
+                  <span className="text-gray-600 text-sm">Team Losses:</span>
+                  <span className="font-semibold text-gray-900">2</span>
                 </div>
               </div>
             </div>
