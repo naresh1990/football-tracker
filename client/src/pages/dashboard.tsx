@@ -131,7 +131,6 @@ export default function Dashboard() {
         squadMembers={squadMembers}
         onQuickAdd={() => setIsQuickAddOpen(true)} 
       />
-
       {/* Main Dashboard Content */}
       <motion.div 
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8"
@@ -266,7 +265,7 @@ export default function Dashboard() {
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-md">
                     <Clock className="w-6 h-6 text-white" />
                   </div>
-                  <h2 className="text-xl font-bold text-gray-900">Training Schedule</h2>
+                  <h2 className="text-xl font-bold text-gray-900">Upcoming Training Schedule</h2>
                 </div>
                 {collapsedSections.training ? (
                   <ChevronDown className="w-5 h-5 text-gray-500" />
@@ -402,7 +401,6 @@ export default function Dashboard() {
           </div>
         </motion.div>
       </motion.div>
-
       {/* Floating Quick Add Button */}
       <motion.button
         onClick={() => setIsQuickAddOpen(true)}
@@ -418,7 +416,6 @@ export default function Dashboard() {
           Quick Add
         </span>
       </motion.button>
-
       {/* Quick Add Modal */}
       <QuickAddModal 
         isOpen={isQuickAddOpen} 
