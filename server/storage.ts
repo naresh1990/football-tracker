@@ -450,7 +450,8 @@ export class MemStorage implements IStorage {
         playerId: 1,
         name: "Mr. Anjith Kumar",
         role: "Head Coach",
-        contact: "anjith.kumar@sporthood.com"
+        contact: "anjith.kumar@sporthood.com",
+        picture: "/uploads/coach-anjith.jpg"
       },
       {
         playerId: 1,
