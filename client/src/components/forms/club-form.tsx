@@ -292,10 +292,10 @@ export default function ClubForm({ onSuccess, onCancel, editData }: ClubFormProp
               )}
               <Button 
                 type="submit" 
-                className="bg-football-green hover:bg-green-700"
-                disabled={createClubMutation.isPending}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                disabled={clubMutation.isPending}
               >
-                {createClubMutation.isPending ? "Adding..." : "Add Club"}
+                {clubMutation.isPending ? (editData ? "Updating..." : "Adding...") : (editData ? "Update Club" : "Add Club")}
               </Button>
             </div>
           </form>

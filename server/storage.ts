@@ -824,7 +824,13 @@ export class MemStorage implements IStorage {
   async updateClub(id: number, club: Partial<InsertClub>): Promise<Club | undefined> {
     const existing = this.clubs.get(id);
     if (!existing) return undefined;
-    const updated = { ...existing, ...club };
+    
+    // Only update logo if a new one is provided, preserve existing logo otherwise
+    const updated = { 
+      ...existing, 
+      ...club,
+      logo: club.logo !== undefined ? club.logo : existing.logo
+    };
     this.clubs.set(id, updated);
     return updated;
   }
