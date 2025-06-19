@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import HeroBanner from "@/components/modern/hero-banner";
 import ColorfulCard from "@/components/modern/colorful-card";
@@ -22,7 +22,9 @@ import {
   Activity,
   Award,
   Clock,
-  MessageSquare
+  MessageSquare,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 
 const containerVariants = {
@@ -48,6 +50,21 @@ const itemVariants = {
 
 export default function Dashboard() {
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
+  
+  // Collapsible sections state
+  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({
+    training: false,
+    tournaments: false,
+    recentGames: false,
+    coachFeedback: false,
+  });
+
+  const toggleSection = (section: string) => {
+    setCollapsedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
   const playerId = 1; // Define playerId variable
 
   // Fetch player data
