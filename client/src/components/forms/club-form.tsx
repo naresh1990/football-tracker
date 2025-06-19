@@ -24,7 +24,7 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
     name: club?.name || "",
     type: club?.type || "",
     level: club?.squadLevel || "",
-    status: club?.status || "Active",
+    status: club?.status || "active",
     seasonStart: club?.seasonStart ? new Date(club.seasonStart).toISOString().split('T')[0] : "",
     seasonEnd: club?.seasonEnd ? new Date(club.seasonEnd).toISOString().split('T')[0] : "",
     description: club?.description || "",

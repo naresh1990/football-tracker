@@ -224,6 +224,7 @@ export default function Clubs() {
                       </div>
                       <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                         <ClubForm
+                          mode="edit"
                           club={club}
                           onSuccess={() => {
                             queryClient.invalidateQueries({ queryKey: ["/api/clubs"] });
