@@ -16,10 +16,11 @@ import {
 interface HeroBannerProps {
   player: any;
   activeClub?: any;
+  squadMembers?: any[];
   onQuickAdd: () => void;
 }
 
-export default function HeroBanner({ player, activeClub, onQuickAdd }: HeroBannerProps) {
+export default function HeroBanner({ player, activeClub, squadMembers, onQuickAdd }: HeroBannerProps) {
   // Fetch real stats data
   const { data: stats } = useQuery({
     queryKey: ["/api/stats/summary"],
@@ -109,7 +110,9 @@ export default function HeroBanner({ player, activeClub, onQuickAdd }: HeroBanne
             >
               <div className="flex items-center justify-center lg:justify-start gap-2 text-lg text-blue-100">
                 <Target className="w-5 h-5 text-blue-300" />
-                <span className="font-medium">{player.position}</span>
+                <span className="font-medium">
+                  {squadMembers?.find(member => member.name === 'Darshil Podishetty')?.position || player.position}
+                </span>
               </div>
               
               <div className="flex items-center justify-center lg:justify-start gap-2 text-blue-100">

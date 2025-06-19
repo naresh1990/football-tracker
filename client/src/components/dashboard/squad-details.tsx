@@ -173,6 +173,54 @@ export default function SquadDetails({ playerId, activeClub, coaches, squadMembe
               )}
             </div>
           </div>
+
+          {/* Squad Members Section - Full Width */}
+          <div className="mt-6 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-xl p-6 shadow-sm">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                  <Users className="w-4 h-4 text-white" />
+                </div>
+                <h4 className="font-semibold text-gray-900">Squad Members</h4>
+              </div>
+              <div className="bg-orange-100 px-3 py-1 rounded-full">
+                <span className="text-sm font-medium text-orange-700">
+                  {squadMembers ? squadMembers.filter(member => member.clubId === activeClub?.id).length : 0} Players
+                </span>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {squadMembers && squadMembers.length > 0 ? (
+                squadMembers.filter(member => member.clubId === activeClub?.id).map((member: any, index: number) => (
+                  <div key={index} className="flex items-center gap-3 p-4 bg-white/60 rounded-lg border border-orange-100 hover:border-orange-200 transition-colors">
+                    <div className="w-12 h-12 rounded-full overflow-hidden shadow-sm border-2 border-orange-200">
+                      {member.profilePicture ? (
+                        <img 
+                          src={member.profilePicture} 
+                          alt={member.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
+                          <User className="text-white w-6 h-6" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-gray-900 text-sm">{member.name}</p>
+                      <p className="text-xs text-orange-600 font-medium">{member.position}</p>
+                      <p className="text-xs text-gray-500">#{member.jerseyNumber}</p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="col-span-full text-center py-8 text-gray-500">
+                  <Users className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                  <p>No squad members added yet</p>
+                </div>
+              )}
+            </div>
+          </div>
         </CardContent>
       </Card>
     </section>

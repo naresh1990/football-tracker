@@ -128,6 +128,7 @@ export default function Dashboard() {
       <HeroBanner 
         player={player} 
         activeClub={activeClub}
+        squadMembers={squadMembers}
         onQuickAdd={() => setIsQuickAddOpen(true)} 
       />
 
