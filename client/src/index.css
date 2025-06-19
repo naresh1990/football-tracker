@@ -288,6 +288,27 @@ body {
   .interactive-card:hover {
     transform: none;
   }
+  
+  .hero-mobile-padding {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .stats-mobile {
+    font-size: 1.5rem;
+  }
+}
+
+/* Responsive backgrounds */
+@media (max-width: 640px) {
+  .hero-bg-mobile {
+    min-height: 400px;
+  }
+  
+  .dashboard-mobile-spacing {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
 }
 
 /* Scrollbar Styling */

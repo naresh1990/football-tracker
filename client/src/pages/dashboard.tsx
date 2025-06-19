@@ -74,12 +74,13 @@ export default function Dashboard() {
 
       {/* Main Dashboard Content */}
       <motion.div 
-        className="relative -mt-16 z-20 bg-white/90 backdrop-blur-sm rounded-t-3xl shadow-xl"
+        className="relative -mt-16 z-20"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        <div className="max-w-7xl mx-auto px-6 pt-8 pb-16 space-y-12">
+        <div className="bg-white/95 backdrop-blur-xl rounded-t-3xl shadow-2xl mx-4 sm:mx-6 lg:mx-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16 space-y-8 sm:space-y-12">
           {/* Quick Stats Section */}
           <motion.div variants={itemVariants}>
             <QuickStats stats={stats} />
@@ -87,7 +88,7 @@ export default function Dashboard() {
 
           {/* Performance and Activity Section */}
           <motion.div 
-            className="grid gap-8 lg:grid-cols-2"
+            className="grid gap-6 sm:gap-8 grid-cols-1 lg:grid-cols-2"
             variants={itemVariants}
           >
             <ProgressChart playerId={1} />
@@ -96,7 +97,7 @@ export default function Dashboard() {
 
           {/* Insights Section */}
           <motion.div 
-            className="grid gap-8 lg:grid-cols-3"
+            className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
             variants={itemVariants}
           >
             <UpcomingTraining playerId={1} />
@@ -106,7 +107,7 @@ export default function Dashboard() {
 
           {/* Player Profile Section */}
           <motion.div 
-            className="grid gap-8 lg:grid-cols-3"
+            className="grid gap-6 sm:gap-8 grid-cols-1 lg:grid-cols-3"
             variants={itemVariants}
           >
             <div className="lg:col-span-2">
@@ -116,6 +117,7 @@ export default function Dashboard() {
               <PlayerProfile player={player} stats={stats} />
             </div>
           </motion.div>
+          </div>
         </div>
       </motion.div>
 
