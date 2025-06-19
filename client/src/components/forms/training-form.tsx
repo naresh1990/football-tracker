@@ -41,13 +41,20 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
   });
 
   const createTrainingMutation = useMutation({
-    mutationFn: (data: any) => apiRequest("POST", "/api/training", data),
-    onSuccess: () => {
+    mutationFn: (data: any) => {
+      if (data.isRecurring) {
+        return apiRequest("POST", "/api/training/recurring", data);
+      } else {
+        return apiRequest("POST", "/api/training", data);
+      }
+    },
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["/api/training"] });
       queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
+      const sessionsCount = variables.isRecurring ? "sessions" : "session";
       toast({
         title: "Success",
-        description: "Training session added successfully",
+        description: `Training ${sessionsCount} added successfully`,
       });
       setOpen(false);
       setFormData({
@@ -58,7 +65,10 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
         location: "",
         coach: "",
         notes: "",
-        completed: false
+        completed: false,
+        isRecurring: false,
+        recurringDays: [],
+        endDate: ""
       });
       onSuccess?.();
     },
@@ -73,18 +83,37 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const sessionDate = new Date(`${formData.date}T${formData.time}`);
     
-    createTrainingMutation.mutate({
-      playerId: 1,
-      type: formData.type,
-      date: sessionDate.toISOString(),
-      duration: parseInt(formData.duration) || 60,
-      location: formData.location,
-      coach: formData.coach,
-      notes: formData.notes,
-      completed: formData.completed,
-    });
+    if (formData.isRecurring) {
+      // For recurring sessions, send all the recurring data
+      createTrainingMutation.mutate({
+        playerId: 1,
+        type: formData.type,
+        startDate: formData.date,
+        time: formData.time,
+        duration: parseInt(formData.duration) || 60,
+        location: formData.location,
+        coach: formData.coach,
+        notes: formData.notes,
+        isRecurring: true,
+        recurringDays: formData.recurringDays,
+        endDate: formData.endDate,
+      });
+    } else {
+      // Convert date and time to proper datetime for single session
+      const sessionDate = new Date(`${formData.date}T${formData.time}`);
+      
+      createTrainingMutation.mutate({
+        playerId: 1,
+        type: formData.type,
+        date: sessionDate.toISOString(),
+        duration: parseInt(formData.duration) || 60,
+        location: formData.location,
+        coach: formData.coach,
+        notes: formData.notes,
+        completed: formData.completed,
+      });
+    }
   };
 
   return (
@@ -127,27 +156,77 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
             </Select>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="date">Date</Label>
-              <Input
-                id="date"
-                type="date"
-                value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                required
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="recurring"
+                checked={formData.isRecurring}
+                onCheckedChange={(checked) => setFormData({ ...formData, isRecurring: !!checked })}
               />
+              <Label htmlFor="recurring" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Create recurring sessions
+              </Label>
             </div>
-            <div>
-              <Label htmlFor="time">Time</Label>
-              <Input
-                id="time"
-                type="time"
-                value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                required
-              />
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="date">{formData.isRecurring ? "Start Date" : "Date"}</Label>
+                <Input
+                  id="date"
+                  type="date"
+                  value={formData.date}
+                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="time">Time</Label>
+                <Input
+                  id="time"
+                  type="time"
+                  value={formData.time}
+                  onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                  required
+                />
+              </div>
             </div>
+
+            {formData.isRecurring && (
+              <div className="space-y-4 p-4 bg-blue-50 rounded-lg border">
+                <div>
+                  <Label>Select Days of Week</Label>
+                  <div className="grid grid-cols-3 gap-2 mt-2">
+                    {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => (
+                      <div key={day} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={day}
+                          checked={formData.recurringDays.includes(day)}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setFormData({ ...formData, recurringDays: [...formData.recurringDays, day] });
+                            } else {
+                              setFormData({ ...formData, recurringDays: formData.recurringDays.filter(d => d !== day) });
+                            }
+                          }}
+                        />
+                        <Label htmlFor={day} className="text-xs">{day.slice(0, 3)}</Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="endDate">End Date</Label>
+                  <Input
+                    id="endDate"
+                    type="date"
+                    value={formData.endDate}
+                    onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                    required={formData.isRecurring}
+                    min={formData.date}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -230,10 +309,10 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
             </Button>
             <Button
               type="submit"
-              disabled={createTrainingMutation.isPending}
+              disabled={createTrainingMutation.isPending || (formData.isRecurring && formData.recurringDays.length === 0)}
               className="flex-1 bg-green-600 hover:bg-green-700"
             >
-              {createTrainingMutation.isPending ? "Adding..." : "Add Training Session"}
+              {createTrainingMutation.isPending ? "Adding..." : formData.isRecurring ? "Create Training Sessions" : "Add Training Session"}
             </Button>
           </div>
         </form>
