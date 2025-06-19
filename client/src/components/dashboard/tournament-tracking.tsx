@@ -50,7 +50,7 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
             Add
           </Button>
         </div>
-        <CardContent>
+        <div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {tournaments?.length === 0 ? (
               <div className="col-span-2 text-center py-8">

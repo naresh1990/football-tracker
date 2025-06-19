@@ -48,7 +48,7 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
             </Button>
           </Link>
         </div>
-        <CardContent>
+        <div>
           <div className="space-y-4">
             {games?.map((game: any, index: number) => {
               const result = getGameResult(game.teamScore, game.opponentScore);

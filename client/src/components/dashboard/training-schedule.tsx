@@ -138,8 +138,8 @@ export default function TrainingSchedule({ playerId }: TrainingScheduleProps) {
               })}
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </motion.div>
   );
 }
