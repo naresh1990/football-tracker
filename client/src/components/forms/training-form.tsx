@@ -82,7 +82,7 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {trigger || (
-          <Button className="bg-green-600 hover:bg-green-700 text-white">
+          <Button className="bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2">
             <Plus className="mr-2 h-4 w-4" />
             Add Training Session
           </Button>

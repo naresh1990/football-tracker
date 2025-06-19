@@ -93,7 +93,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {trigger || (
-          <Button className="bg-yellow-500 hover:bg-yellow-600 text-white">
+          <Button className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold px-4 py-2">
             <Plus className="mr-2 h-4 w-4" />
             Add Tournament
           </Button>
