@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,6 +32,24 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Create a local URL for preview
+      const fileUrl = URL.createObjectURL(file);
+      setFormData({ ...formData, logo: fileUrl });
+      
+      toast({
+        title: "Logo uploaded",
+        description: "Logo has been set for preview. Note: This is a temporary URL.",
+      });
+    }
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
 
   const createClubMutation = useMutation({
     mutationFn: (data: any) => 
