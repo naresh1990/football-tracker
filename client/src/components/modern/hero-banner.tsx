@@ -137,7 +137,7 @@ export default function HeroBanner({ player, activeClub, squadMembers, onQuickAd
               
               <div className="flex items-center justify-center lg:justify-start gap-2 text-blue-100">
                 <MapPin className="w-5 h-5 text-blue-300" />
-                <span className="text-sm">{activeClub?.description || 'Professional football development'}</span>
+                <span className="text-sm">Sporthood Center of Excellence, HAL Sports Club</span>
               </div>
             </motion.div>
 
