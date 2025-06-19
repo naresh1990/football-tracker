@@ -12,12 +12,12 @@ export default function Header({ onToggleMobileMenu, onQuickAdd }: HeaderProps) 
   const [location] = useLocation();
 
   const navigation = [
-    { name: "Dashboard", href: "/dashboard" },
-    { name: "Games", href: "/games" },
-    { name: "Tournaments", href: "/tournaments" },
-    { name: "Training", href: "/training" },
-    { name: "Statistics", href: "/statistics" },
-    { name: "Clubs", href: "/clubs" },
+    { name: "Dashboard", href: "/dashboard", icon: BarChart3 },
+    { name: "Games", href: "/games", icon: Target },
+    { name: "Tournaments", href: "/tournaments", icon: Trophy },
+    { name: "Training", href: "/training", icon: Users },
+    { name: "Statistics", href: "/statistics", icon: BarChart3 },
+    { name: "Clubs", href: "/clubs", icon: Building },
   ];
 
   return (
