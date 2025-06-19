@@ -200,7 +200,7 @@ export default function Training() {
                 
                 return (
                   <motion.div key={session.id} variants={itemVariants}>
-                    <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full">
+                    <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full min-w-[350px]">
                       <CardHeader className="pb-4">
                         <div className="flex items-start justify-between mb-4">
                           <div className="flex items-center gap-3">
@@ -303,7 +303,7 @@ export default function Training() {
               Missed Sessions
             </h2>
             <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
@@ -315,7 +315,7 @@ export default function Training() {
                 
                 return (
                   <motion.div key={session.id} variants={itemVariants}>
-                    <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-md hover:shadow-lg transition-all duration-300 h-full opacity-90 border-l-4 border-red-400">
+                    <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-md hover:shadow-lg transition-all duration-300 h-full opacity-90 border-l-4 border-red-400 min-w-[350px]">
                       <CardHeader className="pb-4">
                         <div className="flex items-start justify-between mb-4">
                           <div className="flex items-center gap-3">
@@ -393,7 +393,7 @@ export default function Training() {
               Completed Sessions
             </h2>
             <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
@@ -405,7 +405,7 @@ export default function Training() {
                 
                 return (
                   <motion.div key={session.id} variants={itemVariants}>
-                    <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-md hover:shadow-lg transition-all duration-300 h-full opacity-90">
+                    <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-md hover:shadow-lg transition-all duration-300 h-full opacity-90 min-w-[350px]">
                       <CardHeader className="pb-4">
                         <div className="flex items-start justify-between mb-4">
                           <div className="flex items-center gap-3">
