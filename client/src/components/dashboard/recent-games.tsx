@@ -2,12 +2,13 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Check, X, ArrowRight, Calendar, Goal, Circle, Clock, MapPin, Users } from "lucide-react";
+import { Check, X, ArrowRight, Calendar, Goal, Circle, Clock, MapPin, Users, Trophy } from "lucide-react";
 import { formatShortDate, getGameResult } from "@/lib/utils";
 import { Link } from "wouter";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import EmptyState from "@/components/ui/empty-state";
 
 interface RecentGamesProps {
   playerId: number;

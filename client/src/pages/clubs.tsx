@@ -11,6 +11,7 @@ import { queryClient } from "@/lib/queryClient";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import ClubForm from "@/components/forms/club-form";
+import EmptyState from "@/components/ui/empty-state";
 
 export default function Clubs() {
   const { toast } = useToast();
