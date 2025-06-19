@@ -126,17 +126,30 @@ export default function Clubs() {
                 <CardHeader className="pb-4">
                   <div className="flex justify-between items-start">
                     <div className="flex items-center space-x-4">
-                      <div className="w-14 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
-                        {club.logo ? (
-                          <img 
-                            src={club.logo} 
-                            alt={`${club.name} logo`}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="text-2xl text-white">{getTypeIcon(club.type)}</div>
-                        )}
-                      </div>
+                      <label htmlFor={`logo-upload-${club.id}`} className="relative group cursor-pointer">
+                        <div className="w-14 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
+                          {club.logo ? (
+                            <img 
+                              src={club.logo} 
+                              alt={`${club.name} logo`}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="text-2xl text-white">{getTypeIcon(club.type)}</div>
+                          )}
+                        </div>
+                        {/* Hover overlay with pencil icon */}
+                        <div className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                          <Edit className="w-5 h-5 text-white" />
+                        </div>
+                      </label>
+                      <input
+                        id={`logo-upload-${club.id}`}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => handleLogoUpload(club.id, e.target.files?.[0])}
+                      />
                       <div>
                         <CardTitle className="text-xl font-bold text-gray-900 mb-2">
                           {club.name}
@@ -158,20 +171,6 @@ export default function Clubs() {
                     </div>
                     
                     <div className="flex items-center space-x-2">
-                      <label htmlFor={`logo-upload-${club.id}`}>
-                        <Button variant="ghost" size="sm" className="text-gray-600 hover:text-green-600 hover:bg-green-50" asChild>
-                          <span className="cursor-pointer">
-                            <Plus className="w-4 h-4" />
-                          </span>
-                        </Button>
-                      </label>
-                      <input
-                        id={`logo-upload-${club.id}`}
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={(e) => handleLogoUpload(club.id, e.target.files?.[0])}
-                      />
                       <Button variant="ghost" size="sm" className="text-gray-600 hover:text-blue-600 hover:bg-blue-50">
                         <Edit className="w-4 h-4" />
                       </Button>
