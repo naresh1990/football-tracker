@@ -48,7 +48,7 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
             transition={{ duration: 0.8, type: "spring" }}
           >
             <div className="relative">
-              <Avatar className="w-32 h-40 sm:w-36 sm:h-44 ring-4 ring-white/40 rounded-3xl shadow-2xl">
+              <Avatar className="w-32 h-48 sm:w-36 sm:h-56 ring-4 ring-white/40 rounded-3xl shadow-2xl">
                 <AvatarImage src={darshilPhoto} alt={player.name} className="object-cover rounded-3xl" />
                 <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-3xl h-full w-full flex items-center justify-center">
                   {player.name.split(' ').map(n => n[0]).join('')}
