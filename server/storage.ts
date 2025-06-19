@@ -510,7 +510,8 @@ export class MemStorage implements IStorage {
         playerId: 1,
         memberName: "Madhav Nair",
         position: "Goalkeeper",
-        jerseyNumber: "#1"
+        jerseyNumber: "#1",
+        picture: "/uploads/madhav-nair.jpg"
       }
     ];
 
