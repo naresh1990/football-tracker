@@ -84,7 +84,7 @@ export default function Games() {
                     className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/90 transition-all duration-300 border border-white/50 shadow-sm"
                   >
                     {/* Header with result and opponent */}
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center space-x-4">
                         <div className={`w-16 h-16 ${resultBg} rounded-2xl flex items-center justify-center shadow-md`}>
                           {React.createElement(resultIcon, { className: `${resultColor} w-7 h-7` })}
@@ -97,7 +97,7 @@ export default function Games() {
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-start gap-4">
                         <div className="text-right">
                           <p className="font-black text-gray-900 text-3xl mb-1">
                             {game.teamScore}-{game.opponentScore}
@@ -110,13 +110,14 @@ export default function Games() {
                             {result === 'win' ? 'Victory' : result === 'loss' ? 'Defeat' : 'Draw'}
                           </span>
                         </div>
-                        <div className="flex items-center space-x-2">
-                          <Button variant="ghost" size="sm">
+                        <div className="flex flex-col gap-1">
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                             <Edit className="w-4 h-4" />
                           </Button>
                           <Button
                             variant="ghost"
                             size="sm"
+                            className="h-8 w-8 p-0"
                             onClick={() => deleteGameMutation.mutate(game.id)}
                             disabled={deleteGameMutation.isPending}
                           >
