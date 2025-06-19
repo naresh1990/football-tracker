@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, Calendar, Clock, MapPin, User, Target, Zap, Users, Activity, Trophy, Dumbbell, CheckCircle } from "lucide-react";
 import { formatShortDate, formatTime } from "@/lib/utils";
 import { motion } from "framer-motion";
+import EmptyState from "@/components/ui/empty-state";
 
 export default function Training() {
   const { data: sessions, isLoading } = useQuery({
@@ -287,22 +288,13 @@ export default function Training() {
         )}
 
         {(!sessions || sessions.length === 0) && (
-          <motion.div 
-            className="text-center py-16"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Dumbbell className="w-12 h-12 text-blue-400" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No training sessions yet</h3>
-            <p className="text-gray-600 mb-6">Start tracking your football training journey</p>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-              <Plus className="mr-2 h-4 w-4" />
-              Add Your First Session
-            </Button>
-          </motion.div>
+          <EmptyState
+            icon={Dumbbell}
+            title="No training sessions yet"
+            description="Start tracking your football training journey to monitor progress and improve your skills systematically."
+            actionLabel="Add Your First Session"
+            onAction={() => {/* Add training modal logic */}}
+          />
         )}
       </div>
     </div>
