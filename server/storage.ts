@@ -620,7 +620,8 @@ export class MemStorage implements IStorage {
       ...member, 
       id,
       jerseyNumber: member.jerseyNumber ?? null,
-      role: member.role ?? null
+      role: member.role ?? null,
+      profilePicture: member.profilePicture ?? null
     };
     this.squadMembers.set(id, newMember);
     return newMember;
