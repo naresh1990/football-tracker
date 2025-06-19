@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MessageSquare, Star, Calendar } from "lucide-react";
-import { motion } from "framer-motion";
+import { MessageSquare, Star, Calendar, ChevronLeft, ChevronRight, Clock, MapPin } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import moment from "moment-timezone";
+import { useState } from "react";
 
 interface CoachFeedbackProps {
   playerId: number;
@@ -13,9 +14,27 @@ export default function CoachFeedback({ playerId }: CoachFeedbackProps) {
     queryKey: ["/api/training", { playerId }],
   });
 
+  const { data: upcomingSessions } = useQuery({
+    queryKey: ["/api/training/upcoming", { playerId }],
+  });
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
   // Filter sessions that have coach feedback
   const feedbackSessions = sessions?.filter((session: any) => session.coachFeedback) || [];
   const recentFeedback = feedbackSessions.slice(0, 3); // Show last 3 feedback items
+  
+  const nextSlide = () => {
+    if (upcomingSessions?.length) {
+      setCurrentSlide((prev) => (prev + 1) % upcomingSessions.length);
+    }
+  };
+
+  const prevSlide = () => {
+    if (upcomingSessions?.length) {
+      setCurrentSlide((prev) => (prev - 1 + upcomingSessions.length) % upcomingSessions.length);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -45,40 +64,116 @@ export default function CoachFeedback({ playerId }: CoachFeedbackProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-gray-900">
           <MessageSquare className="w-5 h-5 text-blue-600" />
-          Recent Coach Feedback
+          Coach Feedback
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        {recentFeedback.length === 0 ? (
-          <div className="text-center py-8">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <MessageSquare className="w-8 h-8 text-blue-400" />
-            </div>
-            <p className="text-gray-600 font-medium">No feedback yet</p>
-            <p className="text-sm text-gray-500 mt-1">Coach feedback will appear here after training sessions</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {recentFeedback.map((session: any, index: number) => (
-              <div
-                key={session.id}
-                className="border-l-4 border-blue-400 pl-4 py-2 bg-blue-50/50 rounded-r-lg"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-semibold text-gray-900 text-sm">{session.type}</h4>
-                  <div className="flex items-center gap-1 text-xs text-gray-500">
-                    <Calendar className="w-3 h-3" />
-                    {moment.tz(session.date, 'Asia/Kolkata').format('MMM DD')}
+      <CardContent className="space-y-6">
+        {/* Upcoming Training Carousel */}
+        {upcomingSessions && upcomingSessions.length > 0 && (
+          <div className="space-y-3">
+            <h3 className="font-medium text-gray-900 text-sm flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-green-600" />
+              Upcoming Training
+            </h3>
+            <div className="relative bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4 border border-green-200">
+              <div className="flex items-center justify-between">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={prevSlide}
+                  disabled={upcomingSessions.length <= 1}
+                  className="h-8 w-8 p-0 text-gray-600 hover:text-gray-900"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </Button>
+                
+                <div className="flex-1 mx-4 text-center">
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-gray-900">{upcomingSessions[currentSlide]?.type}</h4>
+                    <div className="flex items-center justify-center gap-4 text-sm text-gray-600">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        {moment.tz(upcomingSessions[currentSlide]?.date, 'Asia/Kolkata').format('MMM DD, YYYY')}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {moment.tz(upcomingSessions[currentSlide]?.date, 'Asia/Kolkata').format('h:mm A')}
+                      </div>
+                    </div>
+                    {upcomingSessions[currentSlide]?.location && (
+                      <div className="flex items-center justify-center gap-1 text-xs text-gray-500">
+                        <MapPin className="w-3 h-3" />
+                        {upcomingSessions[currentSlide].location}
+                      </div>
+                    )}
                   </div>
                 </div>
-                <p className="text-sm text-gray-700 leading-relaxed">{session.coachFeedback}</p>
-                {session.coach && (
-                  <p className="text-xs text-gray-500 mt-2">- {session.coach}</p>
-                )}
+                
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={nextSlide}
+                  disabled={upcomingSessions.length <= 1}
+                  className="h-8 w-8 p-0 text-gray-600 hover:text-gray-900"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
               </div>
-            ))}
+              
+              {upcomingSessions.length > 1 && (
+                <div className="flex justify-center gap-1 mt-3">
+                  {upcomingSessions.map((_: any, index: number) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentSlide(index)}
+                      className={`w-2 h-2 rounded-full transition-colors ${
+                        index === currentSlide ? 'bg-green-600' : 'bg-gray-300'
+                      }`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         )}
+
+        {/* Recent Feedback */}
+        <div className="space-y-3">
+          <h3 className="font-medium text-gray-900 text-sm flex items-center gap-2">
+            <MessageSquare className="w-4 h-4 text-blue-600" />
+            Recent Feedback
+          </h3>
+          {recentFeedback.length === 0 ? (
+            <div className="text-center py-6">
+              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <MessageSquare className="w-6 h-6 text-blue-400" />
+              </div>
+              <p className="text-gray-600 font-medium text-sm">No recent feedback</p>
+              <p className="text-xs text-gray-500 mt-1">Coach feedback will appear here</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {recentFeedback.map((session: any) => (
+                <div
+                  key={session.id}
+                  className="border-l-4 border-blue-400 pl-3 py-2 bg-blue-50/50 rounded-r-lg"
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <h4 className="font-semibold text-gray-900 text-sm">{session.type}</h4>
+                    <div className="flex items-center gap-1 text-xs text-gray-500">
+                      <Calendar className="w-3 h-3" />
+                      {moment.tz(session.date, 'Asia/Kolkata').format('MMM DD')}
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-700 leading-relaxed">{session.coachFeedback}</p>
+                  {session.coach && (
+                    <p className="text-xs text-gray-500 mt-1">- {session.coach}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </CardContent>
     </>
   );
