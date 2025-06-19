@@ -76,6 +76,8 @@ export default function Dashboard() {
   // Fetch summary stats
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ["/api/stats/summary"],
+    refetchOnMount: true,
+    staleTime: 0,
   });
 
   if (playerLoading || statsLoading) {
