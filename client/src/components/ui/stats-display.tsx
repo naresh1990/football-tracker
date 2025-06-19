@@ -47,8 +47,10 @@ const StatsDisplay: React.FC<StatsDisplayProps> = ({
           <div className="flex-1">
             <p className={cn(
               "text-sm font-medium",
-              variant === "gradient" ? "text-white/80" : "text-muted-foreground"
-            )}>
+              variant === "gradient" ? "text-white" : "text-gray-600"
+            )}
+            style={variant === "gradient" ? { textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)' } : {}}
+            >
               {title}
             </p>
             <motion.div
@@ -59,15 +61,19 @@ const StatsDisplay: React.FC<StatsDisplayProps> = ({
               <p className={cn(
                 "text-3xl font-bold text-display mt-2",
                 variant === "gradient" ? "text-white" : "text-football-primary"
-              )}>
+              )}
+              style={variant === "gradient" ? { textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' } : {}}
+              >
                 {value}
               </p>
             </motion.div>
             {subtitle && (
               <p className={cn(
                 "text-xs mt-1",
-                variant === "gradient" ? "text-white/60" : "text-muted-foreground"
-              )}>
+                variant === "gradient" ? "text-white" : "text-gray-500"
+              )}
+              style={variant === "gradient" ? { textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)' } : {}}
+              >
                 {subtitle}
               </p>
             )}

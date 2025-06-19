@@ -56,7 +56,9 @@ export default function Dashboard() {
           transition={{ duration: 0.5 }}
         >
           <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-white text-lg font-medium">Loading your football journey...</p>
+          <p className="text-white text-lg font-medium" style={{ textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)' }}>
+            Loading your football journey...
+          </p>
         </motion.div>
       </div>
     );

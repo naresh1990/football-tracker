@@ -40,8 +40,8 @@ export default function Header({ onToggleMobileMenu, onQuickAdd }: HeaderProps) 
                 <span className="text-2xl">⚽</span>
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-display text-gradient">Football Tracker</h1>
-                <p className="text-xs text-muted-foreground">Performance Analytics</p>
+                <h1 className="text-2xl font-bold text-display text-football-primary">Football Tracker</h1>
+                <p className="text-xs text-gray-600">Performance Analytics</p>
               </div>
             </div>
           </motion.div>

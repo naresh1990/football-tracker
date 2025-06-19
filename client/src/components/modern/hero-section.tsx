@@ -58,10 +58,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({ player, onQuickAdd }) => {
             </div>
 
             <motion.p
-              className="text-lg text-white/90 mb-8 leading-relaxed"
+              className="text-lg text-white mb-8 leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
+              style={{
+                textShadow: '1px 1px 2px rgba(0, 0, 0, 0.4)'
+              }}
             >
               Track every moment of your football journey with comprehensive performance analytics, 
               club management, and professional development tracking.
@@ -100,9 +103,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ player, onQuickAdd }) => {
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
             className="space-y-6"
           >
-            <ModernCard variant="glass" className="p-6">
+            <ModernCard variant="glass" className="p-6 bg-white/20 backdrop-blur-xl">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-white">Season Overview</h3>
+                <h3 className="text-lg font-semibold text-white" style={{ textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)' }}>Season Overview</h3>
                 <Trophy className="w-6 h-6 text-yellow-400" />
               </div>
               
@@ -113,10 +116,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({ player, onQuickAdd }) => {
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 200, delay: 1 }}
+                    style={{ textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)' }}
                   >
                     12
                   </motion.div>
-                  <p className="text-white/70 text-sm">Games Played</p>
+                  <p className="text-white text-sm" style={{ textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)' }}>Games Played</p>
                 </div>
                 
                 <div className="text-center">
