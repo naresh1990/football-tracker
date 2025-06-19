@@ -28,16 +28,15 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
   if (isLoading) {
     return (
       <Card className="shadow-lg">
-        <CardHeader>
-          <CardTitle>Current Tournaments</CardTitle>
-        </CardHeader>
-        <CardContent>
+        <div>
+        </div>
+        <div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[...Array(2)].map((_, i) => (
               <Skeleton key={i} className="h-48 w-full" />
             ))}
           </div>
-        </CardContent>
+        </div>
       </Card>
     );
   }

@@ -21,15 +21,15 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
   if (isLoading) {
     return (
       <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 shadow-lg">
-        <CardHeader>
-        </CardHeader>
-        <CardContent>
+        <div>
+        </div>
+        <div>
           <div className="space-y-4">
             {[...Array(3)].map((_, i) => (
               <Skeleton key={i} className="h-20 w-full rounded-xl" />
             ))}
           </div>
-        </CardContent>
+        </div>
       </Card>
     );
   }

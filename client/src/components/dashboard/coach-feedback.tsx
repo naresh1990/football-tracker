@@ -34,16 +34,15 @@ export default function CoachFeedback({ playerId }: CoachFeedbackProps) {
   if (isLoading) {
     return (
       <Card className="shadow-lg">
-        <CardHeader>
-          <CardTitle>Coach Feedback</CardTitle>
-        </CardHeader>
-        <CardContent>
+        <div>
+        </div>
+        <div>
           <div className="space-y-4">
             {[...Array(2)].map((_, i) => (
               <Skeleton key={i} className="h-24 w-full" />
             ))}
           </div>
-        </CardContent>
+        </div>
       </Card>
     );
   }

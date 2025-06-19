@@ -55,13 +55,13 @@ export default function TrainingSchedule({ playerId }: TrainingScheduleProps) {
         <CardHeader>
           <CardTitle>Training Schedule</CardTitle>
         </CardHeader>
-        <CardContent>
+        <div>
           <div className="space-y-3">
             {[...Array(3)].map((_, i) => (
               <Skeleton key={i} className="h-16 w-full" />
             ))}
           </div>
-        </CardContent>
+        </div>
       </Card>
     );
   }
