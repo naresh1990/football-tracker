@@ -246,6 +246,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post("/api/training/recurring", async (req, res) => {
+    try {
+      console.log("Recurring training data received:", req.body);
+      const { playerId, type, startDate, time, duration, location, coach, notes, recurringDays, endDate } = req.body;
+      
+      if (!recurringDays || recurringDays.length === 0) {
+        return res.status(400).json({ error: "No recurring days selected" });
+      }
+
+      const sessions = [];
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      
+      // Map day names to numbers (0 = Sunday, 1 = Monday, etc.)
+      const dayMap: { [key: string]: number } = {
+        'Sunday': 0, 'Monday': 1, 'Tuesday': 2, 'Wednesday': 3,
+        'Thursday': 4, 'Friday': 5, 'Saturday': 6
+      };
+
+      const targetDays = recurringDays.map((day: string) => dayMap[day]);
+      console.log("Target days:", targetDays, "from", recurringDays);
+      
+      for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+        if (targetDays.includes(date.getDay())) {
+          const sessionDateTime = new Date(date);
+          const [hours, minutes] = time.split(':');
+          sessionDateTime.setHours(parseInt(hours), parseInt(minutes));
+          
+          const sessionData = {
+            playerId,
+            type,
+            date: sessionDateTime,
+            duration: parseInt(duration) || 60,
+            location,
+            coach,
+            notes,
+            attendance: 'pending'
+          };
+          
+          console.log("Creating session for:", sessionDateTime.toISOString());
+          const session = await storage.createTrainingSession(sessionData);
+          sessions.push(session);
+        }
+      }
+      
+      console.log(`Created ${sessions.length} training sessions`);
+      res.json({ message: `Created ${sessions.length} training sessions`, sessions });
+    } catch (error) {
+      console.error("Error creating recurring training sessions:", error);
+      res.status(500).json({ error: "Failed to create recurring training sessions", details: error.message });
+    }
+  });
+
   app.put("/api/training/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
