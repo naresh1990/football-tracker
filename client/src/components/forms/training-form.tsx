@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Plus } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -25,7 +26,10 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
     location: "",
     coach: "",
     notes: "",
-    completed: false
+    completed: false,
+    isRecurring: false,
+    recurringDays: [] as string[],
+    endDate: ""
   });
 
   const { toast } = useToast();

@@ -44,12 +44,7 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
   return (
     <section>
       <div>
-        <div className="flex justify-end mb-4">
-          <Button size="sm" className="bg-orange-600 hover:bg-orange-700 text-white font-semibold">
-            <Plus className="w-4 h-4 mr-1" />
-            Add
-          </Button>
-        </div>
+        
         <div>
           <div className="space-y-4">
             {tournaments?.length === 0 ? (
