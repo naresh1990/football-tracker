@@ -262,8 +262,25 @@ export default function Training() {
         borderRadius: '4px',
         fontSize: '12px',
         padding: '2px 4px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '4px',
       }
     };
+  };
+
+  const EventComponent = ({ event }: { event: any }) => {
+    const session = event.resource;
+    const TrainingIcon = getTrainingIcon(session.type);
+    
+    return (
+      <div className="flex items-center gap-1 text-xs">
+        <TrainingIcon className="w-3 h-3 flex-shrink-0" />
+        <span className="truncate">
+          {event.title}
+        </span>
+      </div>
+    );
   };
 
   const handleSelectEvent = (event: any) => {
@@ -429,6 +446,7 @@ export default function Training() {
             culture="en-GB"
             components={{
               toolbar: CustomToolbar,
+              event: EventComponent,
             }}
           />
         </motion.div>
