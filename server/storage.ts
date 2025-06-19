@@ -227,31 +227,56 @@ export class MemStorage implements IStorage {
       {
         playerId: 1,
         type: "Speed & Agility",
-        date: new Date("2024-06-20T16:00:00"),
+        date: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // 2 days from now
         duration: 90,
         location: "Main Field",
         coach: "Coach Martinez",
+        focus: "Sprint techniques and cone drills",
         notes: "Focus on acceleration and quick direction changes",
         completed: false
       },
       {
         playerId: 1,
         type: "Ball Control",
-        date: new Date("2024-06-21T15:30:00"),
-        duration: 60,
-        location: "Training Ground",
+        date: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000), // 4 days from now
+        duration: 75,
+        location: "Training Ground A",
         coach: "Coach Thompson",
-        notes: "First touch and close control drills",
+        focus: "First touch and dribbling skills",
+        notes: "First touch and close control drills with both feet",
         completed: false
       },
       {
         playerId: 1,
         type: "Team Practice",
-        date: new Date("2024-06-22T10:00:00"),
+        date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week from now
         duration: 120,
         location: "Main Field",
         coach: "Coach Martinez",
-        notes: "Full team scrimmage and tactical work",
+        focus: "Tactical formations and set pieces",
+        notes: "Full team scrimmage and tactical work - 4-3-3 formation",
+        completed: false
+      },
+      {
+        playerId: 1,
+        type: "Fitness Training",
+        date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), // 10 days from now
+        duration: 60,
+        location: "Fitness Center",
+        coach: "Coach Davis",
+        focus: "Endurance and strength building",
+        notes: "Cardio workout and core strengthening exercises",
+        completed: false
+      },
+      {
+        playerId: 1,
+        type: "Shooting Practice",
+        date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 2 weeks from now
+        duration: 90,
+        location: "Practice Field B",
+        coach: "Coach Thompson",
+        focus: "Finishing and accuracy training",
+        notes: "Goal scoring drills from various angles and distances",
         completed: false
       }
     ];
