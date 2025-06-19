@@ -131,7 +131,9 @@ export const coachingStaff = pgTable("coaching_staff", {
 export const insertPlayerSchema = createInsertSchema(players).omit({ id: true });
 export const insertGameSchema = createInsertSchema(games).omit({ id: true });
 export const insertTournamentSchema = createInsertSchema(tournaments).omit({ id: true });
-export const insertTrainingSessionSchema = createInsertSchema(trainingSessions).omit({ id: true });
+export const insertTrainingSessionSchema = createInsertSchema(trainingSessions).omit({ id: true }).extend({
+  date: z.string().transform((str) => new Date(str))
+});
 export const insertCoachFeedbackSchema = createInsertSchema(coachFeedback).omit({ id: true });
 export const insertSquadMemberSchema = createInsertSchema(squadMembers).omit({ id: true });
 export const insertClubSchema = createInsertSchema(clubs).omit({ id: true });
