@@ -470,7 +470,8 @@ export class MemStorage implements IStorage {
         playerId: 1,
         memberName: "Darshil Podishetty",
         position: "Midfielder",
-        jerseyNumber: "#9"
+        jerseyNumber: "#9",
+        picture: "/uploads/darshil-profile.jpg"
       },
       {
         playerId: 1,
