@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import darshilPhoto from "../../assets/darshil-photo.jpg";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import moment from "moment-timezone";
 import { 
   Trophy, 
   Target, 
@@ -10,7 +13,11 @@ import {
   Calendar,
   MapPin,
   Star,
-  Building
+  Building,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Dumbbell
 } from "lucide-react";
 
 interface HeroBannerProps {
