@@ -72,15 +72,13 @@ export default function TrainingSchedule({ playerId }: TrainingScheduleProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 shadow-lg hover:shadow-xl transition-all duration-300">
-        <CardHeader className="pb-4">
-          <div className="flex justify-end">
-            <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold">
-              <Plus className="w-4 h-4 mr-1" />
-              Add
-            </Button>
-          </div>
-        </CardHeader>
+      <div className="p-6">
+        <div className="flex justify-end mb-4">
+          <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold">
+            <Plus className="w-4 h-4 mr-1" />
+            Add
+          </Button>
+        </div>
         <CardContent>
           {sessions && sessions.length === 0 ? (
             <div className="text-center py-8">

@@ -44,15 +44,13 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
 
   return (
     <section>
-      <Card className="bg-gradient-to-br from-orange-50 to-red-50 border-orange-200 shadow-lg hover:shadow-xl transition-all duration-300">
-        <CardHeader className="pb-4">
-          <div className="flex justify-end">
-            <Button size="sm" className="bg-orange-600 hover:bg-orange-700 text-white font-semibold">
-              <Plus className="w-4 h-4 mr-1" />
-              Add
-            </Button>
-          </div>
-        </CardHeader>
+      <div className="p-6">
+        <div className="flex justify-end mb-4">
+          <Button size="sm" className="bg-orange-600 hover:bg-orange-700 text-white font-semibold">
+            <Plus className="w-4 h-4 mr-1" />
+            Add
+          </Button>
+        </div>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {tournaments?.length === 0 ? (

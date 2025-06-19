@@ -40,16 +40,14 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.2 }}
     >
-      <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 shadow-lg hover:shadow-xl transition-all duration-300">
-        <CardHeader className="pb-4">
-          <div className="flex justify-end">
-            <Link href="/games">
-              <Button variant="ghost" className="text-green-600 hover:text-green-700 hover:bg-green-100 font-medium transition-all duration-200">
-                View All <ArrowRight className="ml-1 w-4 h-4" />
-              </Button>
-            </Link>
-          </div>
-        </CardHeader>
+      <div className="p-6">
+        <div className="flex justify-end mb-4">
+          <Link href="/games">
+            <Button variant="ghost" className="text-green-600 hover:text-green-700 hover:bg-green-100 font-medium transition-all duration-200">
+              View All <ArrowRight className="ml-1 w-4 h-4" />
+            </Button>
+          </Link>
+        </div>
         <CardContent>
           <div className="space-y-4">
             {games?.map((game: any, index: number) => {
