@@ -1,63 +1,60 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { insertTrainingSessionSchema } from "@shared/schema";
-import { apiRequest } from "@/lib/queryClient";
-import { queryClient } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
-import { z } from "zod";
-
+import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-const trainingFormSchema = insertTrainingSessionSchema.extend({
-  date: z.string().min(1, "Date is required"),
-});
-
-type TrainingFormData = z.infer<typeof trainingFormSchema>;
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Plus } from "lucide-react";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 interface TrainingFormProps {
+  trigger?: React.ReactNode;
   onSuccess?: () => void;
-  onCancel?: () => void;
 }
 
-export default function TrainingForm({ onSuccess, onCancel }: TrainingFormProps) {
-  const { toast } = useToast();
-  
-  const form = useForm<TrainingFormData>({
-    resolver: zodResolver(trainingFormSchema),
-    defaultValues: {
-      playerId: 1, // Darshil's ID
-      type: "",
-      date: "",
-      duration: 60,
-      location: "",
-      coach: "",
-      notes: "",
-      completed: false,
-    },
+export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) {
+  const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    type: "",
+    date: "",
+    time: "",
+    duration: "",
+    location: "",
+    coach: "",
+    focus: "",
+    intensity: "",
+    notes: "",
+    attended: true
   });
 
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
   const createTrainingMutation = useMutation({
-    mutationFn: (data: TrainingFormData) => {
-      const trainingData = {
-        ...data,
-        date: new Date(data.date),
-      };
-      return apiRequest("POST", "/api/training", trainingData);
-    },
+    mutationFn: (data: any) => apiRequest("POST", "/api/training", data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/training"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
       toast({
         title: "Success",
         description: "Training session added successfully",
       });
-      form.reset();
+      setOpen(false);
+      setFormData({
+        type: "",
+        date: "",
+        time: "",
+        duration: "",
+        location: "",
+        coach: "",
+        focus: "",
+        intensity: "",
+        notes: "",
+        attended: true
+      });
       onSuccess?.();
     },
     onError: () => {
@@ -69,166 +66,162 @@ export default function TrainingForm({ onSuccess, onCancel }: TrainingFormProps)
     },
   });
 
-  const onSubmit = (data: TrainingFormData) => {
-    createTrainingMutation.mutate(data);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const sessionDate = new Date(`${formData.date}T${formData.time}`);
+    
+    createTrainingMutation.mutate({
+      ...formData,
+      playerId: 1,
+      date: sessionDate.toISOString(),
+      duration: parseInt(formData.duration) || 60,
+    });
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold text-football-green">Add Training Session</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Training Type</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select training type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Speed & Agility">Speed & Agility</SelectItem>
-                        <SelectItem value="Ball Control">Ball Control</SelectItem>
-                        <SelectItem value="Team Practice">Team Practice</SelectItem>
-                        <SelectItem value="Shooting Practice">Shooting Practice</SelectItem>
-                        <SelectItem value="Passing & Crossing">Passing & Crossing</SelectItem>
-                        <SelectItem value="Defensive Training">Defensive Training</SelectItem>
-                        <SelectItem value="Fitness Training">Fitness Training</SelectItem>
-                        <SelectItem value="Tactical Training">Tactical Training</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        {trigger || (
+          <Button className="bg-green-600 hover:bg-green-700 text-white">
+            <Plus className="mr-2 h-4 w-4" />
+            Add Training Session
+          </Button>
+        )}
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Add New Training Session</DialogTitle>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label htmlFor="type">Training Type</Label>
+            <Select value={formData.type} onValueChange={(value) => setFormData({ ...formData, type: value })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select training type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Speed & Agility">Speed & Agility</SelectItem>
+                <SelectItem value="Ball Control">Ball Control</SelectItem>
+                <SelectItem value="Team Practice">Team Practice</SelectItem>
+                <SelectItem value="Fitness Training">Fitness Training</SelectItem>
+                <SelectItem value="Shooting Practice">Shooting Practice</SelectItem>
+                <SelectItem value="Tactical Training">Tactical Training</SelectItem>
+                <SelectItem value="Conditioning">Conditioning</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date & Time</FormLabel>
-                    <FormControl>
-                      <Input type="datetime-local" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="duration"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Duration (minutes)</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="number" 
-                        min="15" 
-                        max="240"
-                        {...field}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 60)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Location</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., Main Field, Gym" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="coach"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Coach</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., Coach Martinez" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="date">Date</Label>
+              <Input
+                id="date"
+                type="date"
+                value={formData.date}
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                required
               />
             </div>
-
-            <FormField
-              control={form.control}
-              name="notes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Notes</FormLabel>
-                  <FormControl>
-                    <Textarea 
-                      placeholder="Training objectives, exercises, or any special notes..."
-                      className="min-h-20"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="completed"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>Mark as completed</FormLabel>
-                    <p className="text-sm text-muted-foreground">
-                      Check this if the training session has already been completed
-                    </p>
-                  </div>
-                </FormItem>
-              )}
-            />
-
-            <div className="flex justify-end space-x-4">
-              {onCancel && (
-                <Button type="button" variant="outline" onClick={onCancel}>
-                  Cancel
-                </Button>
-              )}
-              <Button 
-                type="submit" 
-                className="bg-football-green hover:bg-green-700"
-                disabled={createTrainingMutation.isPending}
-              >
-                {createTrainingMutation.isPending ? "Adding..." : "Add Training"}
-              </Button>
+            <div>
+              <Label htmlFor="time">Time</Label>
+              <Input
+                id="time"
+                type="time"
+                value={formData.time}
+                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                required
+              />
             </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="duration">Duration (minutes)</Label>
+              <Input
+                id="duration"
+                type="number"
+                min="15"
+                max="180"
+                value={formData.duration}
+                onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                placeholder="60"
+              />
+            </div>
+            <div>
+              <Label htmlFor="intensity">Intensity</Label>
+              <Select value={formData.intensity} onValueChange={(value) => setFormData({ ...formData, intensity: value })}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select intensity" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Low">Low</SelectItem>
+                  <SelectItem value="Medium">Medium</SelectItem>
+                  <SelectItem value="High">High</SelectItem>
+                  <SelectItem value="Very High">Very High</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="location">Location</Label>
+            <Input
+              id="location"
+              value={formData.location}
+              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+              placeholder="Training ground, gym, etc."
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="coach">Coach/Trainer</Label>
+            <Input
+              id="coach"
+              value={formData.coach}
+              onChange={(e) => setFormData({ ...formData, coach: e.target.value })}
+              placeholder="Coach name"
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="focus">Focus Areas</Label>
+            <Input
+              id="focus"
+              value={formData.focus}
+              onChange={(e) => setFormData({ ...formData, focus: e.target.value })}
+              placeholder="e.g., Passing, Shooting, Defending"
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="notes">Notes</Label>
+            <Textarea
+              id="notes"
+              value={formData.notes}
+              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+              placeholder="Training highlights, performance notes, areas worked on..."
+            />
+          </div>
+
+          <div className="flex gap-2 pt-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setOpen(false)}
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={createTrainingMutation.isPending}
+              className="flex-1 bg-green-600 hover:bg-green-700"
+            >
+              {createTrainingMutation.isPending ? "Adding..." : "Add Training Session"}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }

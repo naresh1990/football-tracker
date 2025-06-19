@@ -9,6 +9,7 @@ import { queryClient } from "@/lib/queryClient";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
+import GameForm from "@/components/forms/game-form";
 
 export default function Games() {
   const playerId = 1;
@@ -53,10 +54,7 @@ export default function Games() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Games</h1>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Game
-          </Button>
+          <GameForm />
         </div>
 
         <Card>
@@ -74,10 +72,12 @@ export default function Games() {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">No games recorded yet</h3>
                 <p className="text-gray-600 mb-6">Start tracking your football matches and performance</p>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add Your First Game
-                </Button>
+                <GameForm trigger={
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Your First Game
+                  </Button>
+                } />
               </motion.div>
             ) : games && games.length > 0 ? (
               games?.map((game: any, index: number) => {

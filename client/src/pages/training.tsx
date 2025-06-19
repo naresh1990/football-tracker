@@ -6,6 +6,7 @@ import { Plus, Calendar, Clock, MapPin, User, Target, Zap, Users, Activity, Trop
 import { formatShortDate, formatTime } from "@/lib/utils";
 import { motion } from "framer-motion";
 import EmptyState from "@/components/ui/empty-state";
+import TrainingForm from "@/components/forms/training-form";
 
 export default function Training() {
   const { data: sessions, isLoading } = useQuery({
@@ -293,7 +294,8 @@ export default function Training() {
             title="No training sessions yet"
             description="Start tracking your football training journey to monitor progress and improve your skills systematically."
             actionLabel="Add Your First Session"
-            onAction={() => {/* Add training modal logic */}}
+            actionLabel="Add Your First Session"
+            onAction={() => {/* This will be handled by TrainingForm */}}
           />
         )}
       </div>

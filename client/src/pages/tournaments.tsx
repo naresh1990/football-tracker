@@ -6,6 +6,7 @@ import { Plus, Upload, Eye, Edit, Trophy } from "lucide-react";
 import { motion } from "framer-motion";
 import { formatDate } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import TournamentForm from "@/components/forms/tournament-form";
 
 export default function Tournaments() {
   const playerId = 1;
@@ -47,10 +48,7 @@ export default function Tournaments() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Tournaments</h1>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Tournament
-          </Button>
+          <TournamentForm />
         </div>
 
         <div className="space-y-4">
@@ -66,10 +64,12 @@ export default function Tournaments() {
             </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No tournaments yet</h3>
             <p className="text-gray-600 mb-6">Join tournaments to compete and track your progress</p>
-            <Button className="bg-yellow-500 hover:bg-yellow-600 text-white">
-              <Plus className="mr-2 h-4 w-4" />
-              Add Tournament
-            </Button>
+            <TournamentForm trigger={
+              <Button className="bg-yellow-500 hover:bg-yellow-600 text-white">
+                <Plus className="mr-2 h-4 w-4" />
+                Add Tournament
+              </Button>
+            } />
           </motion.div>
         ) : tournaments && tournaments.length > 0 ? (
           tournaments?.map((tournament: any) => (
