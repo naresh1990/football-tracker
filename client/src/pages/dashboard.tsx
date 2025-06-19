@@ -378,6 +378,22 @@ export default function Dashboard() {
         </motion.div>
       </motion.div>
 
+      {/* Floating Quick Add Button */}
+      <motion.button
+        onClick={() => setIsQuickAddOpen(true)}
+        className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-110 z-50 group"
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 1, type: "spring", stiffness: 200 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <Plus className="w-6 h-6" />
+        <span className="absolute right-full mr-3 top-1/2 transform -translate-y-1/2 bg-gray-900 text-white text-sm py-2 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+          Quick Add
+        </span>
+      </motion.button>
+
       {/* Quick Add Modal */}
       <QuickAddModal 
         isOpen={isQuickAddOpen} 
