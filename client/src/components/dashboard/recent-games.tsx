@@ -40,7 +40,7 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.2 }}
     >
-      <div className="p-6">
+      <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
         <div className="flex justify-end mb-4">
           <Link href="/games">
             <Button variant="ghost" className="text-green-600 hover:text-green-700 hover:bg-green-100 font-medium transition-all duration-200">

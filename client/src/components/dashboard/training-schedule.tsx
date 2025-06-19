@@ -72,7 +72,7 @@ export default function TrainingSchedule({ playerId }: TrainingScheduleProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="p-6">
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
         <div className="flex justify-end mb-4">
           <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold">
             <Plus className="w-4 h-4 mr-1" />

@@ -43,7 +43,7 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
 
   return (
     <section>
-      <div className="p-6">
+      <div className="bg-gradient-to-br from-orange-50 to-red-50 border-orange-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
         <div className="flex justify-end mb-4">
           <Button size="sm" className="bg-orange-600 hover:bg-orange-700 text-white font-semibold">
             <Plus className="w-4 h-4 mr-1" />

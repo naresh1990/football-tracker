@@ -53,7 +53,7 @@ export default function CoachFeedback({ playerId }: CoachFeedbackProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      <div className="p-6">
+      <div className="bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
         <div className="flex items-center justify-end mb-4">
           <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-white font-semibold">
             <Plus className="w-4 h-4 mr-1" />
