@@ -28,10 +28,11 @@ interface CoachFormProps {
   onSuccess?: () => void;
   onCancel?: () => void;
   clubId?: number;
+  coach?: any; // For editing existing coach
   trigger?: React.ReactNode;
 }
 
-export default function CoachForm({ onSuccess, onCancel, clubId, trigger }: CoachFormProps) {
+export default function CoachForm({ onSuccess, onCancel, clubId, coach, trigger }: CoachFormProps) {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [profileFile, setProfileFile] = useState<File | null>(null);
@@ -56,11 +57,11 @@ export default function CoachForm({ onSuccess, onCancel, clubId, trigger }: Coac
     resolver: zodResolver(coachFormSchema),
     defaultValues: {
       playerId: 1,
-      clubId: clubId,
-      name: "",
-      title: "Head Coach",
-      contact: "",
-      isActive: true,
+      clubId: clubId || coach?.clubId,
+      name: coach?.name || "",
+      title: coach?.title || "Head Coach",
+      contact: coach?.contact || "",
+      isActive: coach?.isActive ?? true,
     },
   });
 
@@ -78,8 +79,11 @@ export default function CoachForm({ onSuccess, onCancel, clubId, trigger }: Coac
         formData.append('profilePicture', profileFile);
       }
       
-      return fetch('/api/coaches', {
-        method: 'POST',
+      const url = coach ? `/api/coaches/${coach.id}` : '/api/coaches';
+      const method = coach ? 'PUT' : 'POST';
+      
+      return fetch(url, {
+        method,
         body: formData,
       }).then(res => {
         if (!res.ok) {
@@ -92,7 +96,7 @@ export default function CoachForm({ onSuccess, onCancel, clubId, trigger }: Coac
       queryClient.invalidateQueries({ queryKey: ["/api/coaches"] });
       toast({
         title: "Success",
-        description: "Coach added successfully",
+        description: coach ? "Coach updated successfully" : "Coach added successfully",
       });
       form.reset();
       resetImageState();
@@ -102,7 +106,7 @@ export default function CoachForm({ onSuccess, onCancel, clubId, trigger }: Coac
     onError: () => {
       toast({
         title: "Error",
-        description: "Failed to add coach",
+        description: coach ? "Failed to update coach" : "Failed to add coach",
         variant: "destructive",
       });
     },
@@ -216,7 +220,7 @@ export default function CoachForm({ onSuccess, onCancel, clubId, trigger }: Coac
                 <Select 
                   onValueChange={(value) => field.onChange(parseInt(value))} 
                   value={field.value?.toString() || ""}
-                  disabled={!!clubId}
+                  disabled={!!clubId || !!coach}
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -386,7 +390,10 @@ export default function CoachForm({ onSuccess, onCancel, clubId, trigger }: Coac
             className="bg-blue-600 hover:bg-blue-700"
             disabled={createCoachMutation.isPending}
           >
-            {createCoachMutation.isPending ? "Adding..." : "Add Coach"}
+            {createCoachMutation.isPending 
+              ? (coach ? "Updating..." : "Adding...") 
+              : (coach ? "Update Coach" : "Add Coach")
+            }
           </Button>
         </div>
       </form>
@@ -403,7 +410,7 @@ export default function CoachForm({ onSuccess, onCancel, clubId, trigger }: Coac
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <span className="text-2xl">👨‍🏫</span>
-              Add New Coach
+              {coach ? "Edit Coach" : "Add New Coach"}
             </DialogTitle>
           </DialogHeader>
           {formContent}
@@ -417,7 +424,7 @@ export default function CoachForm({ onSuccess, onCancel, clubId, trigger }: Coac
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <span className="text-2xl">👨‍🏫</span>
-          Add New Coach
+          {coach ? "Edit Coach" : "Add New Coach"}
         </CardTitle>
       </CardHeader>
       <CardContent>

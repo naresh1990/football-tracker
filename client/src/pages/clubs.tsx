@@ -288,7 +288,7 @@ export default function Clubs() {
                                   <p className="text-xs text-gray-500 mt-1">{coach.contact}</p>
                                 )}
                               </div>
-                              <div className="flex items-center">
+                              <div className="flex items-center gap-2">
                                 {coach.isActive ? (
                                   <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                     Active
@@ -298,6 +298,27 @@ export default function Clubs() {
                                     Inactive
                                   </span>
                                 )}
+                                <div className="flex gap-1">
+                                  <CoachForm
+                                    coach={coach}
+                                    onSuccess={() => {
+                                      queryClient.invalidateQueries({ queryKey: ["/api/coaches"] });
+                                    }}
+                                    trigger={
+                                      <Button variant="ghost" size="sm" className="h-6 w-6 p-0 hover:bg-blue-100">
+                                        <Edit className="h-3 w-3 text-blue-600" />
+                                      </Button>
+                                    }
+                                  />
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-6 w-6 p-0 hover:bg-red-100"
+                                    onClick={() => handleDeleteCoach(coach.id)}
+                                  >
+                                    <Trash2 className="h-3 w-3 text-red-600" />
+                                  </Button>
+                                </div>
                               </div>
                             </div>
                           ))}

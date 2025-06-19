@@ -525,17 +525,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/coaches/:id", async (req, res) => {
+  app.put("/api/coaches/:id", upload.single('profilePicture'), async (req, res) => {
     try {
+      console.log("Updating coach ID:", req.params.id);
+      console.log("Update data received:", req.body);
+      console.log("Profile picture file:", req.file);
+      
       const id = parseInt(req.params.id);
-      const validatedData = insertCoachSchema.partial().parse(req.body);
-      const coach = await storage.updateCoach(id, validatedData);
+      let profilePictureUrl = null;
+      
+      // Handle file upload if provided
+      if (req.file) {
+        profilePictureUrl = handleImageUpload(req.file);
+      }
+      
+      // Transform and validate data
+      const coachData: any = { ...req.body };
+      
+      // Convert playerId and clubId to numbers
+      if (coachData.playerId) {
+        coachData.playerId = parseInt(coachData.playerId);
+      }
+      if (coachData.clubId) {
+        coachData.clubId = parseInt(coachData.clubId);
+      }
+      
+      // Convert isActive to boolean
+      if (coachData.isActive) {
+        coachData.isActive = coachData.isActive === 'true';
+      }
+      
+      // Add profile picture URL if new file uploaded
+      if (profilePictureUrl) {
+        coachData.profilePicture = profilePictureUrl;
+      }
+      
+      console.log("Processing coach update data:", coachData);
+      const coach = await storage.updateCoach(id, coachData);
       if (!coach) {
         return res.status(404).json({ error: "Coach not found" });
       }
       res.json(coach);
     } catch (error) {
-      res.status(400).json({ error: "Invalid coach data" });
+      console.error("Error updating coach:", error);
+      res.status(400).json({ error: "Invalid coach data", details: error.message });
     }
   });
 
