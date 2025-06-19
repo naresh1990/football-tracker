@@ -224,6 +224,63 @@ export class MemStorage implements IStorage {
 
     // Add sample training sessions
     const sampleTrainingSessions = [
+      // Completed sessions (past dates)
+      {
+        playerId: 1,
+        type: "Speed & Agility",
+        date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000), // 2 weeks ago
+        duration: 90,
+        location: "Main Field",
+        coach: "Coach Martinez",
+        focus: "Sprint techniques and cone drills",
+        notes: "Excellent improvement in sprint times. Reduced 40m sprint by 0.3 seconds.",
+        completed: true
+      },
+      {
+        playerId: 1,
+        type: "Ball Control",
+        date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000), // 10 days ago
+        duration: 75,
+        location: "Training Ground A",
+        coach: "Coach Thompson",
+        focus: "First touch and dribbling skills",
+        notes: "Great session with significant progress on first touch. Need to work on weak foot control.",
+        completed: true
+      },
+      {
+        playerId: 1,
+        type: "Team Practice",
+        date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 1 week ago
+        duration: 120,
+        location: "Main Field",
+        coach: "Coach Martinez",
+        focus: "Tactical formations and set pieces",
+        notes: "Solid understanding of 4-3-3 formation. Positioned well in midfield during scrimmage.",
+        completed: true
+      },
+      {
+        playerId: 1,
+        type: "Fitness Training",
+        date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
+        duration: 60,
+        location: "Fitness Center",
+        coach: "Coach Davis",
+        focus: "Endurance and strength building",
+        notes: "Completed all cardio circuits. Showed good stamina improvement from last session.",
+        completed: true
+      },
+      {
+        playerId: 1,
+        type: "Shooting Practice",
+        date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+        duration: 90,
+        location: "Practice Field B",
+        coach: "Coach Thompson",
+        focus: "Finishing and accuracy training",
+        notes: "Scored 8/10 shots on target. Excellent improvement in accuracy from the penalty area.",
+        completed: true
+      },
+      // Upcoming sessions (future dates)
       {
         playerId: 1,
         type: "Speed & Agility",
@@ -266,17 +323,6 @@ export class MemStorage implements IStorage {
         coach: "Coach Davis",
         focus: "Endurance and strength building",
         notes: "Cardio workout and core strengthening exercises",
-        completed: false
-      },
-      {
-        playerId: 1,
-        type: "Shooting Practice",
-        date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 2 weeks from now
-        duration: 90,
-        location: "Practice Field B",
-        coach: "Coach Thompson",
-        focus: "Finishing and accuracy training",
-        notes: "Goal scoring drills from various angles and distances",
         completed: false
       }
     ];
