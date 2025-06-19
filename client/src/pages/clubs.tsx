@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,9 +14,11 @@ import ClubForm from "@/components/forms/club-form";
 import CoachForm from "@/components/forms/coach-form";
 import SquadMemberForm from "@/components/forms/squad-member-form";
 import { motion } from "framer-motion";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 export default function Clubs() {
   const { toast } = useToast();
+  const [expandedClubs, setExpandedClubs] = useState<Set<number>>(new Set());
 
   const { data: clubs, isLoading } = useQuery({
     queryKey: ["/api/clubs", { playerId: 1 }],
@@ -152,6 +154,18 @@ export default function Clubs() {
   const getClubSquadMembers = (clubId: number) => {
     return squadMembers?.filter((member: any) => member.clubId === clubId) || [];
   };
+
+  const toggleClubExpansion = (clubId: number) => {
+    const newExpanded = new Set(expandedClubs);
+    if (newExpanded.has(clubId)) {
+      newExpanded.delete(clubId);
+    } else {
+      newExpanded.add(clubId);
+    }
+    setExpandedClubs(newExpanded);
+  };
+
+  const isClubExpanded = (clubId: number) => expandedClubs.has(clubId);
 
   const getStatusColor = (status: string) => {
     return status === "active" ? "text-green-600" : "text-gray-500";
@@ -547,8 +561,9 @@ export default function Clubs() {
                         </TabsContent>
                       </Tabs>
                     </div>
-                  </div>
-                </CardContent>
+                    </div>
+                  </CardContent>
+                )}
               </Card>
             );
           })
