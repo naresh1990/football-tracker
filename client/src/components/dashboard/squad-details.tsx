@@ -13,7 +13,7 @@ export default function SquadDetails({ playerId }: SquadDetailsProps) {
     queryKey: ["/api/players/1"],
   });
 
-  const { data: squad, isLoading: squadLoading } = useQuery({
+  const { data: squadMembers, isLoading: squadLoading } = useQuery({
     queryKey: ["/api/squad", { playerId }],
   });
 

@@ -448,20 +448,46 @@ export class MemStorage implements IStorage {
     const coachingStaffData = [
       {
         playerId: 1,
-        name: "Coach Martinez",
+        name: "Mr. Anjith Kumar",
         role: "Head Coach",
-        contact: "martinez@lionsfc.com"
+        contact: "anjith.kumar@sporthood.com"
       },
       {
         playerId: 1,
-        name: "Coach Thompson",
+        name: "Mr. Vaishnav",
         role: "Assistant Coach",
-        contact: "thompson@lionsfc.com"
+        contact: "vaishnav@sporthood.com"
       }
     ];
 
     for (const coach of coachingStaffData) {
       await this.createCoachingStaffMember(coach);
+    }
+
+    // Add squad members
+    const squadMembersData = [
+      {
+        playerId: 1,
+        memberName: "Darshil",
+        position: "Midfielder",
+        jerseyNumber: "#9"
+      },
+      {
+        playerId: 1,
+        memberName: "Aarav",
+        position: "Forward",
+        jerseyNumber: "#10"
+      },
+      {
+        playerId: 1,
+        memberName: "Rohan",
+        position: "Defender",
+        jerseyNumber: "#5"
+      }
+    ];
+
+    for (const member of squadMembersData) {
+      await this.createSquadMember(member);
     }
   }
 
