@@ -102,11 +102,13 @@ This is a comprehensive football player tracking application built for monitorin
 
 ## Recent Changes
 
-- June 19, 2025: Restored database storage functionality
+- June 19, 2025: Restored database storage functionality and cleared all sample data
   - Fixed database connection issues and switched back to DatabaseStorage from MemStorage
-  - Populated database with sample player, club, game, and tournament data
-  - Application now uses persistent PostgreSQL storage as intended
-  - All API endpoints working correctly with database backend
+  - Cleared all sample data from database: games, training sessions, tournaments, coach feedback
+  - Made all frontend components completely dynamic from database with no hardcoded values
+  - Updated statistics components to show "No data yet" messages when appropriate
+  - Application now uses persistent PostgreSQL storage with authentic data only
+  - All API endpoints working correctly with database backend returning empty arrays when no data exists
 - June 19, 2025: Integrated active club data into Dashboard Team & Profile sections
   - Updated HeroBanner to display dynamic club information instead of static data
   - Modified SquadDetails component to show real coach and squad member counts from active club
