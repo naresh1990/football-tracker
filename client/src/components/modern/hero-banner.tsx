@@ -269,24 +269,26 @@ export default function HeroBanner({ player, activeClub, squadMembers, onQuickAd
                         const getTrainingIcon = (type: string) => {
                           switch (type.toLowerCase()) {
                             case 'fitness training':
-                              return <Zap className="w-4 h-4 text-white" />;
+                              return { icon: <Zap className="w-4 h-4 text-white" />, color: 'from-orange-400 to-orange-600' };
                             case 'team practice':
-                              return <Users className="w-4 h-4 text-white" />;
+                              return { icon: <Users className="w-4 h-4 text-white" />, color: 'from-blue-400 to-blue-600' };
                             case 'technical skills':
-                              return <Target className="w-4 h-4 text-white" />;
+                              return { icon: <Target className="w-4 h-4 text-white" />, color: 'from-purple-400 to-purple-600' };
                             case 'match preparation':
-                              return <Trophy className="w-4 h-4 text-white" />;
+                              return { icon: <Trophy className="w-4 h-4 text-white" />, color: 'from-yellow-400 to-yellow-600' };
                             default:
-                              return <Dumbbell className="w-4 h-4 text-white" />;
+                              return { icon: <Dumbbell className="w-4 h-4 text-white" />, color: 'from-green-400 to-green-600' };
                           }
                         };
+
+                        const trainingData = getTrainingIcon(session.type);
 
                         return (
                         <div key={session.id} className="bg-white/10 rounded-2xl p-4">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <div className="p-2 bg-gradient-to-br from-green-400 to-green-600 rounded-lg">
-                                {getTrainingIcon(session.type)}
+                              <div className={`p-2 bg-gradient-to-br ${trainingData.color} rounded-lg`}>
+                                {trainingData.icon}
                               </div>
                               <div>
                                 <h4 className="font-semibold text-white">{session.type}</h4>
