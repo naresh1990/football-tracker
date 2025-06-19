@@ -45,12 +45,17 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
   return (
     <section>
       <Card className="shadow-lg">
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <CardTitle className="text-xl font-bold text-gray-900">Current Tournaments</CardTitle>
-            <Button className="bg-football-green hover:bg-green-700 text-white">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Tournament
+        <CardHeader className="pb-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-md">
+                <Trophy className="w-5 h-5 text-white" />
+              </div>
+              <CardTitle className="text-xl font-bold text-gray-900">Current Tournaments</CardTitle>
+            </div>
+            <Button size="sm" className="bg-orange-600 hover:bg-orange-700 text-white font-semibold">
+              <Plus className="w-4 h-4 mr-1" />
+              Add
             </Button>
           </div>
         </CardHeader>

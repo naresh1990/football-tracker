@@ -20,7 +20,9 @@ import {
   Star,
   Trophy,
   Activity,
-  Award
+  Award,
+  Clock,
+  MessageSquare
 } from "lucide-react";
 
 const containerVariants = {
@@ -142,17 +144,25 @@ export default function Dashboard() {
           <RecentGames playerId={1} />
         </motion.div>
 
-        {/* Insights Section */}
+        {/* Training & Tournaments Row */}
         <motion.div variants={itemVariants}>
           <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <Star className="w-6 h-6 text-blue-600" />
-            Latest Updates
+            <Clock className="w-6 h-6 text-blue-600" />
+            Training & Tournaments
           </h2>
-          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            <UpcomingTraining playerId={1} />
-            <CoachFeedback playerId={1} />
-            <TournamentTracking playerId={1} />
+          <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+            <UpcomingTraining playerId={playerId} />
+            <TournamentTracking playerId={playerId} />
           </div>
+        </motion.div>
+
+        {/* Coach Feedback Section */}
+        <motion.div variants={itemVariants}>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <MessageSquare className="w-6 h-6 text-green-600" />
+            Coach Feedback
+          </h2>
+          <CoachFeedback playerId={playerId} />
         </motion.div>
 
         {/* Team & Profile Section */}

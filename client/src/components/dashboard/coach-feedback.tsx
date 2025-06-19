@@ -56,16 +56,10 @@ export default function CoachFeedback({ playerId }: CoachFeedbackProps) {
     >
       <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 shadow-lg hover:shadow-xl transition-all duration-300">
         <CardHeader className="pb-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-md">
-                <MessageSquare className="w-5 h-5 text-white" />
-              </div>
-              <CardTitle className="text-xl font-bold text-gray-900">Coach Feedback</CardTitle>
-            </div>
+          <div className="flex items-center justify-end">
             <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white font-semibold">
               <Plus className="w-4 h-4 mr-1" />
-              Add
+              Add Feedback
             </Button>
           </div>
         </CardHeader>
@@ -79,8 +73,8 @@ export default function CoachFeedback({ playerId }: CoachFeedbackProps) {
               <p className="text-sm text-gray-500 mt-1">Coach feedback will appear here</p>
             </div>
           ) : (
-            <div className="space-y-3">
-              {feedback?.slice(0, 2).map((item: any, index: number) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {feedback?.slice(0, 6).map((item: any, index: number) => (
                 <motion.div
                   key={item.id}
                   initial={{ opacity: 0, x: -20 }}
