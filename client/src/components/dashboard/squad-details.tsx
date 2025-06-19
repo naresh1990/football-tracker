@@ -6,9 +6,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 interface SquadDetailsProps {
   playerId: number;
+  activeClub?: any;
+  coaches?: any[];
+  squadMembers?: any[];
 }
 
-export default function SquadDetails({ playerId }: SquadDetailsProps) {
+export default function SquadDetails({ playerId, activeClub, coaches, squadMembers }: SquadDetailsProps) {
   const { data: player } = useQuery({
     queryKey: ["/api/players/1"],
   });
@@ -68,7 +71,7 @@ export default function SquadDetails({ playerId }: SquadDetailsProps) {
               <div className="space-y-3">
                 <div className="flex items-center justify-between py-2 border-b border-blue-100">
                   <span className="text-gray-600 text-sm">Team:</span>
-                  <span className="font-semibold text-gray-900">Sporthood</span>
+                  <span className="font-semibold text-gray-900">{activeClub?.name || 'No Active Club'}</span>
                 </div>
                 <div className="flex items-center justify-between py-2 border-b border-blue-100">
                   <span className="text-gray-600 text-sm">Division:</span>

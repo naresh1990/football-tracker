@@ -84,7 +84,24 @@ export default function Dashboard() {
     refetchOnWindowFocus: true,
   });
 
-  if (playerLoading || statsLoading) {
+  // Fetch active club data
+  const { data: activeClub, isLoading: activeClubLoading } = useQuery({
+    queryKey: ["/api/clubs/active", { playerId: 1 }],
+    staleTime: 0,
+    cacheTime: 0,
+  });
+
+  // Fetch coaches for active club
+  const { data: coaches } = useQuery({
+    queryKey: ["/api/coaches", { playerId: 1 }],
+  });
+
+  // Fetch squad members for active club
+  const { data: squadMembers } = useQuery({
+    queryKey: ["/api/squad"],
+  });
+
+  if (playerLoading || statsLoading || activeClubLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <motion.div
@@ -107,6 +124,7 @@ export default function Dashboard() {
       {/* Hero Banner */}
       <HeroBanner 
         player={player} 
+        activeClub={activeClub}
         onQuickAdd={() => setIsQuickAddOpen(true)} 
       />
 

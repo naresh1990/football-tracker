@@ -15,10 +15,11 @@ import {
 
 interface HeroBannerProps {
   player: any;
+  activeClub?: any;
   onQuickAdd: () => void;
 }
 
-export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
+export default function HeroBanner({ player, activeClub, onQuickAdd }: HeroBannerProps) {
   // Fetch real stats data
   const { data: stats } = useQuery({
     queryKey: ["/api/stats/summary"],
@@ -118,17 +119,22 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
               
               <div className="flex items-center justify-center lg:justify-start gap-2 text-blue-100">
                 <Building className="w-5 h-5 text-blue-300" />
-                <span>Sporthood U10 Elite Squad</span>
+                <span>{activeClub ? `${activeClub.name} ${activeClub.squadLevel || ''}` : 'No Active Club'}</span>
               </div>
               
               <div className="flex items-center justify-center lg:justify-start gap-2 text-blue-100">
                 <Star className="w-5 h-5 text-blue-300" />
-                <span>2025-26 Season</span>
+                <span>
+                  {activeClub && activeClub.seasonStart && activeClub.seasonEnd 
+                    ? `${new Date(activeClub.seasonStart).getFullYear()}-${new Date(activeClub.seasonEnd).getFullYear().toString().slice(2)} Season`
+                    : 'Current Season'
+                  }
+                </span>
               </div>
               
               <div className="flex items-center justify-center lg:justify-start gap-2 text-blue-100">
                 <MapPin className="w-5 h-5 text-blue-300" />
-                <span className="text-sm">Sporthood Center of Excellence, HAL Sports Club</span>
+                <span className="text-sm">{activeClub?.description || 'Professional football development'}</span>
               </div>
             </motion.div>
 

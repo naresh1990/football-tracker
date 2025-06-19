@@ -102,6 +102,13 @@ This is a comprehensive football player tracking application built for monitorin
 
 ## Recent Changes
 
+- June 19, 2025: Integrated active club data into Dashboard Team & Profile sections
+  - Updated HeroBanner to display dynamic club information instead of static data
+  - Modified SquadDetails component to show real coach and squad member counts from active club
+  - Enhanced PlayerProfile component to use active club data
+  - Added API endpoint for fetching active club data
+  - Dashboard now reflects current active club name, season, squad level, and coaching staff
+  - Removed all static/hardcoded club information in favor of dynamic data
 - June 19, 2025: Implemented single active club constraint logic
   - Added business logic to ensure only one club can be active at any time
   - Updated database storage methods to automatically deactivate other clubs when setting one as active
