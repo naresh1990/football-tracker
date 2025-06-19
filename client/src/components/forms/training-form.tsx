@@ -82,9 +82,13 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {trigger || (
-          <Button className="bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 w-auto inline-flex items-center whitespace-nowrap !text-white">
-            <Plus className="mr-2 h-4 w-4" />
-            Add Training Session
+          <Button 
+            variant="default"
+            className="bg-green-600 hover:bg-green-700 font-bold px-4 py-2 w-auto inline-flex items-center whitespace-nowrap"
+            style={{ color: 'white' }}
+          >
+            <Plus className="mr-2 h-4 w-4 text-white" />
+            <span className="text-white">Add Training Session</span>
           </Button>
         )}
       </DialogTrigger>

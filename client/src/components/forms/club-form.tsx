@@ -82,9 +82,13 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {trigger || (
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 w-auto inline-flex items-center whitespace-nowrap !text-white">
-            <Plus className="mr-2 h-4 w-4" />
-            {mode === 'edit' ? 'Edit Club' : 'Add Club'}
+          <Button 
+            variant="default"
+            className="bg-blue-600 hover:bg-blue-700 font-bold px-4 py-2 w-auto inline-flex items-center whitespace-nowrap"
+            style={{ color: 'white' }}
+          >
+            <Plus className="mr-2 h-4 w-4 text-white" />
+            <span className="text-white">{mode === 'edit' ? 'Edit Club' : 'Add Club'}</span>
           </Button>
         )}
       </DialogTrigger>
