@@ -187,6 +187,19 @@ export default function Clubs() {
                     </div>
                     
                     <div className="flex items-center space-x-2">
+                      <CoachForm 
+                        trigger={
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="text-gray-600 hover:text-green-600 hover:bg-green-50 w-auto inline-flex items-center"
+                            title="Add Coach"
+                          >
+                            <UserPlus className="w-4 h-4" />
+                          </Button>
+                        }
+                        clubId={club.id}
+                      />
                       <ClubForm 
                         club={club}
                         mode="edit"
@@ -195,6 +208,7 @@ export default function Clubs() {
                             variant="ghost" 
                             size="sm" 
                             className="text-gray-600 hover:text-blue-600 hover:bg-blue-50 w-auto inline-flex items-center"
+                            title="Edit Club"
                           >
                             <Edit className="w-4 h-4" />
                           </Button>
@@ -206,6 +220,7 @@ export default function Clubs() {
                         className="text-gray-600 hover:text-red-600 hover:bg-red-50"
                         onClick={() => deleteClubMutation.mutate(club.id)}
                         disabled={deleteClubMutation.isPending}
+                        title="Delete Club"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -272,7 +287,16 @@ export default function Clubs() {
                       ) : (
                         <div className="text-center py-6 text-gray-500">
                           <Users className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-                          <p className="text-sm">No coaches assigned</p>
+                          <p className="text-sm mb-3">No coaches assigned</p>
+                          <CoachForm 
+                            trigger={
+                              <Button variant="outline" size="sm" className="text-blue-600 hover:text-blue-700">
+                                <UserPlus className="w-4 h-4 mr-1" />
+                                Add First Coach
+                              </Button>
+                            }
+                            clubId={club.id}
+                          />
                         </div>
                       )}
                     </div>
