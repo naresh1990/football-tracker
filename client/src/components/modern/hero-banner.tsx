@@ -292,15 +292,33 @@ export default function HeroBanner({ player, activeClub, squadMembers, onQuickAd
                               </div>
                               <div>
                                 <h4 className="font-semibold text-white">{session.type}</h4>
-                                <div className="flex items-center gap-4 text-sm text-blue-200">
-                                  <div className="flex items-center gap-1">
-                                    <Calendar className="w-3 h-3" />
-                                    {moment.tz(session.date, 'Asia/Kolkata').format('MMM DD')}
+                                <div className="space-y-1">
+                                  <div className="flex items-center gap-4 text-sm text-blue-200">
+                                    <div className="flex items-center gap-1">
+                                      <Calendar className="w-3 h-3" />
+                                      {moment.tz(session.date, 'Asia/Kolkata').format('dddd, MMM DD')}
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      <Clock className="w-3 h-3" />
+                                      {moment.tz(session.date, 'Asia/Kolkata').format('h:mm A')}
+                                    </div>
                                   </div>
-                                  <div className="flex items-center gap-1">
-                                    <Clock className="w-3 h-3" />
-                                    {moment.tz(session.date, 'Asia/Kolkata').format('h:mm A')}
+                                  <div className="flex items-center gap-4 text-xs text-blue-300">
+                                    <div className="flex items-center gap-1">
+                                      <Users className="w-3 h-3" />
+                                      <span>{session.coach || 'Coach TBA'}</span>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      <Building className="w-3 h-3" />
+                                      <span>{session.club || 'Sporthood FC'}</span>
+                                    </div>
                                   </div>
+                                  {session.location && (
+                                    <div className="flex items-center gap-1 text-xs text-blue-300">
+                                      <MapPin className="w-3 h-3" />
+                                      <span>{session.location}</span>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </div>
