@@ -228,14 +228,19 @@ export default function Training() {
   };
 
   // Transform sessions into calendar events
-  const events = sessions?.map((session: any) => ({
-    id: session.id,
-    title: session.type,
-    start: new Date(session.date),
-    end: new Date(new Date(session.date).getTime() + session.duration * 60000),
-    resource: session,
-    allDay: false,
-  })) || [];
+  const events = sessions?.map((session: any) => {
+    const startDate = new Date(session.date);
+    const endDate = new Date(startDate.getTime() + (session.duration || 90) * 60 * 1000);
+    
+    return {
+      id: session.id,
+      title: session.type,
+      start: startDate,
+      end: endDate,
+      resource: session,
+      allDay: false,
+    };
+  }) || [];
 
   const eventStyleGetter = (event: any) => {
     const session = event.resource;
@@ -448,7 +453,7 @@ export default function Training() {
 
         {/* Event Details Modal */}
         <Dialog open={showEventDetails} onOpenChange={setShowEventDetails}>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-2xl" aria-describedby="training-event-details">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-3">
                 {selectedEvent && (
@@ -469,7 +474,7 @@ export default function Training() {
             </DialogHeader>
             
             {selectedEvent && (
-              <div className="space-y-6">
+              <div className="space-y-6" id="training-event-details">
                 {/* Status Badge */}
                 <div className="flex items-center justify-between">
                   {getAttendanceBadge(selectedEvent.attendance || 'pending')}
