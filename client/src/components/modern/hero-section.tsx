@@ -12,14 +12,17 @@ interface HeroSectionProps {
 
 const HeroSection: React.FC<HeroSectionProps> = ({ player, onQuickAdd }) => {
   return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-football-primary via-football-secondary to-football-dark">
+    <div className="relative overflow-hidden bg-gradient-to-br from-football-primary via-football-secondary to-football-dark min-h-[500px]">
       {/* Background Pattern */}
-      <div className="absolute inset-0 field-pattern opacity-20"></div>
+      <div className="absolute inset-0 field-pattern opacity-10"></div>
       
       {/* Floating Elements */}
       <div className="absolute top-10 left-10 w-20 h-20 bg-white/10 rounded-full animate-float"></div>
       <div className="absolute top-32 right-20 w-12 h-12 bg-white/10 rounded-full animate-float" style={{ animationDelay: "2s" }}></div>
       <div className="absolute bottom-20 left-1/4 w-16 h-16 bg-white/10 rounded-full animate-float" style={{ animationDelay: "4s" }}></div>
+      
+      {/* Gradient overlay for better text contrast */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30"></div>
 
       <div className="relative z-10 px-6 py-16 mx-auto max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -103,78 +106,77 @@ const HeroSection: React.FC<HeroSectionProps> = ({ player, onQuickAdd }) => {
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
             className="space-y-6"
           >
-            <ModernCard variant="glass" className="p-6 bg-white/20 backdrop-blur-xl">
+            <ModernCard className="p-6 bg-white/95 backdrop-blur-xl border-0 shadow-xl">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-white" style={{ textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)' }}>Season Overview</h3>
-                <Trophy className="w-6 h-6 text-yellow-400" />
+                <h3 className="text-lg font-semibold text-gray-800">Season Overview</h3>
+                <Trophy className="w-6 h-6 text-yellow-600" />
               </div>
               
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
                   <motion.div
-                    className="text-3xl font-bold text-white text-display"
+                    className="text-3xl font-bold text-football-primary text-display"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 200, delay: 1 }}
-                    style={{ textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)' }}
                   >
                     12
                   </motion.div>
-                  <p className="text-white text-sm" style={{ textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)' }}>Games Played</p>
+                  <p className="text-gray-600 text-sm">Games Played</p>
                 </div>
                 
                 <div className="text-center">
                   <motion.div
-                    className="text-3xl font-bold text-yellow-400 text-display"
+                    className="text-3xl font-bold text-yellow-600 text-display"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 200, delay: 1.2 }}
                   >
                     8
                   </motion.div>
-                  <p className="text-white/70 text-sm">Goals</p>
+                  <p className="text-gray-600 text-sm">Goals</p>
                 </div>
                 
                 <div className="text-center">
                   <motion.div
-                    className="text-3xl font-bold text-blue-400 text-display"
+                    className="text-3xl font-bold text-blue-600 text-display"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 200, delay: 1.4 }}
                   >
                     5
                   </motion.div>
-                  <p className="text-white/70 text-sm">Assists</p>
+                  <p className="text-gray-600 text-sm">Assists</p>
                 </div>
                 
                 <div className="text-center">
                   <motion.div
-                    className="text-3xl font-bold text-green-400 text-display"
+                    className="text-3xl font-bold text-green-600 text-display"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 200, delay: 1.6 }}
                   >
                     75%
                   </motion.div>
-                  <p className="text-white/70 text-sm">Win Rate</p>
+                  <p className="text-gray-600 text-sm">Win Rate</p>
                 </div>
               </div>
             </ModernCard>
 
-            <ModernCard variant="glass" className="p-6">
+            <ModernCard className="p-6 bg-white/95 backdrop-blur-xl border-0 shadow-xl">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-white">Next Training</h3>
-                <Calendar className="w-6 h-6 text-white/70" />
+                <h3 className="text-lg font-semibold text-gray-800">Next Training</h3>
+                <Calendar className="w-6 h-6 text-gray-600" />
               </div>
               
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-white/80">Technical Skills</span>
-                  <span className="text-white text-sm">Tomorrow 4:00 PM</span>
+                  <span className="text-gray-700">Technical Skills</span>
+                  <span className="text-gray-800 text-sm font-medium">Tomorrow 4:00 PM</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-white/80">Match Preparation</span>
-                  <span className="text-white text-sm">Saturday 10:00 AM</span>
+                  <span className="text-gray-700">Match Preparation</span>
+                  <span className="text-gray-800 text-sm font-medium">Saturday 10:00 AM</span>
                 </div>
               </div>
             </ModernCard>

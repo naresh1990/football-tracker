@@ -27,7 +27,7 @@ const StatsDisplay: React.FC<StatsDisplayProps> = ({
   const variants = {
     default: "stats-card",
     premium: "bg-white border-football shadow-premium",
-    gradient: "bg-football-gradient text-white"
+    gradient: "bg-football-gradient text-white shadow-xl"
   };
 
   const trendColors = {
@@ -49,7 +49,7 @@ const StatsDisplay: React.FC<StatsDisplayProps> = ({
               "text-sm font-medium",
               variant === "gradient" ? "text-white" : "text-gray-600"
             )}
-            style={variant === "gradient" ? { textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)' } : {}}
+            style={variant === "gradient" ? { textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' } : {}}
             >
               {title}
             </p>
@@ -62,7 +62,7 @@ const StatsDisplay: React.FC<StatsDisplayProps> = ({
                 "text-3xl font-bold text-display mt-2",
                 variant === "gradient" ? "text-white" : "text-football-primary"
               )}
-              style={variant === "gradient" ? { textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' } : {}}
+              style={variant === "gradient" ? { textShadow: '3px 3px 6px rgba(0, 0, 0, 0.6)' } : {}}
               >
                 {value}
               </p>
@@ -72,7 +72,7 @@ const StatsDisplay: React.FC<StatsDisplayProps> = ({
                 "text-xs mt-1",
                 variant === "gradient" ? "text-white" : "text-gray-500"
               )}
-              style={variant === "gradient" ? { textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)' } : {}}
+              style={variant === "gradient" ? { textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' } : {}}
               >
                 {subtitle}
               </p>

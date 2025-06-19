@@ -65,7 +65,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <HeroSection 
         player={player} 
@@ -74,12 +74,12 @@ export default function Dashboard() {
 
       {/* Main Dashboard Content */}
       <motion.div 
-        className="relative -mt-16 z-20"
+        className="relative -mt-16 z-20 bg-white/90 backdrop-blur-sm rounded-t-3xl shadow-xl"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        <div className="max-w-7xl mx-auto px-6 pb-16 space-y-12">
+        <div className="max-w-7xl mx-auto px-6 pt-8 pb-16 space-y-12">
           {/* Quick Stats Section */}
           <motion.div variants={itemVariants}>
             <QuickStats stats={stats} />
