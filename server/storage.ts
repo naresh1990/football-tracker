@@ -1101,9 +1101,11 @@ export class DatabaseStorage implements IStorage {
     return newCoach;
   }
 
-  async updateCoach(id: number, coach: Partial<InsertCoach>): Promise<Coach | undefined> {
-    const [updated] = await db.update(coaches).set(coach).where(eq(coaches.id, id)).returning();
-    return updated || undefined;
+  async updateCoach(id: number, coach: any): Promise<any> {
+    console.log("Updating coach ID:", id, "with data:", coach);
+    const [updatedCoach] = await db.update(coaches).set(coach).where(eq(coaches.id, id)).returning();
+    console.log("Updated coach:", updatedCoach);
+    return updatedCoach || undefined;
   }
 
   async deleteCoach(id: number): Promise<boolean> {
