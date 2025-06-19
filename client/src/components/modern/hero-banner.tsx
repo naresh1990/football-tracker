@@ -41,13 +41,15 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center space-x-4 mb-6">
-              <Avatar className="w-16 h-16 sm:w-20 sm:h-20 ring-4 ring-white/30">
-                <AvatarImage src={darshilPhoto} alt={player.name} className="object-cover" />
-                <AvatarFallback className="text-xl font-bold bg-white/20 text-white">
-                  {player.name.split(' ').map(n => n[0]).join('')}
-                </AvatarFallback>
-              </Avatar>
+            <div className="flex items-start space-x-6 mb-6">
+              <div className="flex-shrink-0">
+                <img 
+                  src={darshilPhoto} 
+                  alt={player.name}
+                  className="w-24 h-32 sm:w-28 sm:h-36 object-cover rounded-2xl ring-4 ring-white/30 shadow-xl"
+                />
+              </div>
+              <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <motion.h1 
                   className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2"
@@ -104,18 +106,7 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
               Track your football journey with comprehensive analytics and performance insights.
             </motion.p>
 
-            <motion.button
-              onClick={onQuickAdd}
-              className="bg-white text-blue-600 hover:bg-gray-50 px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Target className="w-4 h-4" />
-              Add New Performance
-            </motion.button>
+
           </motion.div>
 
           {/* Quick Stats */}
