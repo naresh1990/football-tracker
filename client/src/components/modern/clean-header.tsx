@@ -88,19 +88,6 @@ export default function CleanHeader({ onToggleMobileMenu, onQuickAdd }: CleanHea
 
           {/* Actions */}
           <div className="flex items-center space-x-4">
-            <motion.button
-              onClick={onQuickAdd}
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-2.5 shadow-lg hover:shadow-xl border-0 whitespace-nowrap"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Plus className="w-4 h-4 flex-shrink-0" />
-              <span className="hidden sm:inline font-medium">Quick Add</span>
-            </motion.button>
-            
             {/* Mobile Menu Button */}
             <motion.button 
               onClick={onToggleMobileMenu}
