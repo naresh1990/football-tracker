@@ -104,10 +104,7 @@ export default function Training() {
             <h1 className="text-4xl font-bold text-gray-900 mb-2">Training Sessions</h1>
             <p className="text-gray-600">Track your training progress and upcoming sessions</p>
           </div>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 px-6 py-3">
-            <Plus className="mr-2 h-5 w-5" />
-            Add Training Session
-          </Button>
+          <TrainingForm />
         </motion.div>
 
         {/* Upcoming Sessions Section */}
@@ -294,7 +291,7 @@ export default function Training() {
             title="No training sessions yet"
             description="Start tracking your football training journey to monitor progress and improve your skills systematically."
             actionLabel="Add Your First Session"
-            onAction={() => {}}
+            action={<TrainingForm />}
           />
         )}
       </div>

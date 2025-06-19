@@ -8,6 +8,7 @@ interface EmptyStateProps {
   description: string;
   actionLabel?: string;
   onAction?: () => void;
+  action?: React.ReactNode;
   variant?: "default" | "compact";
 }
 
@@ -17,6 +18,7 @@ export default function EmptyState({
   description,
   actionLabel,
   onAction,
+  action,
   variant = "default"
 }: EmptyStateProps) {
   const containerVariants = {
@@ -84,14 +86,16 @@ export default function EmptyState({
           {description}
         </motion.p>
         
-        {actionLabel && onAction && (
+        {(action || (actionLabel && onAction)) && (
           <motion.div variants={itemVariants}>
-            <Button
-              onClick={onAction}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-2 rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
-            >
-              {actionLabel}
-            </Button>
+            {action || (
+              <Button
+                onClick={onAction}
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-2 rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
+              >
+                {actionLabel}
+              </Button>
+            )}
           </motion.div>
         )}
       </motion.div>
@@ -126,14 +130,16 @@ export default function EmptyState({
         {description}
       </motion.p>
       
-      {actionLabel && onAction && (
+      {(action || (actionLabel && onAction)) && (
         <motion.div variants={itemVariants}>
-          <Button
-            onClick={onAction}
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-3 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-          >
-            {actionLabel}
-          </Button>
+          {action || (
+            <Button
+              onClick={onAction}
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-3 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+            >
+              {actionLabel}
+            </Button>
+          )}
         </motion.div>
       )}
     </motion.div>
