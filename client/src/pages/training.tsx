@@ -2,70 +2,158 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Plus, Calendar, Clock, MapPin, User, Target, Zap, Users, Activity, Trophy, Dumbbell, CheckCircle, X, AlertCircle, Trash2, Ban, MoreVertical } from "lucide-react";
-import { formatShortDate, formatTime } from "@/lib/utils";
+import { 
+  Calendar as CalendarIcon, 
+  Clock, 
+  MapPin, 
+  User, 
+  CheckCircle2, 
+  X, 
+  Dumbbell, 
+  Target, 
+  Zap, 
+  Users, 
+  Activity, 
+  Trophy,
+  Trash2,
+  MoreHorizontal,
+  ChevronLeft,
+  ChevronRight
+} from "lucide-react";
 import { motion } from "framer-motion";
-import EmptyState from "@/components/ui/empty-state";
 import TrainingForm from "@/components/forms/training-form";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
+import EmptyState from "@/components/ui/empty-state";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import '../styles/calendar.css';
+import { useState } from 'react';
+
+const localizer = momentLocalizer(moment);
 
 export default function Training() {
-  const { data: sessions, isLoading } = useQuery({
-    queryKey: ["/api/training"],
-  });
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const playerId = 1;
+  
+  const [view, setView] = useState<'month' | 'week' | 'day'>('month');
+  const [date, setDate] = useState(new Date());
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [showEventDetails, setShowEventDetails] = useState(false);
 
-  const { data: coaches } = useQuery({
-    queryKey: ["/api/coaches"],
+  const { data: sessions, isLoading } = useQuery({
+    queryKey: ["/api/training", { playerId }],
   });
 
   const { data: clubs } = useQuery({
     queryKey: ["/api/clubs"],
   });
 
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-
   const updateAttendanceMutation = useMutation({
-    mutationFn: ({ sessionId, attendance }: { sessionId: number; attendance: string }) =>
-      apiRequest("PUT", `/api/training/${sessionId}/attendance`, { attendance }),
+    mutationFn: async ({ id, attendance }: { id: number; attendance: string }) => {
+      const response = await fetch(`/api/training/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ attendance }),
+      });
+      if (!response.ok) throw new Error('Failed to update attendance');
+      return response.json();
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/training"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
       toast({
-        title: "Success",
-        description: "Attendance updated successfully",
+        title: "Attendance Updated",
+        description: "Training session attendance has been updated successfully.",
       });
     },
     onError: () => {
       toast({
         title: "Error",
-        description: "Failed to update attendance",
+        description: "Failed to update attendance. Please try again.",
         variant: "destructive",
       });
     },
   });
 
   const deleteSessionMutation = useMutation({
-    mutationFn: (sessionId: number) =>
-      apiRequest("DELETE", `/api/training/${sessionId}`),
+    mutationFn: async (id: number) => {
+      const response = await fetch(`/api/training/${id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) throw new Error('Failed to delete session');
+      return response.json();
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/training"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
       toast({
-        title: "Success",
-        description: "Training session deleted successfully",
+        title: "Session Deleted",
+        description: "Training session has been deleted successfully.",
       });
     },
     onError: () => {
       toast({
         title: "Error",
-        description: "Failed to delete training session",
+        description: "Failed to delete session. Please try again.",
         variant: "destructive",
       });
     },
   });
+
+  const updateAttendance = (id: number, attendance: string) => {
+    updateAttendanceMutation.mutate({ id, attendance });
+  };
+
+  const deleteSession = (id: number) => {
+    deleteSessionMutation.mutate(id);
+  };
+
+  const formatDate = (date: string | Date) => {
+    return moment(date).format('MMMM Do, YYYY');
+  };
+
+  const formatShortDate = (date: string | Date) => {
+    return moment(date).format('MMM D, YYYY');
+  };
+
+  const formatTime = (date: string | Date) => {
+    return moment(date).format('h:mm A');
+  };
+
+  const getClubLogo = (coachName: string) => {
+    if (!clubs) return null;
+    
+    const club = clubs.find((club: any) => 
+      club.coaches?.some((coach: any) => coach.name === coachName)
+    );
+    
+    return club?.logo || null;
+  };
+
+  const getAttendanceBadge = (attendance: string) => {
+    switch (attendance) {
+      case 'completed':
+        return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Completed</Badge>;
+      case 'missed':
+        return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">Missed</Badge>;
+      case 'cancelled':
+        return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">Cancelled</Badge>;
+      default:
+        return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">Pending</Badge>;
+    }
+  };
 
   const getTrainingIcon = (type: string) => {
     switch (type.toLowerCase()) {
@@ -139,61 +227,6 @@ export default function Training() {
     }
   };
 
-  const getClubLogo = (coachName: string) => {
-    const coach = coaches?.find((c: any) => c.name === coachName);
-    if (!coach) return null;
-    
-    const club = clubs?.find((c: any) => c.id === coach.clubId);
-    return club?.logo || null;
-  };
-
-  const getAttendanceBadge = (attendance: string) => {
-    switch (attendance) {
-      case 'completed':
-        return (
-          <Badge className="bg-green-100 text-green-700 border-green-200">
-            <CheckCircle className="w-3 h-3 mr-1" />
-            Completed
-          </Badge>
-        );
-      case 'missed':
-        return (
-          <Badge className="bg-red-100 text-red-700 border-red-200">
-            <X className="w-3 h-3 mr-1" />
-            Missed
-          </Badge>
-        );
-      default:
-        return (
-          <Badge className="bg-blue-100 text-blue-700 border-blue-200">
-            <Clock className="w-3 h-3 mr-1" />
-            Pending
-          </Badge>
-        );
-    }
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5
-      }
-    }
-  };
-
   // Transform sessions into calendar events
   const events = sessions?.map((session: any) => ({
     id: session.id,
@@ -235,6 +268,63 @@ export default function Training() {
     setView(newView);
   };
 
+  // Custom toolbar component for calendar
+  const CustomToolbar = ({ label, onNavigate, onView }: any) => (
+    <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onNavigate('PREV')}
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onNavigate('NEXT')}
+          >
+            <ChevronRight className="w-4 h-4" />
+          </Button>
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onNavigate('TODAY')}
+        >
+          Today
+        </Button>
+      </div>
+      
+      <h2 className="text-xl font-bold text-gray-900">{label}</h2>
+      
+      <div className="flex items-center gap-2">
+        <Button
+          variant={view === 'month' ? 'default' : 'outline'}
+          size="sm"
+          onClick={() => onView('month')}
+        >
+          Month
+        </Button>
+        <Button
+          variant={view === 'week' ? 'default' : 'outline'}
+          size="sm"
+          onClick={() => onView('week')}
+        >
+          Week
+        </Button>
+        <Button
+          variant={view === 'day' ? 'default' : 'outline'}
+          size="sm"
+          onClick={() => onView('day')}
+        >
+          Day
+        </Button>
+      </div>
+    </div>
+  );
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
@@ -256,387 +346,232 @@ export default function Training() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
-      <div className="max-w-7xl mx-auto">
-        <motion.div 
-          className="flex justify-between items-center mb-8"
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        {/* Header */}
+        <motion.div
+          className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
         >
           <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Training Sessions</h1>
-            <p className="text-gray-600">Track your training progress and upcoming sessions</p>
+            <h1 className="text-4xl font-black text-gray-900 mb-2">Training Calendar</h1>
+            <p className="text-lg text-gray-600">Track your football training progress and development</p>
           </div>
-          <TrainingForm />
+          
+          <div className="flex gap-3">
+            <TrainingForm />
+          </div>
         </motion.div>
 
-        {/* Upcoming Sessions Section */}
-        {pendingSessions.length > 0 && (
-          <motion.div 
-            className="mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <AlertCircle className="w-6 h-6 text-blue-600" />
-              Pending Sessions
-            </h2>
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
+        {/* Calendar Controls */}
+        <motion.div
+          className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <div className="flex items-center gap-2">
+            <Button
+              variant={view === 'month' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setView('month')}
             >
-              {pendingSessions.map((session: any, index: number) => {
-                const TrainingIcon = getTrainingIcon(session.type);
-                const colorClass = getTrainingColor(session.type);
-                const clubLogo = getClubLogo(session.coach);
-                
-                return (
-                  <motion.div key={session.id} variants={itemVariants}>
-                    <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full min-w-[350px]">
-                      <CardHeader className="pb-4">
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex items-center gap-3">
-                            <div className={`w-14 h-14 bg-gradient-to-br ${colorClass} rounded-xl flex items-center justify-center shadow-md`}>
-                              <TrainingIcon className="w-7 h-7 text-white" />
-                            </div>
-                            <div>
-                              <CardTitle className="text-xl font-bold text-gray-900">{session.type}</CardTitle>
-                              <p className="text-sm text-gray-600 mt-1">{session.focus || 'Training session'}</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            {clubLogo && (
-                              <div className="w-8 h-8 rounded-full overflow-hidden bg-white shadow-sm border border-gray-200">
-                                <img 
-                                  src={clubLogo} 
-                                  alt="Club logo"
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
-                            )}
-                            {getAttendanceBadge(session.attendance || 'pending')}
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <Button 
-                                    variant="ghost" 
-                                    size="sm" 
-                                    className="h-6 w-6 p-0 text-gray-400 hover:text-red-500 hover:bg-red-50"
-                                    onClick={() => deleteSessionMutation.mutate(session.id)}
-                                    disabled={deleteSessionMutation.isPending}
-                                  >
-                                    <Trash2 className="w-4 h-4" />
-                                  </Button>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <p>Delete Session</p>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      
-                      <CardContent className="space-y-4">
-                        <div className="grid grid-cols-3 gap-3">
-                          <div className="text-center p-3 bg-gray-50 rounded-lg">
-                            <Calendar className="w-4 h-4 mx-auto text-gray-500 mb-1" />
-                            <div className="font-semibold text-gray-900 text-sm">{formatShortDate(session.date).split(',')[0]}</div>
-                            <div className="text-xs text-gray-500">{formatTime(session.date)}</div>
-                          </div>
-                          <div className="text-center p-3 bg-gray-50 rounded-lg">
-                            <Clock className="w-4 h-4 mx-auto text-gray-500 mb-1" />
-                            <div className="font-semibold text-gray-900 text-sm">{session.duration || 90}</div>
-                            <div className="text-xs text-gray-500">min</div>
-                          </div>
-                          <div className="text-center p-3 bg-gray-50 rounded-lg">
-                            <MapPin className="w-4 h-4 mx-auto text-gray-500 mb-1" />
-                            <div className="font-semibold text-gray-900 text-xs leading-tight">{session.location || 'Training Ground'}</div>
-                          </div>
-                        </div>
-
-                        {session.coach && (
-                          <div className="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 p-2 rounded-lg">
-                            <User className="w-4 h-4 text-gray-400" />
-                            <span className="font-medium">{session.coach}</span>
-                          </div>
-                        )}
-
-                        {session.notes && (
-                          <div className="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-400">
-                            <p className="text-sm text-gray-700 leading-relaxed">{session.notes}</p>
-                          </div>
-                        )}
-
-                        <TooltipProvider>
-                          <div className="flex gap-2 pt-2 justify-center">
-                            {session.attendance === 'pending' && (
-                              <>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button 
-                                      variant="outline" 
-                                      size="sm" 
-                                      className="px-3 py-1 hover:bg-green-50 text-green-600 border-green-200 rounded-full"
-                                      onClick={() => updateAttendanceMutation.mutate({ sessionId: session.id, attendance: 'completed' })}
-                                      disabled={updateAttendanceMutation.isPending}
-                                    >
-                                      <CheckCircle className="w-3 h-3" />
-                                    </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Mark as Completed</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                                
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button 
-                                      variant="outline" 
-                                      size="sm" 
-                                      className="px-3 py-1 hover:bg-red-50 text-red-600 border-red-200 rounded-full"
-                                      onClick={() => updateAttendanceMutation.mutate({ sessionId: session.id, attendance: 'missed' })}
-                                      disabled={updateAttendanceMutation.isPending}
-                                    >
-                                      <X className="w-3 h-3" />
-                                    </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Mark as Missed</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                                
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button 
-                                      variant="outline" 
-                                      size="sm" 
-                                      className="px-3 py-1 hover:bg-orange-50 text-orange-600 border-orange-200 rounded-full"
-                                      onClick={() => updateAttendanceMutation.mutate({ sessionId: session.id, attendance: 'cancelled' })}
-                                      disabled={updateAttendanceMutation.isPending}
-                                    >
-                                      <Ban className="w-3 h-3" />
-                                    </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Mark as Cancelled</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </>
-                            )}
-                            
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Button 
-                                  variant="outline" 
-                                  size="sm" 
-                                  className="px-3 py-1 hover:bg-red-50 text-red-500 border-red-200 rounded-full"
-                                  onClick={() => deleteSessionMutation.mutate(session.id)}
-                                  disabled={deleteSessionMutation.isPending}
-                                >
-                                  <Trash2 className="w-3 h-3" />
-                                </Button>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>Delete Session</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </div>
-                        </TooltipProvider>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          </motion.div>
-        )}
-
-        {/* Missed Sessions Section */}
-        {missedSessions.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <X className="w-6 h-6 text-red-600" />
-              Missed Sessions
-            </h2>
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
+              Month
+            </Button>
+            <Button
+              variant={view === 'week' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setView('week')}
             >
-              {missedSessions.map((session: any, index: number) => {
-                const TrainingIcon = getTrainingIcon(session.type);
-                const colorClass = getTrainingColor(session.type);
-                const clubLogo = getClubLogo(session.coach);
-                
-                return (
-                  <motion.div key={session.id} variants={itemVariants}>
-                    <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-md hover:shadow-lg transition-all duration-300 h-full opacity-90 border-l-4 border-red-400 min-w-[350px]">
-                      <CardHeader className="pb-4">
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex items-center gap-3">
-                            <div className={`w-14 h-14 bg-gradient-to-br ${colorClass} rounded-xl flex items-center justify-center shadow-md opacity-80`}>
-                              <TrainingIcon className="w-7 h-7 text-white" />
-                            </div>
-                            <div>
-                              <CardTitle className="text-xl font-bold text-gray-900">{session.type}</CardTitle>
-                              <p className="text-sm text-gray-600 mt-1">{session.focus || 'Training session'}</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            {clubLogo && (
-                              <div className="w-8 h-8 rounded-full overflow-hidden bg-white shadow-sm border border-gray-200">
-                                <img 
-                                  src={clubLogo} 
-                                  alt="Club logo"
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
-                            )}
-                            {getAttendanceBadge(session.attendance || 'missed')}
-                          </div>
-                        </div>
-                      </CardHeader>
-                      
-                      <CardContent className="space-y-4">
-                        <div className="grid grid-cols-3 gap-3">
-                          <div className="text-center p-3 bg-gray-50 rounded-lg">
-                            <Calendar className="w-4 h-4 mx-auto text-gray-500 mb-1" />
-                            <div className="font-semibold text-gray-900 text-sm">{formatShortDate(session.date).split(',')[0]}</div>
-                            <div className="text-xs text-gray-500">{formatTime(session.date)}</div>
-                          </div>
-                          <div className="text-center p-3 bg-gray-50 rounded-lg">
-                            <Clock className="w-4 h-4 mx-auto text-gray-500 mb-1" />
-                            <div className="font-semibold text-gray-900 text-sm">{session.duration || 90}</div>
-                            <div className="text-xs text-gray-500">min</div>
-                          </div>
-                          <div className="text-center p-3 bg-gray-50 rounded-lg">
-                            <MapPin className="w-4 h-4 mx-auto text-gray-500 mb-1" />
-                            <div className="font-semibold text-gray-900 text-xs leading-tight">{session.location || 'Training Ground'}</div>
-                          </div>
-                        </div>
-
-                        {session.coach && (
-                          <div className="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 p-2 rounded-lg">
-                            <User className="w-4 h-4 text-gray-400" />
-                            <span className="font-medium">{session.coach}</span>
-                          </div>
-                        )}
-
-                        {session.notes && (
-                          <div className="bg-red-50 p-3 rounded-lg border-l-4 border-red-400">
-                            <p className="text-sm text-gray-700 leading-relaxed">{session.notes}</p>
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          </motion.div>
-        )}
-
-        {/* Completed Sessions Section */}
-        {completedSessions.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <CheckCircle className="w-6 h-6 text-green-600" />
-              Completed Sessions
-            </h2>
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
+              Week
+            </Button>
+            <Button
+              variant={view === 'day' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setView('day')}
             >
-              {completedSessions.map((session: any, index: number) => {
-                const TrainingIcon = getTrainingIcon(session.type);
-                const colorClass = getTrainingColor(session.type);
-                const clubLogo = getClubLogo(session.coach);
-                
-                return (
-                  <motion.div key={session.id} variants={itemVariants}>
-                    <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-md hover:shadow-lg transition-all duration-300 h-full opacity-90 min-w-[350px]">
-                      <CardHeader className="pb-4">
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex items-center gap-3">
-                            <div className={`w-14 h-14 bg-gradient-to-br ${colorClass} rounded-xl flex items-center justify-center shadow-md opacity-80`}>
-                              <TrainingIcon className="w-7 h-7 text-white" />
-                            </div>
-                            <div>
-                              <CardTitle className="text-xl font-bold text-gray-900">{session.type}</CardTitle>
-                              <p className="text-sm text-gray-600 mt-1">{session.focus || 'Training session'}</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            {clubLogo && (
-                              <div className="w-8 h-8 rounded-full overflow-hidden bg-white shadow-sm border border-gray-200">
-                                <img 
-                                  src={clubLogo} 
-                                  alt="Club logo"
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
-                            )}
-                            {getAttendanceBadge(session.attendance || 'completed')}
-                          </div>
-                        </div>
-                      </CardHeader>
-                      
-                      <CardContent className="space-y-4">
-                        <div className="grid grid-cols-3 gap-3">
-                          <div className="text-center p-3 bg-gray-50 rounded-lg">
-                            <Calendar className="w-4 h-4 mx-auto text-gray-500 mb-1" />
-                            <div className="font-semibold text-gray-900 text-sm">{formatShortDate(session.date).split(',')[0]}</div>
-                            <div className="text-xs text-gray-500">{formatTime(session.date)}</div>
-                          </div>
-                          <div className="text-center p-3 bg-gray-50 rounded-lg">
-                            <Clock className="w-4 h-4 mx-auto text-gray-500 mb-1" />
-                            <div className="font-semibold text-gray-900 text-sm">{session.duration || 90}</div>
-                            <div className="text-xs text-gray-500">min</div>
-                          </div>
-                          <div className="text-center p-3 bg-gray-50 rounded-lg">
-                            <MapPin className="w-4 h-4 mx-auto text-gray-500 mb-1" />
-                            <div className="font-semibold text-gray-900 text-xs leading-tight">{session.location || 'Training Ground'}</div>
-                          </div>
-                        </div>
+              Day
+            </Button>
+          </div>
 
-                        {session.coach && (
-                          <div className="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 p-2 rounded-lg">
-                            <User className="w-4 h-4 text-gray-400" />
-                            <span className="font-medium">{session.coach}</span>
-                          </div>
-                        )}
+          {/* Legend */}
+          <div className="flex items-center gap-4 text-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-blue-500 rounded"></div>
+              <span>Pending</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-green-500 rounded"></div>
+              <span>Completed</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-yellow-500 rounded"></div>
+              <span>Cancelled</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-red-500 rounded"></div>
+              <span>Missed</span>
+            </div>
+          </div>
+        </motion.div>
 
-                        {session.notes && (
-                          <div className="bg-green-50 p-3 rounded-lg border-l-4 border-green-400">
-                            <p className="text-sm text-gray-700 leading-relaxed">{session.notes}</p>
-                          </div>
-                        )}
+        {/* Calendar */}
+        <motion.div
+          className="bg-white rounded-2xl shadow-xl border border-white/20 p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <Calendar
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: 600 }}
+            view={view}
+            onView={handleViewChange}
+            date={date}
+            onNavigate={handleNavigate}
+            onSelectEvent={handleSelectEvent}
+            eventPropGetter={eventStyleGetter}
+            views={[Views.MONTH, Views.WEEK, Views.DAY]}
+            step={30}
+            showMultiDayTimes
+            components={{
+              toolbar: CustomToolbar,
+            }}
+          />
+        </motion.div>
 
+        {/* Event Details Modal */}
+        <Dialog open={showEventDetails} onOpenChange={setShowEventDetails}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-3">
+                {selectedEvent && (
+                  <>
+                    <div className={`w-12 h-12 bg-gradient-to-br ${getTrainingColor(selectedEvent.type)} rounded-xl flex items-center justify-center shadow-md`}>
+                      {(() => {
+                        const TrainingIcon = getTrainingIcon(selectedEvent.type);
+                        return <TrainingIcon className="w-6 h-6 text-white" />;
+                      })()}
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900">{selectedEvent.type}</h3>
+                      <p className="text-sm text-gray-600">{formatDate(selectedEvent.date)}</p>
+                    </div>
+                  </>
+                )}
+              </DialogTitle>
+            </DialogHeader>
+            
+            {selectedEvent && (
+              <div className="space-y-6">
+                {/* Status Badge */}
+                <div className="flex items-center justify-between">
+                  {getAttendanceBadge(selectedEvent.attendance || 'pending')}
+                  <div className="flex gap-2">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button size="sm" variant="outline">
+                          Update Status
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem 
+                          onClick={() => {
+                            updateAttendance(selectedEvent.id, 'completed');
+                            setShowEventDetails(false);
+                          }}
+                          className="text-green-600"
+                        >
+                          <CheckCircle2 className="w-4 h-4 mr-2" />
+                          Mark Completed
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          onClick={() => {
+                            updateAttendance(selectedEvent.id, 'missed');
+                            setShowEventDetails(false);
+                          }}
+                          className="text-red-600"
+                        >
+                          <X className="w-4 h-4 mr-2" />
+                          Mark Missed
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          onClick={() => {
+                            updateAttendance(selectedEvent.id, 'cancelled');
+                            setShowEventDetails(false);
+                          }}
+                          className="text-yellow-600"
+                        >
+                          <X className="w-4 h-4 mr-2" />
+                          Mark Cancelled
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => {
+                        deleteSession(selectedEvent.id);
+                        setShowEventDetails(false);
+                      }}
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
 
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          </motion.div>
-        )}
+                {/* Details Grid */}
+                <div className="grid grid-cols-3 gap-6 text-sm">
+                  <div className="text-center">
+                    <div className="flex items-center justify-center gap-1 text-gray-500 mb-2">
+                      <CalendarIcon className="w-4 h-4" />
+                    </div>
+                    <div className="font-semibold text-gray-900">{formatShortDate(selectedEvent.date)}</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="flex items-center justify-center gap-1 text-gray-500 mb-2">
+                      <Clock className="w-4 h-4" />
+                    </div>
+                    <div className="font-semibold text-gray-900">{formatTime(selectedEvent.date)}</div>
+                    <div className="text-xs text-gray-500">{selectedEvent.duration} minutes</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="flex items-center justify-center gap-1 text-gray-500 mb-2">
+                      <MapPin className="w-4 h-4" />
+                    </div>
+                    <div className="font-semibold text-gray-900 text-sm">{selectedEvent.location || 'TBD'}</div>
+                  </div>
+                </div>
+
+                {/* Coach */}
+                {selectedEvent.coach && (
+                  <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+                    <User className="w-5 h-5 text-gray-400" />
+                    <div>
+                      <div className="font-medium text-gray-900">Coach</div>
+                      <div className="text-sm text-gray-600">{selectedEvent.coach}</div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Notes */}
+                {selectedEvent.notes && (
+                  <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                    <div className="font-medium text-gray-900 mb-2">Session Notes</div>
+                    <p className="text-sm text-gray-700 leading-relaxed">{selectedEvent.notes}</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
 
         {(!sessions || sessions.length === 0) && (
           <EmptyState

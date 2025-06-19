@@ -102,6 +102,15 @@ This is a comprehensive football player tracking application built for monitorin
 
 ## Recent Changes
 
+- June 19, 2025: Implemented interactive training calendar with comprehensive event management
+  - Created full calendar view using react-big-calendar with month/week/day view options
+  - Added color-coded events based on training status (pending=blue, completed=green, cancelled=yellow, missed=red)
+  - Implemented training type differentiation with left border colors for each training category
+  - Built detailed event popup modal with full session information and action buttons
+  - Added calendar navigation controls and legend for status colors
+  - Integrated calendar event click handlers to show/edit training session details
+  - Fixed training session sorting to display in ascending chronological order
+  - Custom calendar styling with responsive design and professional appearance
 - June 19, 2025: Restored database storage functionality and cleared all sample data
   - Fixed database connection issues and switched back to DatabaseStorage from MemStorage
   - Cleared all sample data from database: games, training sessions, tournaments, coach feedback
