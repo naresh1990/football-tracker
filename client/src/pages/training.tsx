@@ -521,7 +521,7 @@ export default function Training() {
                   <div className="flex gap-2">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button size="sm" variant="outline">
+                        <Button size="sm" variant="outline" className="border-gray-300 text-gray-700 hover:bg-gray-50">
                           Update Status
                         </Button>
                       </DropdownMenuTrigger>
@@ -630,7 +630,7 @@ export default function Training() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="mt-2"
+                    className="mt-2 border-green-600 text-green-600 hover:bg-green-50"
                     onClick={() => {
                       setFeedbackText(selectedEvent.coachFeedback || '');
                       setShowFeedbackForm(true);
@@ -664,6 +664,7 @@ export default function Training() {
                   <Button
                     variant="outline"
                     size="sm"
+                    className="border-green-600 text-green-600 hover:bg-green-50"
                     onClick={() => {/* TODO: Open gallery upload */}}
                   >
                     <Plus className="w-4 h-4 mr-1" />
@@ -713,7 +714,7 @@ export default function Training() {
                     }
                   }}
                   disabled={!feedbackText.trim() || updateFeedbackMutation.isPending}
-                  className="flex-1"
+                  className="flex-1 bg-green-600 hover:bg-green-700 text-white"
                 >
                   {updateFeedbackMutation.isPending ? 'Saving...' : 'Save Feedback'}
                 </Button>
