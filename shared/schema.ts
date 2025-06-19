@@ -114,7 +114,6 @@ export const coaches = pgTable("coaches", {
   contact: text("contact"),
   isActive: boolean("is_active").default(true),
   profilePicture: text("profile_picture"), // URL to coach profile image
-  profilePicture: text("profile_picture"), // URL to coach profile image
 });
 
 // Coaching staff

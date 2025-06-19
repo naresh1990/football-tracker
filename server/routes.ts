@@ -28,6 +28,13 @@ const uploadStorage = multer.diskStorage({
 
 const upload = multer({ storage: uploadStorage });
 
+// Helper function to handle image uploads
+const handleImageUpload = (file: Express.Multer.File | undefined): string | null => {
+  if (!file) return null;
+  // Return the path to the uploaded file
+  return `/uploads/${file.filename}`;
+};
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Player routes
   app.get("/api/players", async (req, res) => {
