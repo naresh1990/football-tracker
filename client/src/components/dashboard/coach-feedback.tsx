@@ -6,6 +6,7 @@ import { Plus, MessageSquare, Star, Calendar } from "lucide-react";
 import { formatShortDate } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface CoachFeedbackProps {
   playerId: number;
@@ -97,7 +98,20 @@ export default function CoachFeedback({ playerId }: CoachFeedbackProps) {
                       <span className="text-sm font-semibold text-gray-700">{item.rating}/5</span>
                     </div>
                   </div>
-                  <p className="text-sm text-gray-700 mb-3 line-clamp-2">{item.comment || item.feedback}</p>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <p className="text-sm text-gray-700 mb-3 line-clamp-2 cursor-pointer hover:text-gray-900 transition-colors">
+                          {item.comment || item.feedback}
+                        </p>
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-md p-3 bg-white border border-gray-200 shadow-lg">
+                        <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                          {item.comment || item.feedback}
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                   <div className="flex flex-wrap gap-1">
                     {item.tags?.slice(0, 3).map((tag: string, tagIndex: number) => (
                       <Badge
