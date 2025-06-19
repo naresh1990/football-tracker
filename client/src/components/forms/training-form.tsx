@@ -180,12 +180,24 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
 
           <div>
             <Label htmlFor="coach">Coach/Trainer</Label>
-            <Input
-              id="coach"
-              value={formData.coach}
-              onChange={(e) => setFormData({ ...formData, coach: e.target.value })}
-              placeholder="Coach name"
-            />
+            <Select value={formData.coach} onValueChange={(value) => setFormData({ ...formData, coach: value })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select coach" />
+              </SelectTrigger>
+              <SelectContent className="z-[9999] max-h-[200px] bg-white" position="popper" sideOffset={4}>
+                {coaches && coaches.length > 0 ? (
+                  coaches.map((coach: any) => (
+                    <SelectItem key={coach.id} value={coach.name} className="text-gray-900 hover:bg-green-50 hover:text-green-900 cursor-pointer">
+                      {coach.name}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <SelectItem value="No coaches available" disabled className="text-gray-500">
+                    No coaches available
+                  </SelectItem>
+                )}
+              </SelectContent>
+            </Select>
           </div>
 
           <div>
