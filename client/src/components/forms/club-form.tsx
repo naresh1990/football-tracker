@@ -23,13 +23,16 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
   const [formData, setFormData] = useState({
     name: club?.name || "",
     type: club?.type || "",
-    level: club?.level || "",
+    level: club?.squadLevel || "",
     status: club?.status || "Active",
     seasonStart: club?.seasonStart ? new Date(club.seasonStart).toISOString().split('T')[0] : "",
     seasonEnd: club?.seasonEnd ? new Date(club.seasonEnd).toISOString().split('T')[0] : "",
     description: club?.description || "",
     logo: club?.logo || ""
   });
+
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string>(club?.logo || "");
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -126,7 +129,7 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
       seasonEnd: formData.seasonEnd ? new Date(formData.seasonEnd).toISOString() : null,
       status: formData.status.toLowerCase(),
       description: formData.description || null,
-      logoFile: logoFile, // Pass the actual file
+      logoFile: logoFile,
     };
     
     console.log("Submitting club data:", submitData);
@@ -266,14 +269,22 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
                 ref={fileInputRef}
                 type="file"
                 accept="image/*"
-                onChange={handleFileUpload}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    setLogoFile(file);
+                    const url = URL.createObjectURL(file);
+                    setLogoPreview(url);
+                    setFormData({ ...formData, logo: url });
+                  }
+                }}
                 className="hidden"
               />
             </div>
-            {formData.logo && (
+            {logoPreview && (
               <div className="mt-2">
                 <img 
-                  src={formData.logo} 
+                  src={logoPreview} 
                   alt="Club logo preview" 
                   className="w-16 h-16 object-cover rounded-lg border"
                   onError={(e) => {
