@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import { Upload, X } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const coachFormSchema = insertCoachSchema.extend({
   clubId: z.number().optional(),
@@ -25,9 +26,11 @@ type CoachFormData = z.infer<typeof coachFormSchema>;
 interface CoachFormProps {
   onSuccess?: () => void;
   onCancel?: () => void;
+  clubId?: number;
+  trigger?: React.ReactNode;
 }
 
-export default function CoachForm({ onSuccess, onCancel }: CoachFormProps) {
+export default function CoachForm({ onSuccess, onCancel, clubId, trigger }: CoachFormProps) {
   const { toast } = useToast();
   const [profileFile, setProfileFile] = useState<File | null>(null);
   const [profilePreview, setProfilePreview] = useState<string | null>(null);
@@ -259,14 +262,16 @@ export default function CoachForm({ onSuccess, onCancel }: CoachFormProps) {
             />
 
             <div className="flex justify-end space-x-4">
-              {onCancel && (
-                <Button type="button" variant="outline" onClick={onCancel}>
-                  Cancel
-                </Button>
-              )}
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => setOpen(false)}
+              >
+                Cancel
+              </Button>
               <Button 
                 type="submit" 
-                className="bg-football-green hover:bg-green-700"
+                className="bg-blue-600 hover:bg-blue-700"
                 disabled={createCoachMutation.isPending}
               >
                 {createCoachMutation.isPending ? "Adding..." : "Add Coach"}
@@ -274,6 +279,38 @@ export default function CoachForm({ onSuccess, onCancel }: CoachFormProps) {
             </div>
           </form>
         </Form>
+    </div>
+  );
+
+  if (trigger) {
+    return (
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          {trigger}
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <span className="text-2xl">👨‍🏫</span>
+              Add New Coach
+            </DialogTitle>
+          </DialogHeader>
+          {formContent}
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  return (
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <span className="text-2xl">👨‍🏫</span>
+          Add New Coach
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {formContent}
       </CardContent>
     </Card>
   );

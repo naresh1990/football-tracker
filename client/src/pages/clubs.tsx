@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Edit, Trash2, Building, Users } from "lucide-react";
+import { Plus, Edit, Trash2, Building, Users, UserPlus } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -10,6 +10,7 @@ import { queryClient } from "@/lib/queryClient";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import ClubForm from "@/components/forms/club-form";
+import CoachForm from "@/components/forms/coach-form";
 import { motion } from "framer-motion";
 
 export default function Clubs() {
