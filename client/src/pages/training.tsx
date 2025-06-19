@@ -373,38 +373,13 @@ export default function Training() {
           </div>
         </motion.div>
 
-        {/* Calendar Controls */}
+        {/* Legend */}
         <motion.div
-          className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4"
+          className="flex justify-end items-center mb-6 gap-4"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <div className="flex items-center gap-2">
-            <Button
-              variant={view === 'month' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setView('month')}
-            >
-              Month
-            </Button>
-            <Button
-              variant={view === 'week' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setView('week')}
-            >
-              Week
-            </Button>
-            <Button
-              variant={view === 'day' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setView('day')}
-            >
-              Day
-            </Button>
-          </div>
-
-          {/* Legend */}
           <div className="flex items-center gap-4 text-sm">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-blue-500 rounded"></div>
