@@ -71,8 +71,8 @@ export default function Clubs() {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Clubs</h1>
-          <Button className="bg-blue-600 hover:bg-blue-700">
+          <h1 className="text-3xl font-black text-gray-900">Clubs</h1>
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold">
             <Plus className="mr-2 h-4 w-4" />
             Add Club
           </Button>

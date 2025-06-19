@@ -69,10 +69,10 @@ export default function CleanHeader({ onToggleMobileMenu, onQuickAdd }: CleanHea
                   <Link href={item.href}>
                     <motion.div
                       className={cn(
-                        "flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+                        "flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200",
                         isActive 
                           ? "bg-blue-600 text-white shadow-md" 
-                          : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                          : "text-gray-800 hover:text-gray-900 hover:bg-gray-50"
                       )}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -104,7 +104,7 @@ export default function CleanHeader({ onToggleMobileMenu, onQuickAdd }: CleanHea
             {/* Mobile Menu Button */}
             <motion.button 
               onClick={onToggleMobileMenu}
-              className="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
+              className="lg:hidden p-2 rounded-lg text-gray-800 hover:text-gray-900 hover:bg-gray-50 transition-colors"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
             >
