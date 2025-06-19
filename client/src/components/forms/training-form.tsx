@@ -24,10 +24,8 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
     duration: "",
     location: "",
     coach: "",
-    focus: "",
-    intensity: "",
     notes: "",
-    attended: true
+    completed: false
   });
 
   const { toast } = useToast();
@@ -50,10 +48,8 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
         duration: "",
         location: "",
         coach: "",
-        focus: "",
-        intensity: "",
         notes: "",
-        attended: true
+        completed: false
       });
       onSuccess?.();
     },
@@ -71,10 +67,14 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
     const sessionDate = new Date(`${formData.date}T${formData.time}`);
     
     createTrainingMutation.mutate({
-      ...formData,
       playerId: 1,
+      type: formData.type,
       date: sessionDate.toISOString(),
       duration: parseInt(formData.duration) || 60,
+      location: formData.location,
+      coach: formData.coach,
+      notes: formData.notes,
+      completed: formData.completed,
     });
   };
 

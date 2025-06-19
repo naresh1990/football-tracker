@@ -235,11 +235,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/training", async (req, res) => {
     try {
+      console.log("Training session data received:", req.body);
       const validatedData = insertTrainingSessionSchema.parse(req.body);
+      console.log("Training session data validated:", validatedData);
       const session = await storage.createTrainingSession(validatedData);
       res.status(201).json(session);
     } catch (error) {
-      res.status(400).json({ error: "Invalid training session data" });
+      console.error("Training session validation error:", error);
+      res.status(400).json({ error: "Invalid training session data", details: error.message });
     }
   });
 
