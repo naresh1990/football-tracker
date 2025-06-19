@@ -79,6 +79,8 @@ export default function Training() {
         return Activity;
       case 'shooting practice':
         return Trophy;
+      case 'tactical training':
+        return Users;
       default:
         return Dumbbell;
     }
@@ -96,8 +98,44 @@ export default function Training() {
         return 'from-red-400 to-red-500';
       case 'shooting practice':
         return 'from-purple-400 to-purple-500';
+      case 'tactical training':
+        return 'from-indigo-400 to-indigo-500';
       default:
         return 'from-green-400 to-green-500';
+    }
+  };
+
+  const getEventColor = (attendance: string) => {
+    switch (attendance) {
+      case 'completed':
+        return '#10B981'; // green
+      case 'pending':
+        return '#3B82F6'; // blue
+      case 'cancelled':
+        return '#F59E0B'; // yellow
+      case 'missed':
+        return '#EF4444'; // red
+      default:
+        return '#6B7280'; // gray
+    }
+  };
+
+  const getTypeColor = (type: string) => {
+    switch (type.toLowerCase()) {
+      case 'speed & agility':
+        return '#F59E0B';
+      case 'ball control':
+        return '#3B82F6';
+      case 'team practice':
+        return '#10B981';
+      case 'fitness training':
+        return '#EF4444';
+      case 'shooting practice':
+        return '#8B5CF6';
+      case 'tactical training':
+        return '#6366F1';
+      default:
+        return '#10B981';
     }
   };
 
@@ -156,6 +194,47 @@ export default function Training() {
     }
   };
 
+  // Transform sessions into calendar events
+  const events = sessions?.map((session: any) => ({
+    id: session.id,
+    title: session.type,
+    start: new Date(session.date),
+    end: new Date(new Date(session.date).getTime() + session.duration * 60000),
+    resource: session,
+    allDay: false,
+  })) || [];
+
+  const eventStyleGetter = (event: any) => {
+    const session = event.resource;
+    const backgroundColor = getEventColor(session.attendance);
+    const borderColor = getTypeColor(session.type);
+    
+    return {
+      style: {
+        backgroundColor,
+        borderLeft: `4px solid ${borderColor}`,
+        color: 'white',
+        border: 'none',
+        borderRadius: '4px',
+        fontSize: '12px',
+        padding: '2px 4px',
+      }
+    };
+  };
+
+  const handleSelectEvent = (event: any) => {
+    setSelectedEvent(event.resource);
+    setShowEventDetails(true);
+  };
+
+  const handleNavigate = (newDate: Date) => {
+    setDate(newDate);
+  };
+
+  const handleViewChange = (newView: any) => {
+    setView(newView);
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
@@ -175,11 +254,6 @@ export default function Training() {
       </div>
     );
   }
-
-  const pendingSessions = sessions?.filter((session: any) => session.attendance === 'pending') || [];
-  const completedSessions = sessions?.filter((session: any) => session.attendance === 'completed') || [];
-  const missedSessions = sessions?.filter((session: any) => session.attendance === 'missed') || [];
-  const cancelledSessions = sessions?.filter((session: any) => session.attendance === 'cancelled') || [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
