@@ -53,6 +53,7 @@ export default function Dashboard() {
   
   // Collapsible sections state
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({
+    performanceAnalytics: false,
     training: false,
     tournaments: false,
     recentGames: false,
@@ -150,11 +151,39 @@ export default function Dashboard() {
 
         {/* Performance Charts */}
         <motion.div variants={itemVariants}>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <TrendingUp className="w-6 h-6 text-blue-600" />
-            Performance Analytics
-          </h2>
-          <ProgressChart playerId={1} />
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border-0 mb-8">
+            <button
+              onClick={() => toggleSection('performanceAnalytics')}
+              className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50/50 transition-colors rounded-t-xl"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-md">
+                  <TrendingUp className="w-6 h-6 text-white" />
+                </div>
+                <h2 className="text-xl font-bold text-gray-900">Performance Analytics</h2>
+              </div>
+              {collapsedSections.performanceAnalytics ? (
+                <ChevronDown className="w-5 h-5 text-gray-500" />
+              ) : (
+                <ChevronUp className="w-5 h-5 text-gray-500" />
+              )}
+            </button>
+            <AnimatePresence>
+              {!collapsedSections.performanceAnalytics && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-6 pb-6">
+                    <ProgressChart playerId={1} />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </motion.div>
 
         {/* Recent Games Section */}
