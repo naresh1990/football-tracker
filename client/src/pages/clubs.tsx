@@ -455,53 +455,70 @@ export default function Clubs() {
                           </div>
                           
                           {getClubSquadMembers(club.id).length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                               {getClubSquadMembers(club.id).map((member: any) => (
-                                <div key={member.id} className="flex items-center gap-3 p-3 bg-white/80 rounded-lg border border-green-50 hover:bg-white/90 transition-colors">
-                                  <Avatar className="w-12 h-12 ring-2 ring-green-200">
-                                    <AvatarImage 
-                                      src={member.profilePicture} 
-                                      alt={member.name}
-                                      className="object-cover"
-                                    />
-                                    <AvatarFallback className="text-sm bg-gradient-to-br from-green-500 to-blue-500 text-white">
-                                      {member.name.split(' ').map((n: string) => n[0]).join('')}
-                                    </AvatarFallback>
-                                  </Avatar>
-                                  <div className="flex-1">
-                                    <div className="flex items-center gap-2">
-                                      <p className="font-semibold text-gray-900 text-sm">{member.name}</p>
+                                <div key={member.id} className="bg-white rounded-xl p-4 border border-green-100 hover:border-green-200 transition-all duration-200 shadow-sm hover:shadow-md">
+                                  <div className="flex items-start gap-4">
+                                    <div className="relative flex-shrink-0">
+                                      <Avatar className="w-16 h-16 ring-3 ring-green-200">
+                                        <AvatarImage 
+                                          src={member.profilePicture} 
+                                          alt={member.name}
+                                          className="object-cover"
+                                        />
+                                        <AvatarFallback className="text-lg font-semibold bg-gradient-to-br from-green-500 to-blue-500 text-white">
+                                          {member.name.split(' ').map((n: string) => n[0]).join('')}
+                                        </AvatarFallback>
+                                      </Avatar>
                                       {member.jerseyNumber && (
-                                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                                        <div className="absolute -top-2 -right-2 bg-blue-600 text-white rounded-full w-7 h-7 flex items-center justify-center text-xs font-bold shadow-md">
                                           #{member.jerseyNumber}
-                                        </span>
+                                        </div>
                                       )}
                                     </div>
-                                    <p className="text-xs text-green-600 font-medium">{member.position}</p>
-                                    {member.age && (
-                                      <p className="text-xs text-gray-500">Age: {member.age}</p>
-                                    )}
-                                  </div>
-                                  <div className="flex gap-1">
-                                    <SquadMemberForm
-                                      squadMember={member}
-                                      onSuccess={() => {
-                                        queryClient.invalidateQueries({ queryKey: ["/api/squad"] });
-                                      }}
-                                      trigger={
-                                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0 hover:bg-green-100">
-                                          <Edit className="h-3 w-3 text-green-600" />
-                                        </Button>
-                                      }
-                                    />
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      className="h-6 w-6 p-0 hover:bg-red-100"
-                                      onClick={() => handleDeleteSquadMember(member.id)}
-                                    >
-                                      <Trash2 className="h-3 w-3 text-red-600" />
-                                    </Button>
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-center justify-between mb-2">
+                                        <h4 className="font-semibold text-gray-900 text-base leading-tight truncate pr-2">
+                                          {member.name}
+                                        </h4>
+                                        <div className="flex gap-1 flex-shrink-0">
+                                          <SquadMemberForm
+                                            squadMember={member}
+                                            onSuccess={() => {
+                                              queryClient.invalidateQueries({ queryKey: ["/api/squad"] });
+                                            }}
+                                            trigger={
+                                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-green-100 rounded-lg">
+                                                <Edit className="h-4 w-4 text-green-600" />
+                                              </Button>
+                                            }
+                                          />
+                                          <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="h-8 w-8 p-0 hover:bg-red-100 rounded-lg"
+                                            onClick={() => handleDeleteSquadMember(member.id)}
+                                          >
+                                            <Trash2 className="h-4 w-4 text-red-600" />
+                                          </Button>
+                                        </div>
+                                      </div>
+                                      <div className="space-y-1">
+                                        <div className="flex items-center gap-2">
+                                          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            {member.position}
+                                          </span>
+                                          {member.age && (
+                                            <span className="text-sm text-gray-600">
+                                              Age {member.age}
+                                            </span>
+                                          )}
+                                        </div>
+                                        {member.notes && (
+                                          <p className="text-xs text-gray-500 mt-2 line-clamp-2">{member.notes}</p>
+                                        )}
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                               ))}
