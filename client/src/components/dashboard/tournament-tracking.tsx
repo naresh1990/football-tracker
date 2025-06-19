@@ -51,9 +51,9 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
           </Button>
         </div>
         <div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-4">
             {tournaments?.length === 0 ? (
-              <div className="col-span-2 text-center py-8">
+              <div className="text-center py-8">
                 <p className="text-gray-500">No tournaments found</p>
               </div>
             ) : (
