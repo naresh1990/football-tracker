@@ -15,6 +15,14 @@ export default function TrainingSchedule({ playerId }: TrainingScheduleProps) {
     queryKey: ["/api/training/upcoming", { playerId }],
   });
 
+  const { data: coaches } = useQuery({
+    queryKey: ["/api/coaches"],
+  });
+
+  const { data: clubs } = useQuery({
+    queryKey: ["/api/clubs"],
+  });
+
   const getTrainingIcon = (type: string) => {
     switch (type.toLowerCase()) {
       case 'speed & agility':
@@ -47,6 +55,17 @@ export default function TrainingSchedule({ playerId }: TrainingScheduleProps) {
       default:
         return 'from-green-400 to-green-500';
     }
+  };
+
+  const getCoachAndClub = (coachName: string) => {
+    const coach = coaches?.find((c: any) => c.name === coachName);
+    if (!coach) return { coachName, clubName: null };
+    
+    const club = clubs?.find((c: any) => c.id === coach.clubId);
+    return { 
+      coachName: coach.name, 
+      clubName: club?.name || null 
+    };
   };
 
   if (isLoading) {
@@ -93,6 +112,7 @@ export default function TrainingSchedule({ playerId }: TrainingScheduleProps) {
               {sessions?.slice(0, 2).map((session: any, index: number) => {
                 const TrainingIcon = getTrainingIcon(session.type);
                 const colorClass = getTrainingColor(session.type);
+                const { coachName, clubName } = getCoachAndClub(session.coach);
                 
                 return (
                 <motion.div
@@ -108,7 +128,11 @@ export default function TrainingSchedule({ playerId }: TrainingScheduleProps) {
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-bold text-gray-900 text-lg mb-1">{session.type}</h3>
-                      <p className="text-sm text-gray-600 leading-relaxed">{session.focus || 'General training'}</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        {coachName && clubName ? `${coachName} • ${clubName}` : 
+                         coachName ? coachName : 
+                         'Training session'}
+                      </p>
                     </div>
                   </div>
                   <div className="grid grid-cols-3 gap-4 text-sm">
