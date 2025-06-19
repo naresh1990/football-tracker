@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import darshilPhoto from "../../assets/darshil-photo.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { 
@@ -10,12 +11,16 @@ import {
   Calendar,
   MapPin,
   Star,
-  Building
+  Building,
+  User
 } from "lucide-react";
 
 interface HeroBannerProps {
   player: any;
   activeClub?: any;
+  squadMembers?: any[];
+  selectedSquadMemberId?: number | null;
+  onSquadMemberChange: (memberId: number | null) => void;
   onQuickAdd: () => void;
 }
 
