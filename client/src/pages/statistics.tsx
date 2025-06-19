@@ -89,8 +89,8 @@ export default function Statistics() {
           <h1 className="text-3xl font-bold text-gray-900">Statistics</h1>
         </div>
 
-      {/* Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Overview Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
@@ -271,6 +271,7 @@ export default function Statistics() {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
     </div>
   );

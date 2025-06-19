@@ -78,7 +78,7 @@ export default function Clubs() {
           </Button>
         </div>
 
-      <div className="grid gap-6">
+        <div className="grid gap-6">
         {clubs && clubs.length === 0 ? (
           <Card className="text-center py-12">
             <CardContent>
@@ -192,6 +192,7 @@ export default function Clubs() {
             );
           })
         )}
+        </div>
       </div>
     </div>
   );
