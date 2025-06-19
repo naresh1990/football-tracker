@@ -70,7 +70,7 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
                   </div>
                   <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
                     <Calendar className="w-4 h-4" />
-                    <span>Age {player.age}</span>
+                    <span>Age 8 (Born 2016)</span>
                   </div>
                 </div>
                 
@@ -81,7 +81,11 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
                   </div>
                   <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
                     <Star className="w-4 h-4" />
-                    <span>2024-25 Season</span>
+                    <span>2025-26 Season</span>
+                  </div>
+                  <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
+                    <Trophy className="w-4 h-4" />
+                    <span>Jersey #18 "Darsh"</span>
                   </div>
                 </div>
               </div>

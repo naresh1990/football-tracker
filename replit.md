@@ -102,6 +102,11 @@ This is a comprehensive football player tracking application built for monitorin
 
 ## Recent Changes
 
+- June 19, 2025: Updated player information with correct details
+  - Updated Darshil's age to 8 (born 2016) 
+  - Changed season to 2025-26
+  - Added jersey information: #18 "Darsh"
+  - Enhanced hero banner with complete player profile information
 - June 19, 2025: Complete redesign with clean, modern, colorful interface
   - Implemented fresh color palette with vibrant gradients and modern design
   - Created ColorfulCard component with gradient backgrounds and trend indicators
