@@ -88,7 +88,7 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto bg-white">
         <DialogHeader>
           <DialogTitle>Add New Training Session</DialogTitle>
           <DialogDescription>

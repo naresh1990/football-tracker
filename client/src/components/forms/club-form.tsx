@@ -88,7 +88,7 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto bg-white">
         <DialogHeader>
           <DialogTitle>{mode === 'edit' ? 'Edit Club' : 'Add New Club'}</DialogTitle>
           <DialogDescription>

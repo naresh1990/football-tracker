@@ -99,7 +99,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto bg-white">
         <DialogHeader>
           <DialogTitle>Add New Tournament</DialogTitle>
           <DialogDescription>
