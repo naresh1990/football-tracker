@@ -268,23 +268,25 @@ export default function Clubs() {
 
         {/* Edit Club Modal */}
         <Dialog open={!!editingClub} onOpenChange={() => setEditingClub(null)}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Edit Club</DialogTitle>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white border-0 shadow-2xl">
+            <DialogHeader className="bg-white">
+              <DialogTitle className="text-gray-900">Edit Club</DialogTitle>
             </DialogHeader>
-            {editingClub && (
-              <ClubForm 
-                editData={editingClub}
-                onSuccess={() => {
-                  setEditingClub(null);
-                  toast({
-                    title: "Success",
-                    description: "Club updated successfully",
-                  });
-                }}
-                onCancel={() => setEditingClub(null)}
-              />
-            )}
+            <div className="bg-white">
+              {editingClub && (
+                <ClubForm 
+                  editData={editingClub}
+                  onSuccess={() => {
+                    setEditingClub(null);
+                    toast({
+                      title: "Success",
+                      description: "Club updated successfully",
+                    });
+                  }}
+                  onCancel={() => setEditingClub(null)}
+                />
+              )}
+            </div>
           </DialogContent>
         </Dialog>
       </div>

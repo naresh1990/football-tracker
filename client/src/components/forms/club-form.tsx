@@ -125,11 +125,13 @@ export default function ClubForm({ onSuccess, onCancel, editData }: ClubFormProp
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold text-football-green">Add Club</CardTitle>
+    <Card className="w-full max-w-2xl mx-auto bg-white border border-gray-200 shadow-lg">
+      <CardHeader className="bg-white">
+        <CardTitle className="text-2xl font-bold text-gray-900">
+          {editData ? "Edit Club" : "Add Club"}
+        </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="bg-white">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
