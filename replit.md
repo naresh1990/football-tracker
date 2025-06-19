@@ -102,6 +102,16 @@ This is a comprehensive football player tracking application built for monitorin
 
 ## Recent Changes
 
+- June 19, 2025: Implemented complete Gallery feature with photo upload, delete, and gallery view functionality
+  - Added galleryPhotos database table with player association, filename, caption, and upload timestamp
+  - Created comprehensive Gallery page with responsive grid layout and modal photo viewing
+  - Implemented photo upload with file validation, caption support, and progress indicators
+  - Added photo deletion functionality with confirmation prompts and optimistic updates
+  - Enhanced navigation with Gallery menu item and camera icon
+  - Built photo modal with full-screen viewing, caption display, and delete options
+  - Used Multer for secure file handling and storage in uploads directory
+  - Added IST timezone formatting for upload timestamps
+  - Integrated with existing database storage pattern and API routes
 - June 19, 2025: Implemented interactive training calendar with comprehensive event management
   - Created full calendar view using react-big-calendar with month/week/day view options
   - Added color-coded events based on training status (pending=blue, completed=green, cancelled=yellow, missed=red)
