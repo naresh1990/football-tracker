@@ -259,9 +259,9 @@ export class MemStorage implements IStorage {
         duration: 120,
         location: "Main Field",
         coach: "Coach Martinez",
-        focus: "Tactical formations and set pieces",
         notes: "Solid understanding of 4-3-3 formation. Positioned well in midfield during scrimmage.",
-        completed: true
+        completed: true,
+        attendance: "completed"
       },
       {
         playerId: 1,
@@ -270,9 +270,9 @@ export class MemStorage implements IStorage {
         duration: 60,
         location: "Fitness Center",
         coach: "Coach Davis",
-        focus: "Endurance and strength building",
         notes: "Completed all cardio circuits. Showed good stamina improvement from last session.",
-        completed: true
+        completed: true,
+        attendance: "completed"
       },
       {
         playerId: 1,
@@ -281,9 +281,9 @@ export class MemStorage implements IStorage {
         duration: 90,
         location: "Practice Field B",
         coach: "Coach Thompson",
-        focus: "Finishing and accuracy training",
         notes: "Scored 8/10 shots on target. Excellent improvement in accuracy from the penalty area.",
-        completed: true
+        completed: true,
+        attendance: "completed"
       },
       // Upcoming sessions (future dates)
       {
@@ -293,9 +293,9 @@ export class MemStorage implements IStorage {
         duration: 90,
         location: "Main Field",
         coach: "Coach Martinez",
-        focus: "Sprint techniques and cone drills",
         notes: "Focus on acceleration and quick direction changes",
-        completed: false
+        completed: false,
+        attendance: "pending"
       },
       {
         playerId: 1,
@@ -304,9 +304,9 @@ export class MemStorage implements IStorage {
         duration: 75,
         location: "Training Ground A",
         coach: "Coach Thompson",
-        focus: "First touch and dribbling skills",
         notes: "First touch and close control drills with both feet",
-        completed: false
+        completed: false,
+        attendance: "pending"
       },
       {
         playerId: 1,
@@ -315,9 +315,9 @@ export class MemStorage implements IStorage {
         duration: 120,
         location: "Main Field",
         coach: "Coach Martinez",
-        focus: "Tactical formations and set pieces",
         notes: "Full team scrimmage and tactical work - 4-3-3 formation",
-        completed: false
+        completed: false,
+        attendance: "pending"
       },
       {
         playerId: 1,
@@ -326,9 +326,9 @@ export class MemStorage implements IStorage {
         duration: 60,
         location: "Fitness Center",
         coach: "Coach Davis",
-        focus: "Endurance and strength building",
         notes: "Cardio workout and core strengthening exercises",
-        completed: false
+        completed: false,
+        attendance: "pending"
       }
     ];
 
@@ -454,14 +454,13 @@ export class MemStorage implements IStorage {
       {
         playerId: 1,
         name: "Mr. Anjith Kumar",
-        role: "Head Coach",
-        contact: "anjith.kumar@sporthood.com",
-        picture: "/uploads/coach-anjith.jpg"
+        role: "head_coach",
+        contact: "anjith.kumar@sporthood.com"
       },
       {
         playerId: 1,
         name: "Mr. Vaishnav",
-        role: "Assistant Coach",
+        role: "assistant_coach",
         contact: "vaishnav@sporthood.com"
       }
     ];
