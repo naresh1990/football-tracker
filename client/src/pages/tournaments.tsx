@@ -52,74 +52,96 @@ export default function Tournaments() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="space-y-4">
         {tournaments?.length === 0 ? (
-          <div className="col-span-full text-center py-12">
+          <div className="text-center py-12">
             <p className="text-gray-500">No tournaments found</p>
           </div>
         ) : (
           tournaments?.map((tournament: any) => (
-            <Card key={tournament.id} className="shadow-lg">
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-lg">{tournament.name}</CardTitle>
-                  <Badge className={getStatusColor(tournament.status)} variant="secondary">
-                    {tournament.status}
-                  </Badge>
+            <div key={tournament.id} className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-6 hover:bg-white/90 transition-all duration-200 shadow-sm">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 leading-tight mb-2">{tournament.name}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">{tournament.description}</p>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-600 mb-4">{tournament.description}</p>
-                
-                <div className="space-y-3 mb-6">
-                  {tournament.startDate && (
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Start Date:</span>
-                      <span className="font-medium">{formatDate(tournament.startDate)}</span>
-                    </div>
-                  )}
-                  {tournament.currentPosition && (
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Position:</span>
-                      <span className="font-medium">{tournament.currentPosition} Place</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Games:</span>
-                    <span className="font-medium">
-                      {tournament.gamesPlayed}/{tournament.totalGames || '?'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Points:</span>
-                    <span className="font-medium">{tournament.points} pts</span>
-                  </div>
-                  {tournament.format && (
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Format:</span>
-                      <span className="font-medium">{tournament.format}</span>
-                    </div>
-                  )}
+                <Badge className={`text-xs px-3 py-1 font-medium ${getStatusColor(tournament.status)}`} variant="secondary">
+                  {tournament.status}
+                </Badge>
+              </div>
+              
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div className="text-center p-3 bg-gray-50 rounded-lg">
+                  <div className="text-lg font-bold text-gray-900">{tournament.currentPosition || 'TBD'}</div>
+                  <div className="text-xs text-gray-600">Position</div>
                 </div>
+                <div className="text-center p-3 bg-gray-50 rounded-lg">
+                  <div className="text-lg font-bold text-gray-900">{tournament.gamesPlayed}/{tournament.totalGames || '?'}</div>
+                  <div className="text-xs text-gray-600">Games Played</div>
+                </div>
+                <div className="text-center p-3 bg-gray-50 rounded-lg">
+                  <div className="text-lg font-bold text-gray-900">{tournament.points}</div>
+                  <div className="text-xs text-gray-600">Points</div>
+                </div>
+                <div className="text-center p-3 bg-gray-50 rounded-lg">
+                  <div className="text-lg font-bold text-gray-900">{tournament.startDate ? formatDate(tournament.startDate) : 'TBD'}</div>
+                  <div className="text-xs text-gray-600">Start Date</div>
+                </div>
+              </div>
 
-                <div className="flex justify-between items-center">
-                  <div className="flex space-x-2">
-                    <Button variant="outline" size="sm">
-                      <Eye className="w-4 h-4 mr-1" />
-                      View
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Edit className="w-4 h-4 mr-1" />
-                      Edit
-                    </Button>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-gray-900">Tournament Details</h4>
+                  <div className="text-sm space-y-1">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Format:</span>
+                      <span className="font-medium">{tournament.format || 'League'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Age Group:</span>
+                      <span className="font-medium">{tournament.ageGroup || 'U12'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Location:</span>
+                      <span className="font-medium">{tournament.location || 'Local Area'}</span>
+                    </div>
                   </div>
-                  <Button variant="ghost" size="sm" className="text-football-green">
-                    <Upload className="w-4 h-4 mr-1" />
-                    Points Table
-                  </Button>
                 </div>
-              </CardContent>
-            </Card>
+                
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-gray-900">Performance</h4>
+                  <div className="text-sm space-y-1">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Goals Scored:</span>
+                      <span className="font-medium">{tournament.goalsScored || 0}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Goals Conceded:</span>
+                      <span className="font-medium">{tournament.goalsConceded || 0}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Win Rate:</span>
+                      <span className="font-medium">{tournament.winRate || '0%'}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex gap-3 pt-4 border-t border-gray-100">
+                <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                  <Eye className="w-4 h-4 mr-2" />
+                  View Details
+                </Button>
+                <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                  <Upload className="w-4 h-4 mr-2" />
+                  Upload Points Table
+                </Button>
+                <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                  <Edit className="w-4 h-4 mr-2" />
+                  Edit
+                </Button>
+              </div>
+            </div>
           ))
         )}
         </div>
