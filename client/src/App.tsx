@@ -37,7 +37,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
           <Header 
             onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             onQuickAdd={() => setIsQuickAddModalOpen(true)}
@@ -46,19 +46,10 @@ function App() {
             isOpen={isMobileMenuOpen}
             onClose={() => setIsMobileMenuOpen(false)}
           />
-          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          
+          <main className="relative">
             <Router />
           </main>
-          
-          {/* Floating Action Button */}
-          <button 
-            onClick={() => setIsQuickAddModalOpen(true)}
-            className="fixed bottom-6 right-6 bg-football-green hover:bg-green-700 text-white p-4 rounded-full shadow-lg transition-all hover:scale-105 z-50"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-          </button>
 
           <QuickAddModal 
             isOpen={isQuickAddModalOpen}

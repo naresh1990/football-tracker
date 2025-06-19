@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { ModernButton } from "@/components/ui/modern-button";
+import { ModernCard } from "@/components/ui/modern-card";
 import { Target, Zap, MessageSquare, Trophy, Building, User } from "lucide-react";
 import GameForm from "@/components/forms/game-form";
 import TrainingForm from "@/components/forms/training-form";
@@ -31,39 +33,45 @@ export default function QuickAddModal({ isOpen, onClose }: QuickAddModalProps) {
 
   const quickActions = [
     {
-      title: "Add Game",
+      title: "Record Game",
+      description: "Track match performance",
       icon: Target,
-      color: "text-football-green",
+      color: "from-football-primary to-football-secondary",
       action: () => setCurrentForm("game")
     },
     {
-      title: "Add Training",
+      title: "Log Training",
+      description: "Document training session",
       icon: Zap,
-      color: "text-field-green",
+      color: "from-blue-500 to-blue-600",
       action: () => setCurrentForm("training")
     },
     {
-      title: "Add Feedback",
+      title: "Coach Feedback",
+      description: "Record coach insights",
       icon: MessageSquare,
-      color: "text-trophy-gold",
+      color: "from-orange-500 to-orange-600",
       action: () => setCurrentForm("feedback")
     },
     {
       title: "Add Tournament",
+      description: "Create tournament entry",
       icon: Trophy,
-      color: "text-yellow-600",
+      color: "from-yellow-500 to-yellow-600",
       action: () => setCurrentForm("tournament")
     },
     {
-      title: "Add Club",
+      title: "Manage Club",
+      description: "Club information",
       icon: Building,
-      color: "text-indigo-600",
+      color: "from-purple-500 to-purple-600",
       action: () => setCurrentForm("club")
     },
     {
       title: "Add Coach",
+      description: "Coach profile setup",
       icon: User,
-      color: "text-teal-600",
+      color: "from-teal-500 to-teal-600",
       action: () => setCurrentForm("coach")
     }
   ];
@@ -114,24 +122,77 @@ export default function QuickAddModal({ isOpen, onClose }: QuickAddModalProps) {
         );
       default:
         return (
-          <div className="p-6">
-            <DialogHeader className="mb-6">
-              <DialogTitle className="text-xl font-bold text-gray-900">Quick Add</DialogTitle>
+          <motion.div 
+            className="p-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <DialogHeader className="mb-8 text-center">
+              <DialogTitle className="text-3xl font-bold text-display text-gradient mb-2">
+                Quick Actions
+              </DialogTitle>
+              <p className="text-muted-foreground">
+                Choose an action to record your football journey
+              </p>
             </DialogHeader>
-            <div className="grid grid-cols-2 gap-4">
-              {quickActions.map((action, index) => (
-                <Button
-                  key={index}
-                  variant="outline"
-                  onClick={action.action}
-                  className="flex flex-col items-center p-6 h-auto border border-gray-200 hover:bg-gray-50 transition-colors"
-                >
-                  <action.icon className={`${action.color} w-8 h-8 mb-2`} />
-                  <span className="text-sm font-medium">{action.title}</span>
-                </Button>
-              ))}
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <AnimatePresence>
+                {quickActions.map((action, index) => {
+                  const Icon = action.icon;
+                  return (
+                    <motion.div
+                      key={action.title}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <ModernCard
+                        interactive
+                        className="p-6 cursor-pointer group hover:shadow-football border-2 border-transparent hover:border-football/20"
+                        onClick={action.action}
+                      >
+                        <div className="flex items-center space-x-4">
+                          <div className={`
+                            w-14 h-14 rounded-2xl bg-gradient-to-br ${action.color} 
+                            flex items-center justify-center text-white shadow-lg
+                            group-hover:scale-110 transition-transform duration-300
+                          `}>
+                            <Icon className="w-7 h-7" />
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-lg text-gray-900 mb-1">
+                              {action.title}
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                              {action.description}
+                            </p>
+                          </div>
+                        </div>
+                      </ModernCard>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
             </div>
-          </div>
+            
+            <motion.div 
+              className="mt-8 text-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              <ModernButton
+                variant="ghost"
+                onClick={() => onClose()}
+              >
+                Cancel
+              </ModernButton>
+            </motion.div>
+          </motion.div>
         );
     }
   };
