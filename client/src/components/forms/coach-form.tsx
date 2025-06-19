@@ -32,6 +32,8 @@ interface CoachFormProps {
 export default function CoachForm({ onSuccess, onCancel, clubId, trigger }: CoachFormProps) {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
+  const [profileFile, setProfileFile] = useState<File | null>(null);
+  const [profilePreview, setProfilePreview] = useState<string>("");
   
   const { data: clubs } = useQuery({
     queryKey: ["/api/clubs", { playerId: 1 }],
@@ -58,6 +60,11 @@ export default function CoachForm({ onSuccess, onCancel, clubId, trigger }: Coac
         }
       });
       
+      // Add profile picture if selected
+      if (profileFile) {
+        formData.append('profilePicture', profileFile);
+      }
+      
       return fetch('/api/coaches', {
         method: 'POST',
         body: formData,
@@ -75,6 +82,8 @@ export default function CoachForm({ onSuccess, onCancel, clubId, trigger }: Coac
         description: "Coach added successfully",
       });
       form.reset();
+      setProfileFile(null);
+      setProfilePreview("");
       setOpen(false);
       if (onSuccess) onSuccess();
     },
@@ -177,6 +186,51 @@ export default function CoachForm({ onSuccess, onCancel, clubId, trigger }: Coac
             </FormItem>
           )}
         />
+
+        <div>
+          <FormLabel>Profile Picture (Optional)</FormLabel>
+          <div className="flex items-center gap-4 mt-2">
+            {profilePreview ? (
+              <div className="relative">
+                <img
+                  src={profilePreview}
+                  alt="Profile preview"
+                  className="w-20 h-20 rounded-full object-cover border-2 border-gray-200"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setProfileFile(null);
+                    setProfilePreview("");
+                  }}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 text-xs"
+                >
+                  ×
+                </button>
+              </div>
+            ) : (
+              <div className="w-20 h-20 border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center">
+                <span className="text-gray-400 text-xs">No Image</span>
+              </div>
+            )}
+            <div className="flex-1">
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    setProfileFile(file);
+                    const url = URL.createObjectURL(file);
+                    setProfilePreview(url);
+                  }
+                }}
+                className="cursor-pointer"
+              />
+              <p className="text-sm text-gray-500 mt-1">Upload profile picture (PNG, JPG, max 5MB)</p>
+            </div>
+          </div>
+        </div>
 
         <FormField
           control={form.control}

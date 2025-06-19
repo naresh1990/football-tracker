@@ -270,9 +270,13 @@ export default function Clubs() {
                       {clubCoaches.length > 0 ? (
                         <div className="space-y-3">
                           {clubCoaches.map((coach: any) => (
-                            <div key={coach.id} className="flex items-center gap-3 p-3 bg-white/80 rounded-lg border border-blue-50">
-                              <Avatar className="w-10 h-10 ring-2 ring-blue-200">
-                                <AvatarImage src={coach.profilePicture} alt={coach.name} />
+                            <div key={coach.id} className="flex items-center gap-3 p-3 bg-white/80 rounded-lg border border-blue-50 hover:bg-white/90 transition-colors">
+                              <Avatar className="w-12 h-12 ring-2 ring-blue-200">
+                                <AvatarImage 
+                                  src={coach.profilePicture} 
+                                  alt={coach.name}
+                                  className="object-cover"
+                                />
                                 <AvatarFallback className="text-sm bg-gradient-to-br from-blue-500 to-purple-500 text-white">
                                   {coach.name.split(' ').map((n: string) => n[0]).join('')}
                                 </AvatarFallback>
@@ -280,6 +284,20 @@ export default function Clubs() {
                               <div className="flex-1">
                                 <p className="font-semibold text-gray-900 text-sm">{coach.name}</p>
                                 <p className="text-xs text-blue-600 font-medium">{coach.title}</p>
+                                {coach.contact && (
+                                  <p className="text-xs text-gray-500 mt-1">{coach.contact}</p>
+                                )}
+                              </div>
+                              <div className="flex items-center">
+                                {coach.isActive ? (
+                                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    Active
+                                  </span>
+                                ) : (
+                                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                    Inactive
+                                  </span>
+                                )}
                               </div>
                             </div>
                           ))}
