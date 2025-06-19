@@ -334,14 +334,24 @@ export default function SquadMemberForm({ onSuccess, onCancel, clubId, squadMemb
                 <span className="text-gray-400 text-xs">No Image</span>
               </div>
             )}
-            <div className="flex-1">
+            <div className="flex-1 space-y-2">
               <Input
                 type="file"
                 accept="image/*"
                 onChange={handleImageSelect}
                 className="cursor-pointer"
               />
-              <p className="text-sm text-gray-500 mt-1">Upload profile picture (PNG, JPG, max 5MB)</p>
+              <p className="text-sm text-gray-500">Upload profile picture (PNG, JPG, max 5MB)</p>
+              {originalImage && !profilePreview && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowCropper(true)}
+                  className="w-full text-green-600 border-green-200 hover:bg-green-50"
+                >
+                  Crop Image
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -362,37 +372,39 @@ export default function SquadMemberForm({ onSuccess, onCancel, clubId, squadMemb
 
         {/* Image Cropping Modal */}
         {showCropper && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[10000]">
-            <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4">
-              <h3 className="text-lg font-semibold mb-4">Crop Profile Picture</h3>
-              <div className="mb-4">
+          <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[99999]" style={{ zIndex: 99999 }}>
+            <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto shadow-2xl">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900">Crop Profile Picture</h3>
+              <div className="mb-6 flex justify-center">
                 <ReactCrop
                   crop={crop}
                   onChange={setCrop}
                   onComplete={setCompletedCrop}
                   aspect={1}
                   circularCrop
+                  className="border border-gray-200 rounded"
                 >
                   <img
                     ref={imgRef}
                     src={originalImage}
                     alt="Crop preview"
-                    className="max-h-96 w-auto"
+                    className="max-h-80 w-auto rounded"
                   />
                 </ReactCrop>
               </div>
-              <div className="flex justify-end gap-3">
+              <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setShowCropper(false)}
+                  className="px-6"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="button"
                   onClick={handleCropComplete}
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="bg-green-600 hover:bg-green-700 text-white px-6"
                 >
                   Apply Crop
                 </Button>
