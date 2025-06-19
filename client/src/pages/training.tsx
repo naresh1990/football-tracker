@@ -37,11 +37,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../styles/calendar.css';
 import { useState } from 'react';
 
+// Configure moment for IST timezone
 const localizer = momentLocalizer(moment);
 
 export default function Training() {
@@ -121,15 +122,15 @@ export default function Training() {
   };
 
   const formatDate = (date: string | Date) => {
-    return moment(date).format('MMMM Do, YYYY');
+    return moment(date).tz('Asia/Kolkata').format('MMMM Do, YYYY');
   };
 
   const formatShortDate = (date: string | Date) => {
-    return moment(date).format('MMM D, YYYY');
+    return moment(date).tz('Asia/Kolkata').format('MMM D, YYYY');
   };
 
   const formatTime = (date: string | Date) => {
-    return moment(date).format('h:mm A');
+    return moment(date).tz('Asia/Kolkata').format('h:mm A');
   };
 
   const getClubLogo = (coachName: string) => {
@@ -229,18 +230,19 @@ export default function Training() {
 
   // Transform sessions into calendar events
   const events = sessions?.map((session: any) => {
-    const startDate = moment(session.date).toDate();
-    const endDate = moment(session.date).add(session.duration || 90, 'minutes').toDate();
+    // Parse the UTC date and convert to IST
+    const startMoment = moment.utc(session.date).tz('Asia/Kolkata');
+    const endMoment = startMoment.clone().add(session.duration || 90, 'minutes');
     
-    // Ensure end time doesn't cross midnight by capping at 23:59 of the same day
-    const maxEndTime = moment(startDate).endOf('day').toDate();
-    const finalEndDate = endDate > maxEndTime ? maxEndTime : endDate;
+    // Ensure event stays within the same day in IST
+    const dayEnd = startMoment.clone().endOf('day');
+    const finalEndMoment = endMoment.isAfter(dayEnd) ? dayEnd : endMoment;
     
     return {
       id: session.id,
       title: session.type,
-      start: startDate,
-      end: finalEndDate,
+      start: startMoment.toDate(),
+      end: finalEndMoment.toDate(),
       resource: session,
       allDay: false,
     };
