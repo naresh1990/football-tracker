@@ -64,17 +64,19 @@ export default function Training() {
   const pastSessions = sessions?.filter((session: any) => new Date(session.date) < now) || [];
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Training</h1>
-        <Button className="bg-blue-600 hover:bg-blue-700">
-          <Plus className="w-4 h-4 mr-2" />
-          Add Training
-        </Button>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Training</h1>
+          <Button className="bg-blue-600 hover:bg-blue-700">
+            <Plus className="w-4 h-4 mr-2" />
+            Add Training
+          </Button>
+        </div>
 
-      {/* Upcoming Sessions */}
-      <Card>
+        <div className="space-y-6">
+          {/* Upcoming Sessions */}
+          <Card>
         <CardContent className="p-6">
           <div className="space-y-4">
             {upcomingSessions.length === 0 ? (
@@ -183,7 +185,9 @@ export default function Training() {
             )}
           </div>
         </CardContent>
-      </Card>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }
