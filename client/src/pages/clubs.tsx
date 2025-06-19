@@ -11,6 +11,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import ClubForm from "@/components/forms/club-form";
 import CoachForm from "@/components/forms/coach-form";
+import SquadMemberForm from "@/components/forms/squad-member-form";
 import { motion } from "framer-motion";
 
 export default function Clubs() {
@@ -106,8 +107,45 @@ export default function Clubs() {
     }
   };
 
+  const deleteSquadMemberMutation = useMutation({
+    mutationFn: (squadId: number) => {
+      return fetch(`/api/squad/${squadId}`, {
+        method: 'DELETE',
+      }).then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.status === 204 ? null : res.json();
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/squad"] });
+      toast({
+        title: "Success",
+        description: "Squad member deleted successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error", 
+        description: "Failed to delete squad member",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleDeleteSquadMember = (squadId: number) => {
+    if (window.confirm("Are you sure you want to delete this squad member?")) {
+      deleteSquadMemberMutation.mutate(squadId);
+    }
+  };
+
   const getClubCoaches = (clubId: number) => {
     return coaches?.filter((coach: any) => coach.clubId === clubId) || [];
+  };
+
+  const getClubSquadMembers = (clubId: number) => {
+    return squadMembers?.filter((member: any) => member.clubId === clubId) || [];
   };
 
   const getStatusColor = (status: string) => {

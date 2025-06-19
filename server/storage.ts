@@ -1047,8 +1047,10 @@ export class DatabaseStorage implements IStorage {
     return newMember;
   }
 
-  async updateSquadMember(id: number, member: Partial<InsertSquadMember>): Promise<SquadMember | undefined> {
+  async updateSquadMember(id: number, member: any): Promise<any> {
+    console.log("Updating squad member ID:", id, "with data:", member);
     const [updated] = await db.update(squadMembers).set(member).where(eq(squadMembers.id, id)).returning();
+    console.log("Updated squad member:", updated);
     return updated || undefined;
   }
 
