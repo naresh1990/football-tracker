@@ -32,7 +32,7 @@ interface ClubFormProps {
 export default function ClubForm({ onSuccess, onCancel, editData }: ClubFormProps) {
   const { toast } = useToast();
   const [logoFile, setLogoFile] = useState<File | null>(null);
-  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(editData?.logo || null);
   
   const form = useForm<ClubFormData>({
     resolver: zodResolver(clubFormSchema),
