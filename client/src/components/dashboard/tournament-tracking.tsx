@@ -86,14 +86,14 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-2 pt-4 border-t border-gray-100">
-                    <Button variant="ghost" size="sm" className="w-full justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100 py-2">
+                  <div className="flex gap-3 pt-4 border-t border-gray-100">
+                    <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
                       <Eye className="w-4 h-4 mr-2" />
                       View Details
                     </Button>
-                    <Button variant="ghost" size="sm" className="w-full justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100 py-2">
+                    <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
                       <Upload className="w-4 h-4 mr-2" />
-                      Upload Points Table
+                      Upload
                     </Button>
                   </div>
                 </div>
