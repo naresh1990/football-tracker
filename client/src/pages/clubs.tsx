@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,6 @@ import { Plus, Edit, Trash2, Building, Users } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { queryClient } from "@/lib/queryClient";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -15,7 +14,6 @@ import { motion } from "framer-motion";
 
 export default function Clubs() {
   const { toast } = useToast();
-  const [editingClub, setEditingClub] = useState<any>(null);
 
   const { data: clubs, isLoading } = useQuery({
     queryKey: ["/api/clubs", { playerId: 1 }],
@@ -107,10 +105,7 @@ export default function Clubs() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-black text-gray-900">Clubs</h1>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold">
-            <Plus className="mr-2 h-4 w-4" />
-            Add Club
-          </Button>
+          <ClubForm />
         </div>
 
         {(!clubs || clubs.length === 0) && (
@@ -125,13 +120,12 @@ export default function Clubs() {
             </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No clubs added yet</h3>
             <p className="text-gray-600 mb-6">Add the football clubs you're part of to track your journey</p>
-            <Button 
-              onClick={() => setEditingClub({})}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              Add Your First Club
-            </Button>
+            <ClubForm trigger={
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                <Plus className="mr-2 h-4 w-4" />
+                Add Your First Club
+              </Button>
+            } />
           </motion.div>
         )}
 
@@ -189,14 +183,19 @@ export default function Clubs() {
                     </div>
                     
                     <div className="flex items-center space-x-2">
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="text-gray-600 hover:text-blue-600 hover:bg-blue-50"
-                        onClick={() => setEditingClub(club)}
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Button>
+                      <ClubForm 
+                        club={club}
+                        mode="edit"
+                        trigger={
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                        }
+                      />
                       <Button
                         variant="ghost"
                         size="sm"
@@ -281,29 +280,7 @@ export default function Clubs() {
         )}
         </div>
 
-        {/* Edit Club Modal */}
-        <Dialog open={!!editingClub} onOpenChange={() => setEditingClub(null)}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-visible bg-white border-0 shadow-2xl z-50">
-            <DialogHeader className="bg-white">
-              <DialogTitle className="text-gray-900">Edit Club</DialogTitle>
-            </DialogHeader>
-            <div className="bg-white relative z-50 overflow-visible">
-              {editingClub && (
-                <ClubForm 
-                  editData={editingClub}
-                  onSuccess={() => {
-                    setEditingClub(null);
-                    toast({
-                      title: "Success",
-                      description: "Club updated successfully",
-                    });
-                  }}
-                  onCancel={() => setEditingClub(null)}
-                />
-              )}
-            </div>
-          </DialogContent>
-        </Dialog>
+
       </div>
     </div>
   );
