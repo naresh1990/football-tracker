@@ -155,16 +155,14 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
               />
             </div>
             <div>
-              <Label htmlFor="intensity">Intensity</Label>
-              <Select value={formData.intensity} onValueChange={(value) => setFormData({ ...formData, intensity: value })}>
+              <Label htmlFor="completed">Session Status</Label>
+              <Select value={formData.completed.toString()} onValueChange={(value) => setFormData({ ...formData, completed: value === 'true' })}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select intensity" />
+                  <SelectValue placeholder="Select status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Low">Low</SelectItem>
-                  <SelectItem value="Medium">Medium</SelectItem>
-                  <SelectItem value="High">High</SelectItem>
-                  <SelectItem value="Very High">Very High</SelectItem>
+                  <SelectItem value="false">Scheduled</SelectItem>
+                  <SelectItem value="true">Completed</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -187,16 +185,6 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
               value={formData.coach}
               onChange={(e) => setFormData({ ...formData, coach: e.target.value })}
               placeholder="Coach name"
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="focus">Focus Areas</Label>
-            <Input
-              id="focus"
-              value={formData.focus}
-              onChange={(e) => setFormData({ ...formData, focus: e.target.value })}
-              placeholder="e.g., Passing, Shooting, Defending"
             />
           </div>
 
