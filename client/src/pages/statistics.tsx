@@ -90,63 +90,79 @@ export default function Statistics() {
         </div>
 
         {/* Overview Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Total Goals</p>
-                <p className="text-3xl font-bold text-football-green">{stats?.totalGoals || 0}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <Card className="shadow-lg border-0 bg-gradient-to-br from-green-50 to-emerald-50 border-l-4 border-l-green-500">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Total Goals</p>
+                  <p className="text-2xl font-bold text-green-600">{stats?.totalGoals || 0}</p>
+                  <div className="flex items-center mt-2">
+                    <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
+                    <span className="text-xs text-green-600">+2 this month</span>
+                  </div>
+                </div>
+                <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
+                  <Trophy className="h-6 w-6 text-white" />
+                </div>
               </div>
-              <div className="bg-field-green bg-opacity-20 p-3 rounded-full">
-                <Target className="text-field-green w-6 h-6" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Total Assists</p>
-                <p className="text-3xl font-bold text-trophy-gold">{stats?.totalAssists || 0}</p>
+          <Card className="shadow-lg border-0 bg-gradient-to-br from-blue-50 to-indigo-50 border-l-4 border-l-blue-500">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Total Assists</p>
+                  <p className="text-2xl font-bold text-blue-600">{stats?.totalAssists || 0}</p>
+                  <div className="flex items-center mt-2">
+                    <TrendingUp className="w-4 h-4 text-blue-500 mr-1" />
+                    <span className="text-xs text-blue-600">+1 this month</span>
+                  </div>
+                </div>
+                <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
+                  <Target className="h-6 w-6 text-white" />
+                </div>
               </div>
-              <div className="bg-trophy-gold bg-opacity-20 p-3 rounded-full">
-                <TrendingUp className="text-trophy-gold w-6 h-6" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Games Played</p>
-                <p className="text-3xl font-bold text-football-green">{stats?.totalGames || 0}</p>
+          <Card className="shadow-lg border-0 bg-gradient-to-br from-purple-50 to-violet-50 border-l-4 border-l-purple-500">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Games Played</p>
+                  <p className="text-2xl font-bold text-purple-600">{stats?.totalGames || 0}</p>
+                  <div className="flex items-center mt-2">
+                    <Calendar className="w-4 h-4 text-purple-500 mr-1" />
+                    <span className="text-xs text-purple-600">6 this month</span>
+                  </div>
+                </div>
+                <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center">
+                  <Calendar className="h-6 w-6 text-white" />
+                </div>
               </div>
-              <div className="bg-football-green bg-opacity-20 p-3 rounded-full">
-                <Calendar className="text-football-green w-6 h-6" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Win Rate</p>
-                <p className="text-3xl font-bold text-green-600">{stats?.winRate || 0}%</p>
+          <Card className="shadow-lg border-0 bg-gradient-to-br from-orange-50 to-amber-50 border-l-4 border-l-orange-500">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Win Rate</p>
+                  <p className="text-2xl font-bold text-orange-600">{stats?.winRate || 0}%</p>
+                  <div className="flex items-center mt-2">
+                    <TrendingUp className="w-4 h-4 text-orange-500 mr-1" />
+                    <span className="text-xs text-orange-600">14/18 games</span>
+                  </div>
+                </div>
+                <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">
+                  <TrendingUp className="h-6 w-6 text-white" />
+                </div>
               </div>
-              <div className="bg-green-100 p-3 rounded-full">
-                <Trophy className="text-green-600 w-6 h-6" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            </CardContent>
+          </Card>
+        </div>
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
