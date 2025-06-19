@@ -1094,8 +1094,10 @@ export class DatabaseStorage implements IStorage {
     return coach || undefined;
   }
 
-  async createCoach(coach: InsertCoach): Promise<Coach> {
+  async createCoach(coach: any): Promise<any> {
+    console.log("Creating coach with data:", coach);
     const [newCoach] = await db.insert(coaches).values(coach).returning();
+    console.log("Created coach:", newCoach);
     return newCoach;
   }
 

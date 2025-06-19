@@ -482,15 +482,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/coaches", upload.single('profilePicture'), async (req, res) => {
     try {
-      const profilePictureUrl = handleImageUpload(req.file);
-      const validatedData = insertCoachSchema.parse({
-        ...req.body,
-        profilePicture: profilePictureUrl
-      });
+      console.log("Coach data received:", req.body);
+      console.log("Profile picture file:", req.file);
+      
+      let profilePictureUrl = null;
+      
+      // Handle file upload if provided
+      if (req.file) {
+        profilePictureUrl = handleImageUpload(req.file);
+      }
+      
+      // Transform and validate data
+      const coachData: any = { ...req.body };
+      
+      // Convert playerId and clubId to numbers
+      if (coachData.playerId) {
+        coachData.playerId = parseInt(coachData.playerId);
+      }
+      if (coachData.clubId) {
+        coachData.clubId = parseInt(coachData.clubId);
+      }
+      
+      // Convert isActive to boolean
+      if (coachData.isActive) {
+        coachData.isActive = coachData.isActive === 'true';
+      }
+      
+      // Add profile picture URL
+      if (profilePictureUrl) {
+        coachData.profilePicture = profilePictureUrl;
+      }
+      
+      console.log("Processing coach data:", coachData);
+      const validatedData = insertCoachSchema.parse(coachData);
+      console.log("Validated coach data:", validatedData);
       const coach = await storage.createCoach(validatedData);
       res.status(201).json(coach);
     } catch (error) {
-      res.status(400).json({ error: "Invalid coach data" });
+      console.error("Error creating coach:", error);
+      console.error("Error details:", error.message);
+      res.status(400).json({ error: "Invalid coach data", details: error.message });
     }
   });
 
