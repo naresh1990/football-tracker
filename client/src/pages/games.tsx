@@ -52,18 +52,15 @@ export default function Games() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-900">Games</h1>
-        <Button className="bg-football-green hover:bg-green-700">
+        <Button className="bg-blue-600 hover:bg-blue-700">
           <Plus className="w-4 h-4 mr-2" />
           Add Game
         </Button>
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>All Games</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-6">
+        <CardContent className="p-0">
+          <div className="space-y-6 p-6">
             {games?.length === 0 ? (
               <div className="text-center py-8">
                 <p className="text-gray-500">No games recorded yet</p>

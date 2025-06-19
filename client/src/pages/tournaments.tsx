@@ -45,7 +45,7 @@ export default function Tournaments() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-900">Tournaments</h1>
-        <Button className="bg-football-green hover:bg-green-700">
+        <Button className="bg-blue-600 hover:bg-blue-700">
           <Plus className="w-4 h-4 mr-2" />
           Add Tournament
         </Button>

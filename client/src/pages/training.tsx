@@ -67,7 +67,7 @@ export default function Training() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-900">Training</h1>
-        <Button className="bg-football-green hover:bg-green-700">
+        <Button className="bg-blue-600 hover:bg-blue-700">
           <Plus className="w-4 h-4 mr-2" />
           Add Training
         </Button>
@@ -75,10 +75,7 @@ export default function Training() {
 
       {/* Upcoming Sessions */}
       <Card>
-        <CardHeader>
-          <CardTitle className="text-xl text-football-green">Upcoming Sessions</CardTitle>
-        </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
           <div className="space-y-4">
             {upcomingSessions.length === 0 ? (
               <div className="text-center py-8">
@@ -138,10 +135,7 @@ export default function Training() {
 
       {/* Past Sessions */}
       <Card>
-        <CardHeader>
-          <CardTitle className="text-xl text-gray-700">Training History</CardTitle>
-        </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
           <div className="space-y-4">
             {pastSessions.length === 0 ? (
               <div className="text-center py-8">
