@@ -229,14 +229,18 @@ export default function Training() {
 
   // Transform sessions into calendar events
   const events = sessions?.map((session: any) => {
-    const startDate = new Date(session.date);
-    const endDate = new Date(startDate.getTime() + (session.duration || 90) * 60 * 1000);
+    const startDate = moment(session.date).toDate();
+    const endDate = moment(session.date).add(session.duration || 90, 'minutes').toDate();
+    
+    // Ensure end time doesn't cross midnight by capping at 23:59 of the same day
+    const maxEndTime = moment(startDate).endOf('day').toDate();
+    const finalEndDate = endDate > maxEndTime ? maxEndTime : endDate;
     
     return {
       id: session.id,
       title: session.type,
       start: startDate,
-      end: endDate,
+      end: finalEndDate,
       resource: session,
       allDay: false,
     };

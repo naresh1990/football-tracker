@@ -65,6 +65,28 @@
   font-weight: 500;
   margin: 1px 0;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Force events to stay within their day cell in month view */
+.rbc-month-view .rbc-event {
+  max-width: 100%;
+  position: relative;
+}
+
+/* Prevent events from spanning across date boundaries in month view */
+.rbc-month-view .rbc-event-label,
+.rbc-month-view .rbc-event-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Ensure proper event positioning */
+.rbc-month-view .rbc-event {
+  z-index: 1;
 }
 
 .rbc-event:hover {
