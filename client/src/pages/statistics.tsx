@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, Legend } from "recharts";
-import { Target, Trophy, Calendar, TrendingUp, Users } from "lucide-react";
+import { Target, Trophy, Calendar, TrendingUp, Circle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Statistics() {
@@ -121,7 +121,7 @@ export default function Statistics() {
                   </div>
                 </div>
                 <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
-                  <Users className="h-6 w-6 text-white" />
+                  <Circle className="h-6 w-6 text-white" />
                 </div>
               </div>
             </CardContent>
