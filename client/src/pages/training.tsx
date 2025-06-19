@@ -109,12 +109,15 @@ export default function Training() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/training"] });
       toast({
-        title: "Feedback Added",
-        description: "Coach feedback has been added successfully.",
+        title: selectedEvent?.coachFeedback ? "Feedback Updated" : "Feedback Added",
+        description: selectedEvent?.coachFeedback ? "Coach feedback has been updated successfully." : "Coach feedback has been added successfully.",
       });
       setShowFeedbackForm(false);
       setFeedbackText('');
-      setShowEventDetails(false);
+      // Update the selected event with new feedback
+      if (selectedEvent) {
+        setSelectedEvent({ ...selectedEvent, coachFeedback: feedbackText.trim() });
+      }
     },
     onError: () => {
       toast({
@@ -677,7 +680,12 @@ export default function Training() {
         </Dialog>
 
         {/* Feedback Form Modal */}
-        <Dialog open={showFeedbackForm} onOpenChange={setShowFeedbackForm}>
+        <Dialog open={showFeedbackForm} onOpenChange={(open) => {
+          setShowFeedbackForm(open);
+          if (!open) {
+            setFeedbackText('');
+          }
+        }}>
           <DialogContent className="max-w-md bg-white">
             <DialogHeader>
               <DialogTitle>
@@ -716,7 +724,7 @@ export default function Training() {
                   disabled={!feedbackText.trim() || updateFeedbackMutation.isPending}
                   className="flex-1 bg-green-600 hover:bg-green-700 text-white"
                 >
-                  {updateFeedbackMutation.isPending ? 'Saving...' : 'Save Feedback'}
+                  {updateFeedbackMutation.isPending ? 'Saving...' : (selectedEvent?.coachFeedback ? 'Update Feedback' : 'Save Feedback')}
                 </Button>
               </div>
             </div>
