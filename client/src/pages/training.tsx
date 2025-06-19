@@ -176,7 +176,7 @@ export default function Training() {
         </motion.div>
 
         {/* Upcoming Sessions Section */}
-        {upcomingSessions.length > 0 && (
+        {pendingSessions.length > 0 && (
           <motion.div 
             className="mb-12"
             initial={{ opacity: 0, y: 20 }}
@@ -184,8 +184,8 @@ export default function Training() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <Clock className="w-6 h-6 text-blue-600" />
-              Upcoming Sessions
+              <AlertCircle className="w-6 h-6 text-blue-600" />
+              Pending Sessions
             </h2>
             <motion.div 
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -193,7 +193,7 @@ export default function Training() {
               initial="hidden"
               animate="visible"
             >
-              {upcomingSessions.map((session: any, index: number) => {
+              {pendingSessions.map((session: any, index: number) => {
                 const TrainingIcon = getTrainingIcon(session.type);
                 const colorClass = getTrainingColor(session.type);
                 const clubLogo = getClubLogo(session.coach);
