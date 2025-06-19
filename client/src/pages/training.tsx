@@ -13,6 +13,14 @@ export default function Training() {
     queryKey: ["/api/training"],
   });
 
+  const { data: coaches } = useQuery({
+    queryKey: ["/api/coaches"],
+  });
+
+  const { data: clubs } = useQuery({
+    queryKey: ["/api/clubs"],
+  });
+
   const getTrainingIcon = (type: string) => {
     switch (type.toLowerCase()) {
       case 'speed & agility':
@@ -184,9 +192,6 @@ export default function Training() {
                         <div className="flex gap-2 pt-2">
                           <Button variant="outline" size="sm" className="flex-1 hover:bg-blue-50">
                             View Details
-                          </Button>
-                          <Button variant="outline" size="sm" className="flex-1 hover:bg-green-50">
-                            Mark Complete
                           </Button>
                         </div>
                       </CardContent>
