@@ -62,11 +62,24 @@ export default function Games() {
         <Card>
         <CardContent className="p-0">
           <div className="space-y-6 p-6">
-            {games?.length === 0 ? (
-              <div className="text-center py-8">
-                <p className="text-gray-500">No games recorded yet</p>
-              </div>
-            ) : (
+            {games && games.length === 0 ? (
+              <motion.div 
+                className="text-center py-16"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Trophy className="w-12 h-12 text-blue-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">No games recorded yet</h3>
+                <p className="text-gray-600 mb-6">Start tracking your football matches and performance</p>
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Your First Game
+                </Button>
+              </motion.div>
+            ) : games && games.length > 0 ? (
               games?.map((game: any, index: number) => {
                 const result = getGameResult(game.teamScore, game.opponentScore);
                 const resultIcon = result === 'win' ? Check : X;
@@ -245,7 +258,7 @@ export default function Games() {
                   </motion.div>
                 );
               })
-            )}
+            ) : null}
           </div>
         </CardContent>
         </Card>

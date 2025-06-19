@@ -11,7 +11,7 @@ import { queryClient } from "@/lib/queryClient";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import ClubForm from "@/components/forms/club-form";
-import EmptyState from "@/components/ui/empty-state";
+import { motion } from "framer-motion";
 
 export default function Clubs() {
   const { toast } = useToast();
@@ -113,16 +113,30 @@ export default function Clubs() {
           </Button>
         </div>
 
+        {(!clubs || clubs.length === 0) && (
+          <motion.div 
+            className="text-center py-16"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Building className="w-12 h-12 text-blue-400" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">No clubs added yet</h3>
+            <p className="text-gray-600 mb-6">Add the football clubs you're part of to track your journey</p>
+            <Button 
+              onClick={() => setEditingClub({})}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              Add Your First Club
+            </Button>
+          </motion.div>
+        )}
+
         <div className="grid gap-6">
-        {clubs && clubs.length === 0 ? (
-          <Card className="text-center py-12">
-            <CardContent>
-              <Building className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No clubs yet</h3>
-              <p className="text-gray-500 mb-4">Start by adding your first club association.</p>
-            </CardContent>
-          </Card>
-        ) : (
+        {clubs && clubs.length > 0 && (
           clubs?.map((club: any) => {
             const clubCoaches = getClubCoaches(club.id);
             return (
