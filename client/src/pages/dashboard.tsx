@@ -340,17 +340,45 @@ export default function Dashboard() {
 
         {/* Team & Profile Section */}
         <motion.div variants={itemVariants}>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <Award className="w-6 h-6 text-blue-600" />
-            Team & Profile
-          </h2>
-          <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
-            <div className="lg:col-span-2">
-              <SquadDetails playerId={1} />
-            </div>
-            <div className="lg:col-span-1">
-              <PlayerProfile player={player} stats={stats} />
-            </div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border-0 mb-8">
+            <button
+              onClick={() => toggleSection('teamProfile')}
+              className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50/50 transition-colors rounded-t-xl"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center shadow-md">
+                  <Award className="w-6 h-6 text-white" />
+                </div>
+                <h2 className="text-xl font-bold text-gray-900">Team & Profile</h2>
+              </div>
+              {collapsedSections.teamProfile ? (
+                <ChevronDown className="w-5 h-5 text-gray-500" />
+              ) : (
+                <ChevronUp className="w-5 h-5 text-gray-500" />
+              )}
+            </button>
+            <AnimatePresence>
+              {!collapsedSections.teamProfile && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="p-6 m-4 bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl shadow-sm">
+                    <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
+                      <div className="lg:col-span-2">
+                        <SquadDetails playerId={1} />
+                      </div>
+                      <div className="lg:col-span-1">
+                        <PlayerProfile player={player} stats={stats} />
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </motion.div>
       </motion.div>
