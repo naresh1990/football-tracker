@@ -268,11 +268,11 @@ export default function Clubs() {
 
         {/* Edit Club Modal */}
         <Dialog open={!!editingClub} onOpenChange={() => setEditingClub(null)}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white border-0 shadow-2xl">
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white border-0 shadow-2xl z-50">
             <DialogHeader className="bg-white">
               <DialogTitle className="text-gray-900">Edit Club</DialogTitle>
             </DialogHeader>
-            <div className="bg-white">
+            <div className="bg-white relative z-50">
               {editingClub && (
                 <ClubForm 
                   editData={editingClub}
