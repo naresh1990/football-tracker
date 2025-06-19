@@ -125,13 +125,13 @@ export default function ClubForm({ onSuccess, onCancel, editData }: ClubFormProp
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto bg-white border border-gray-200 shadow-lg">
+    <Card className="w-full max-w-2xl mx-auto bg-white border border-gray-200 shadow-lg overflow-visible">
       <CardHeader className="bg-white">
         <CardTitle className="text-2xl font-bold text-gray-900">
           {editData ? "Edit Club" : "Add Club"}
         </CardTitle>
       </CardHeader>
-      <CardContent className="bg-white">
+      <CardContent className="bg-white overflow-visible">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -161,7 +161,7 @@ export default function ClubForm({ onSuccess, onCancel, editData }: ClubFormProp
                           <SelectValue placeholder="Select club type" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="z-[60]" position="popper" sideOffset={4}>
+                      <SelectContent className="z-[100]" position="popper" sideOffset={4} align="start" avoidCollisions={true}>
                         <SelectItem value="primary">Primary Club</SelectItem>
                         <SelectItem value="adhoc">Adhoc Club</SelectItem>
                       </SelectContent>
@@ -197,7 +197,7 @@ export default function ClubForm({ onSuccess, onCancel, editData }: ClubFormProp
                           <SelectValue placeholder="Select status" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="z-[60]" position="popper" sideOffset={4}>
+                      <SelectContent className="z-[100]" position="popper" sideOffset={4} align="start" avoidCollisions={true}>
                         <SelectItem value="active">Active</SelectItem>
                         <SelectItem value="inactive">Inactive</SelectItem>
                       </SelectContent>
