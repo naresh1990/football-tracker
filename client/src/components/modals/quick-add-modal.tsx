@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Target, Zap, MessageSquare, Trophy, Building, User, ArrowLeft } from "lucide-react";
 import GameForm from "@/components/forms/game-form";
@@ -134,9 +134,9 @@ export default function QuickAddModal({ isOpen, onClose }: QuickAddModalProps) {
                 </div>
                 Quick Actions
               </DialogTitle>
-              <p className="text-gray-600">
+              <DialogDescription className="text-gray-600">
                 Choose an action to record your football journey
-              </p>
+              </DialogDescription>
             </DialogHeader>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
