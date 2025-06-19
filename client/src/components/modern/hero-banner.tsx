@@ -7,7 +7,8 @@ import {
   TrendingUp,
   Calendar,
   MapPin,
-  Star
+  Star,
+  Building
 } from "lucide-react";
 
 interface HeroBannerProps {
@@ -70,6 +71,17 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
                   <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
                     <Calendar className="w-4 h-4" />
                     <span>Age {player.age}</span>
+                  </div>
+                </div>
+                
+                <div className="flex flex-wrap items-center gap-4 text-white/90 mt-2">
+                  <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
+                    <Building className="w-4 h-4" />
+                    <span>Sporthood U10 Elite Squad</span>
+                  </div>
+                  <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
+                    <Star className="w-4 h-4" />
+                    <span>2024-25 Season</span>
                   </div>
                 </div>
               </div>
