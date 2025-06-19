@@ -35,10 +35,14 @@ export default function Games() {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold text-gray-900">Games</h1>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            Add Game
-          </Button>
+          <GameForm 
+            trigger={
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                Add Game
+              </Button>
+            }
+          />
         </div>
         <div className="space-y-4">
           {[...Array(5)].map((_, i) => (
