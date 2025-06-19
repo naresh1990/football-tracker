@@ -7,8 +7,12 @@ import {
   SquadMember, InsertSquadMember,
   Club, InsertClub,
   Coach, InsertCoach,
-  CoachingStaff, InsertCoachingStaff
+  CoachingStaff, InsertCoachingStaff,
+  players, games, tournaments, trainingSessions,
+  coachFeedback, squadMembers, clubs, coaches, coachingStaff
 } from "@shared/schema";
+import { db } from "./db";
+import { eq, desc } from "drizzle-orm";
 
 export interface IStorage {
   // Player methods
@@ -938,7 +942,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteGame(id: number): Promise<boolean> {
     const result = await db.delete(games).where(eq(games.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 
   async getGamesByPlayer(playerId: number): Promise<Game[]> {
@@ -966,7 +970,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteTournament(id: number): Promise<boolean> {
     const result = await db.delete(tournaments).where(eq(tournaments.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 
   async getTournamentsByPlayer(playerId: number): Promise<Tournament[]> {
@@ -994,7 +998,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteTrainingSession(id: number): Promise<boolean> {
     const result = await db.delete(trainingSessions).where(eq(trainingSessions.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 
   async getTrainingSessionsByPlayer(playerId: number): Promise<TrainingSession[]> {
@@ -1022,7 +1026,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteCoachFeedback(id: number): Promise<boolean> {
     const result = await db.delete(coachFeedback).where(eq(coachFeedback.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 
   async getFeedbackByPlayer(playerId: number): Promise<CoachFeedback[]> {
@@ -1050,7 +1054,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteSquadMember(id: number): Promise<boolean> {
     const result = await db.delete(squadMembers).where(eq(squadMembers.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 
   async getSquadByPlayer(playerId: number): Promise<SquadMember[]> {
@@ -1074,7 +1078,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteClub(id: number): Promise<boolean> {
     const result = await db.delete(clubs).where(eq(clubs.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 
   async getClubsByPlayer(playerId: number): Promise<Club[]> {
@@ -1102,7 +1106,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteCoach(id: number): Promise<boolean> {
     const result = await db.delete(coaches).where(eq(coaches.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 
   async getCoachesByPlayer(playerId: number): Promise<Coach[]> {
@@ -1134,7 +1138,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteCoachingStaffMember(id: number): Promise<boolean> {
     const result = await db.delete(coachingStaff).where(eq(coachingStaff.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 
   async getCoachingStaffByPlayer(playerId: number): Promise<CoachingStaff[]> {

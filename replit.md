@@ -102,6 +102,13 @@ This is a comprehensive football player tracking application built for monitorin
 
 ## Recent Changes
 
+- June 19, 2025: Migrated to persistent PostgreSQL database storage
+  - Set up database connection using Neon PostgreSQL
+  - Implemented DatabaseStorage class replacing in-memory storage
+  - All club data, logos, and transactional data now persisted in database
+  - Fixed Edit Club functionality with proper data validation
+  - Enhanced dropdown positioning in modal dialogs
+  - Resolved form submission validation errors for club updates
 - June 19, 2025: Updated player information with correct details
   - Updated Darshil's age to 8 (born 2016) 
   - Changed season to 2025-26
