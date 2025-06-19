@@ -15,12 +15,12 @@ interface ColorfulCardProps {
 }
 
 const colorVariants = {
-  primary: "bg-gradient-primary",
-  success: "bg-gradient-success", 
-  warning: "bg-gradient-warning",
-  info: "bg-primary",
-  secondary: "bg-gradient-secondary",
-  danger: "bg-danger"
+  primary: "bg-gradient-to-br from-blue-500 to-blue-600",
+  success: "bg-gradient-to-br from-green-500 to-green-600", 
+  warning: "bg-gradient-to-br from-orange-500 to-orange-600",
+  info: "bg-gradient-to-br from-cyan-500 to-cyan-600",
+  secondary: "bg-gradient-to-br from-purple-500 to-purple-600",
+  danger: "bg-gradient-to-br from-red-500 to-red-600"
 };
 
 export default function ColorfulCard({ 
@@ -34,7 +34,7 @@ export default function ColorfulCard({
   return (
     <motion.div
       className={cn(
-        "modern-card p-6 text-white border-none shadow-lg",
+        "rounded-2xl p-6 text-white border-none shadow-lg",
         colorVariants[color],
         className
       )}

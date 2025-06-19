@@ -45,7 +45,7 @@ export default function CleanHeader({ onToggleMobileMenu, onQuickAdd }: CleanHea
             whileHover={{ scale: 1.02 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <div className="w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center shadow-md">
+            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
               <span className="text-white text-xl">⚽</span>
             </div>
             <div>
@@ -72,7 +72,7 @@ export default function CleanHeader({ onToggleMobileMenu, onQuickAdd }: CleanHea
                       className={cn(
                         "flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200",
                         isActive 
-                          ? "bg-primary text-white shadow-md" 
+                          ? "bg-blue-600 text-white shadow-md" 
                           : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                       )}
                       whileHover={{ scale: 1.05 }}
@@ -91,7 +91,7 @@ export default function CleanHeader({ onToggleMobileMenu, onQuickAdd }: CleanHea
           <div className="flex items-center space-x-3">
             <motion.button
               onClick={onQuickAdd}
-              className="btn-primary shadow-md"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 shadow-md"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}

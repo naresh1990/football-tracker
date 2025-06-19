@@ -19,7 +19,7 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
   if (!player) return null;
 
   return (
-    <div className="bg-gradient-primary text-white relative overflow-hidden">
+    <div className="bg-gradient-to-br from-blue-600 to-blue-800 text-white relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-10 left-10 w-20 h-20 border border-white/20 rounded-full"></div>
@@ -80,7 +80,7 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
 
             <motion.button
               onClick={onQuickAdd}
-              className="btn-secondary bg-white text-blue-600 hover:bg-gray-50"
+              className="bg-white text-blue-600 hover:bg-gray-50 px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 shadow-lg"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6 }}
@@ -99,8 +99,8 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <div className="modern-card bg-white/10 backdrop-blur-sm border-white/20 p-6">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <div className="bg-white/15 backdrop-blur-sm border border-white/20 rounded-2xl p-6 shadow-xl">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-white">
                 <TrendingUp className="w-5 h-5" />
                 Season Highlights
               </h3>

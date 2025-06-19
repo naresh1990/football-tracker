@@ -91,8 +91,8 @@ export default function Dashboard() {
       >
         {/* Stats Grid */}
         <motion.div variants={itemVariants}>
-          <h2 className="text-2xl font-bold text-heading mb-6 flex items-center gap-2">
-            <Activity className="w-6 h-6 text-primary" />
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <Activity className="w-6 h-6 text-blue-600" />
             Performance Overview
           </h2>
           <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
@@ -129,8 +129,8 @@ export default function Dashboard() {
 
         {/* Performance Charts */}
         <motion.div variants={itemVariants}>
-          <h2 className="text-2xl font-bold text-heading mb-6 flex items-center gap-2">
-            <TrendingUp className="w-6 h-6 text-primary" />
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <TrendingUp className="w-6 h-6 text-blue-600" />
             Performance & Activity
           </h2>
           <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
@@ -141,8 +141,8 @@ export default function Dashboard() {
 
         {/* Insights Section */}
         <motion.div variants={itemVariants}>
-          <h2 className="text-2xl font-bold text-heading mb-6 flex items-center gap-2">
-            <Star className="w-6 h-6 text-primary" />
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <Star className="w-6 h-6 text-blue-600" />
             Latest Updates
           </h2>
           <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -154,8 +154,8 @@ export default function Dashboard() {
 
         {/* Team & Profile Section */}
         <motion.div variants={itemVariants}>
-          <h2 className="text-2xl font-bold text-heading mb-6 flex items-center gap-2">
-            <Award className="w-6 h-6 text-primary" />
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <Award className="w-6 h-6 text-blue-600" />
             Team & Profile
           </h2>
           <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
