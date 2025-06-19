@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Calendar, Clock, MapPin, Dumbbell } from "lucide-react";
+import { Plus, Calendar, Clock, MapPin, Dumbbell, Zap, Target, Users, Activity, Trophy } from "lucide-react";
 import { formatShortDate, formatTime } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
@@ -90,7 +90,11 @@ export default function TrainingSchedule({ playerId }: TrainingScheduleProps) {
             </div>
           ) : (
             <div className="space-y-3">
-              {sessions?.slice(0, 2).map((session: any, index: number) => (
+              {sessions?.slice(0, 2).map((session: any, index: number) => {
+                const TrainingIcon = getTrainingIcon(session.type);
+                const colorClass = getTrainingColor(session.type);
+                
+                return (
                 <motion.div
                   key={session.id}
                   initial={{ opacity: 0, x: -20 }}
@@ -98,33 +102,40 @@ export default function TrainingSchedule({ playerId }: TrainingScheduleProps) {
                   transition={{ delay: index * 0.1, duration: 0.4 }}
                   className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-white/50 hover:bg-white/90 transition-all duration-200"
                 >
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-green-500 rounded-lg flex items-center justify-center shadow-sm">
-                        <Dumbbell className="w-5 h-5 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-gray-900">{session.type}</h3>
-                        <p className="text-sm text-gray-600">{session.focus || 'General training'}</p>
-                      </div>
+                  <div className="flex items-start gap-3 mb-4">
+                    <div className={`w-12 h-12 bg-gradient-to-br ${colorClass} rounded-xl flex items-center justify-center shadow-sm flex-shrink-0`}>
+                      <TrainingIcon className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-gray-900 text-lg mb-1">{session.type}</h3>
+                      <p className="text-sm text-gray-600 leading-relaxed">{session.focus || 'General training'}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4 text-sm text-gray-600">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-3 h-3" />
-                      <span>{formatShortDate(session.date)}</span>
+                  <div className="grid grid-cols-3 gap-4 text-sm">
+                    <div className="flex flex-col items-center text-center">
+                      <div className="flex items-center gap-1 text-gray-500 mb-1">
+                        <Calendar className="w-3 h-3" />
+                      </div>
+                      <span className="font-semibold text-gray-900">{formatShortDate(session.date).split(',')[0]}</span>
+                      <span className="text-xs text-gray-500">{formatShortDate(session.date).split(',')[1]?.trim()}</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      <span>{session.duration || 90} min</span>
+                    <div className="flex flex-col items-center text-center">
+                      <div className="flex items-center gap-1 text-gray-500 mb-1">
+                        <Clock className="w-3 h-3" />
+                      </div>
+                      <span className="font-semibold text-gray-900">{session.duration || 90}</span>
+                      <span className="text-xs text-gray-500">min</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <MapPin className="w-3 h-3" />
-                      <span>{session.location || 'Training Ground'}</span>
+                    <div className="flex flex-col items-center text-center">
+                      <div className="flex items-center gap-1 text-gray-500 mb-1">
+                        <MapPin className="w-3 h-3" />
+                      </div>
+                      <span className="font-semibold text-gray-900 text-xs leading-tight">{session.location || 'Training Ground'}</span>
                     </div>
                   </div>
                 </motion.div>
-              ))}
+                );
+              })}
             </div>
           )}
         </CardContent>
