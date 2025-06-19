@@ -2,6 +2,7 @@ import React from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Edit, Trash2, Building, Users, UserPlus } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -146,6 +147,27 @@ export default function Clubs() {
 
   const getClubCoaches = (clubId: number) => {
     return coaches?.filter((coach: any) => coach.clubId === clubId) || [];
+  };
+
+  const getClubSquadMembers = (clubId: number) => {
+    return squadMembers?.filter((member: any) => member.clubId === clubId) || [];
+  };
+
+  const handleDeleteSquadMember = async (memberId: number) => {
+    try {
+      await apiRequest("DELETE", `/api/squad/${memberId}`);
+      queryClient.invalidateQueries({ queryKey: ["/api/squad"] });
+      toast({
+        title: "Success",
+        description: "Squad member deleted successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete squad member",
+        variant: "destructive",
+      });
+    }
   };
 
   const getClubSquadMembers = (clubId: number) => {
@@ -329,90 +351,205 @@ export default function Clubs() {
                       </div>
                     </div>
 
-                    {/* Associated Coaches */}
-                    <div className="bg-white/60 rounded-xl p-4 border border-blue-100">
-                      <div className="flex items-center justify-between mb-4">
-                        <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-                          <Users className="w-4 h-4 text-blue-500" />
-                          Coaches
-                        </h4>
-                        <div className="bg-blue-100 px-3 py-1 rounded-full">
-                          <span className="text-sm font-medium text-blue-700">
-                            {clubCoaches.length} Members
-                          </span>
-                        </div>
-                      </div>
-                      {clubCoaches.length > 0 ? (
-                        <div className="space-y-3">
-                          {clubCoaches.map((coach: any) => (
-                            <div key={coach.id} className="flex items-center gap-3 p-3 bg-white/80 rounded-lg border border-blue-50 hover:bg-white/90 transition-colors">
-                              <Avatar className="w-12 h-12 ring-2 ring-blue-200">
-                                <AvatarImage 
-                                  src={coach.profilePicture} 
-                                  alt={coach.name}
-                                  className="object-cover"
-                                />
-                                <AvatarFallback className="text-sm bg-gradient-to-br from-blue-500 to-purple-500 text-white">
-                                  {coach.name.split(' ').map((n: string) => n[0]).join('')}
-                                </AvatarFallback>
-                              </Avatar>
-                              <div className="flex-1">
-                                <p className="font-semibold text-gray-900 text-sm">{coach.name}</p>
-                                <p className="text-xs text-blue-600 font-medium">{coach.title}</p>
-                                {coach.contact && (
-                                  <p className="text-xs text-gray-500 mt-1">{coach.contact}</p>
-                                )}
-                              </div>
-                              <div className="flex items-center gap-2">
-                                {coach.isActive ? (
-                                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    Active
-                                  </span>
-                                ) : (
-                                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                    Inactive
-                                  </span>
-                                )}
-                                <div className="flex gap-1">
-                                  <CoachForm
-                                    coach={coach}
-                                    onSuccess={() => {
-                                      queryClient.invalidateQueries({ queryKey: ["/api/coaches"] });
-                                    }}
-                                    trigger={
-                                      <Button variant="ghost" size="sm" className="h-6 w-6 p-0 hover:bg-blue-100">
-                                        <Edit className="h-3 w-3 text-blue-600" />
+                    {/* Coaches and Squad Members Tabs */}
+                    <div className="bg-white/60 rounded-xl p-4 border border-gray-100">
+                      <Tabs defaultValue="coaches" className="w-full">
+                        <TabsList className="grid w-full grid-cols-2">
+                          <TabsTrigger value="coaches" className="flex items-center gap-2">
+                            <Users className="w-4 h-4" />
+                            Coaches ({clubCoaches.length})
+                          </TabsTrigger>
+                          <TabsTrigger value="squad" className="flex items-center gap-2">
+                            <UserPlus className="w-4 h-4" />
+                            Squad ({getClubSquadMembers(club.id).length})
+                          </TabsTrigger>
+                        </TabsList>
+                        
+                        <TabsContent value="coaches" className="mt-4">
+                          <div className="flex justify-between items-center mb-4">
+                            <h4 className="font-semibold text-gray-900">Coaching Staff</h4>
+                            <CoachForm
+                              clubId={club.id}
+                              onSuccess={() => {
+                                queryClient.invalidateQueries({ queryKey: ["/api/coaches"] });
+                              }}
+                              trigger={
+                                <Button variant="outline" size="sm" className="text-blue-600 border-blue-200 hover:bg-blue-50">
+                                  <UserPlus className="w-3 h-3 mr-1" />
+                                  Add Coach
+                                </Button>
+                              }
+                            />
+                          </div>
+                          
+                          {clubCoaches.length > 0 ? (
+                            <div className="space-y-3">
+                              {clubCoaches.map((coach: any) => (
+                                <div key={coach.id} className="flex items-center gap-3 p-3 bg-white/80 rounded-lg border border-blue-50 hover:bg-white/90 transition-colors">
+                                  <Avatar className="w-12 h-12 ring-2 ring-blue-200">
+                                    <AvatarImage 
+                                      src={coach.profilePicture} 
+                                      alt={coach.name}
+                                      className="object-cover"
+                                    />
+                                    <AvatarFallback className="text-sm bg-gradient-to-br from-blue-500 to-purple-500 text-white">
+                                      {coach.name.split(' ').map((n: string) => n[0]).join('')}
+                                    </AvatarFallback>
+                                  </Avatar>
+                                  <div className="flex-1">
+                                    <p className="font-semibold text-gray-900 text-sm">{coach.name}</p>
+                                    <p className="text-xs text-blue-600 font-medium">{coach.title}</p>
+                                    {coach.contact && (
+                                      <p className="text-xs text-gray-500 mt-1">{coach.contact}</p>
+                                    )}
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    {coach.isActive ? (
+                                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        Active
+                                      </span>
+                                    ) : (
+                                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                        Inactive
+                                      </span>
+                                    )}
+                                    <div className="flex gap-1">
+                                      <CoachForm
+                                        coach={coach}
+                                        onSuccess={() => {
+                                          queryClient.invalidateQueries({ queryKey: ["/api/coaches"] });
+                                        }}
+                                        trigger={
+                                          <Button variant="ghost" size="sm" className="h-6 w-6 p-0 hover:bg-blue-100">
+                                            <Edit className="h-3 w-3 text-blue-600" />
+                                          </Button>
+                                        }
+                                      />
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className="h-6 w-6 p-0 hover:bg-red-100"
+                                        onClick={() => handleDeleteCoach(coach.id)}
+                                      >
+                                        <Trash2 className="h-3 w-3 text-red-600" />
                                       </Button>
-                                    }
-                                  />
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="h-6 w-6 p-0 hover:bg-red-100"
-                                    onClick={() => handleDeleteCoach(coach.id)}
-                                  >
-                                    <Trash2 className="h-3 w-3 text-red-600" />
-                                  </Button>
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
+                              ))}
                             </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="text-center py-6 text-gray-500">
-                          <Users className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-                          <p className="text-sm mb-3">No coaches assigned</p>
-                          <CoachForm 
-                            trigger={
-                              <Button variant="outline" size="sm" className="text-blue-600 hover:text-blue-700">
-                                <UserPlus className="w-4 h-4 mr-1" />
-                                Add First Coach
-                              </Button>
-                            }
-                            clubId={club.id}
-                          />
-                        </div>
-                      )}
+                          ) : (
+                            <div className="text-center py-6 text-gray-500">
+                              <Users className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+                              <p className="text-sm mb-3">No coaches assigned</p>
+                              <CoachForm 
+                                trigger={
+                                  <Button variant="outline" size="sm" className="text-blue-600 hover:text-blue-700">
+                                    <UserPlus className="w-4 h-4 mr-1" />
+                                    Add First Coach
+                                  </Button>
+                                }
+                                clubId={club.id}
+                                onSuccess={() => {
+                                  queryClient.invalidateQueries({ queryKey: ["/api/coaches"] });
+                                }}
+                              />
+                            </div>
+                          )}
+                        </TabsContent>
+                        
+                        <TabsContent value="squad" className="mt-4">
+                          <div className="flex justify-between items-center mb-4">
+                            <h4 className="font-semibold text-gray-900">Squad Members</h4>
+                            <SquadMemberForm
+                              clubId={club.id}
+                              onSuccess={() => {
+                                queryClient.invalidateQueries({ queryKey: ["/api/squad"] });
+                              }}
+                              trigger={
+                                <Button variant="outline" size="sm" className="text-green-600 border-green-200 hover:bg-green-50">
+                                  <UserPlus className="w-3 h-3 mr-1" />
+                                  Add Player
+                                </Button>
+                              }
+                            />
+                          </div>
+                          
+                          {getClubSquadMembers(club.id).length > 0 ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              {getClubSquadMembers(club.id).map((member: any) => (
+                                <div key={member.id} className="flex items-center gap-3 p-3 bg-white/80 rounded-lg border border-green-50 hover:bg-white/90 transition-colors">
+                                  <Avatar className="w-12 h-12 ring-2 ring-green-200">
+                                    <AvatarImage 
+                                      src={member.profilePicture} 
+                                      alt={member.name}
+                                      className="object-cover"
+                                    />
+                                    <AvatarFallback className="text-sm bg-gradient-to-br from-green-500 to-blue-500 text-white">
+                                      {member.name.split(' ').map((n: string) => n[0]).join('')}
+                                    </AvatarFallback>
+                                  </Avatar>
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-2">
+                                      <p className="font-semibold text-gray-900 text-sm">{member.name}</p>
+                                      {member.jerseyNumber && (
+                                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                                          #{member.jerseyNumber}
+                                        </span>
+                                      )}
+                                    </div>
+                                    <p className="text-xs text-green-600 font-medium">{member.position}</p>
+                                    {member.age && (
+                                      <p className="text-xs text-gray-500">Age: {member.age}</p>
+                                    )}
+                                  </div>
+                                  <div className="flex gap-1">
+                                    <SquadMemberForm
+                                      squadMember={member}
+                                      onSuccess={() => {
+                                        queryClient.invalidateQueries({ queryKey: ["/api/squad"] });
+                                      }}
+                                      trigger={
+                                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0 hover:bg-green-100">
+                                          <Edit className="h-3 w-3 text-green-600" />
+                                        </Button>
+                                      }
+                                    />
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-6 w-6 p-0 hover:bg-red-100"
+                                      onClick={() => handleDeleteSquadMember(member.id)}
+                                    >
+                                      <Trash2 className="h-3 w-3 text-red-600" />
+                                    </Button>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="text-center py-6">
+                              <div className="w-16 h-16 mx-auto mb-4 bg-green-50 rounded-full flex items-center justify-center">
+                                <Users className="w-8 h-8 text-green-400" />
+                              </div>
+                              <h3 className="text-sm font-medium text-gray-900 mb-2">No squad members yet</h3>
+                              <p className="text-sm text-gray-500 mb-4">Add your first squad member to get started</p>
+                              <SquadMemberForm
+                                clubId={club.id}
+                                onSuccess={() => {
+                                  queryClient.invalidateQueries({ queryKey: ["/api/squad"] });
+                                }}
+                                trigger={
+                                  <Button className="bg-green-600 hover:bg-green-700 text-white">
+                                    <UserPlus className="w-4 h-4 mr-2" />
+                                    Add First Player
+                                  </Button>
+                                }
+                              />
+                            </div>
+                          )}
+                        </TabsContent>
+                      </Tabs>
                     </div>
                   </div>
                 </CardContent>
