@@ -20,140 +20,179 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
   if (!player) return null;
 
   return (
-    <div className="bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-900 text-white relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-10 left-10 w-20 h-20 border border-white/20 rounded-full"></div>
-        <div className="absolute top-20 right-20 w-32 h-32 border border-white/20 rounded-full"></div>
-        <div className="absolute bottom-10 left-1/3 w-16 h-16 border border-white/20 rounded-full"></div>
+    <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white relative overflow-hidden">
+      {/* Enhanced Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-8 left-8 w-24 h-24 border-2 border-white/30 rounded-full"></div>
+        <div className="absolute top-16 right-16 w-40 h-40 border-2 border-white/20 rounded-full"></div>
+        <div className="absolute bottom-8 left-1/4 w-20 h-20 border-2 border-white/25 rounded-full"></div>
+        <div className="absolute bottom-20 right-1/3 w-32 h-32 border border-white/15 rounded-full"></div>
+        
+        {/* Football pattern elements */}
+        <div className="absolute top-1/4 left-1/2 w-6 h-6 bg-white/10 rounded-full"></div>
+        <div className="absolute top-1/3 right-1/4 w-4 h-4 bg-white/10 rounded-full"></div>
+        <div className="absolute bottom-1/3 left-1/6 w-8 h-8 bg-white/10 rounded-full"></div>
       </div>
       
-      {/* Dark overlay for better text contrast */}
-      <div className="absolute inset-0 bg-black/20"></div>
+      {/* Subtle overlay for depth */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-        <motion.div 
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="flex items-start space-x-6 mb-6">
-            {/* Vertical Player Image */}
-            <div className="flex-shrink-0">
-              <Avatar className="w-24 h-32 sm:w-28 sm:h-36 ring-4 ring-white/30 rounded-2xl">
-                <AvatarFallback className="text-xl font-bold bg-blue-600 text-white rounded-2xl h-full w-full flex items-center justify-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+          {/* Player Avatar */}
+          <motion.div 
+            className="lg:col-span-1 flex justify-center lg:justify-start"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, type: "spring" }}
+          >
+            <div className="relative">
+              <Avatar className="w-32 h-40 sm:w-36 sm:h-44 ring-4 ring-white/40 rounded-3xl shadow-2xl">
+                <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-3xl h-full w-full flex items-center justify-center">
                   {player.name.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
               </Avatar>
+              {/* Floating badge */}
+              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
+                #18 Darsh
+              </div>
             </div>
+          </motion.div>
+
+          {/* Player Info */}
+          <motion.div 
+            className="lg:col-span-2 text-center lg:text-left"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <motion.h1 
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              style={{
+                textShadow: '3px 3px 12px rgba(0, 0, 0, 0.8)'
+              }}
+            >
+              {player.name}
+            </motion.h1>
             
-            {/* Player Info and Season Highlights */}
-            <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Player Details */}
-              <div>
-                <motion.h1 
-                  className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.6 }}
-                  style={{
-                    textShadow: '2px 2px 8px rgba(0, 0, 0, 0.7), 1px 1px 4px rgba(0, 0, 0, 0.5)'
-                  }}
-                >
-                  {player.name}
-                </motion.h1>
-                
-                <div className="space-y-2">
-                  <div className="flex flex-wrap items-center gap-4 text-white">
-                    <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
-                      <Target className="w-4 h-4" />
-                      <span>{player.position}</span>
-                    </div>
-                    <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
-                      <MapPin className="w-4 h-4" />
-                      <span>Sporthood Center of Excellence, HAL Sports Club</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-wrap items-center gap-4 text-white">
-                    <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
-                      <Calendar className="w-4 h-4" />
-                      <span>Age 8 (Born 2016)</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-wrap items-center gap-4 text-white/90">
-                    <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
-                      <Building className="w-4 h-4" />
-                      <span>Sporthood U10 Elite Squad</span>
-                    </div>
-                    <div className="flex items-center gap-1" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
-                      <Star className="w-4 h-4" />
-                      <span>2025-26 Season</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-1 text-white/90" style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}>
-                    <Trophy className="w-4 h-4" />
-                    <span>Jersey #18 "Darsh"</span>
-                  </div>
-                </div>
+            <motion.div 
+              className="space-y-3 mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+            >
+              <div className="flex items-center justify-center lg:justify-start gap-2 text-lg text-blue-100">
+                <Target className="w-5 h-5 text-blue-300" />
+                <span className="font-medium">{player.position}</span>
               </div>
               
-              {/* Season Highlights */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                <div className="flex items-center gap-2 mb-4">
-                  <TrendingUp className="w-5 h-5 text-white" />
-                  <h3 className="text-white font-semibold text-lg">Season Highlights</h3>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-white">12</div>
-                    <div className="text-white/80 text-sm">Games</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-yellow-300">8</div>
-                    <div className="text-white/80 text-sm">Goals</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-green-300">5</div>
-                    <div className="text-white/80 text-sm">Assists</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-300">75%</div>
-                    <div className="text-white/80 text-sm">Win Rate</div>
-                  </div>
-                </div>
-                
-                <motion.button
-                  onClick={onQuickAdd}
-                  className="bg-white text-blue-600 hover:bg-gray-50 px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 shadow-lg w-full mt-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.6 }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Target className="w-4 h-4" />
-                  Add New Performance
-                </motion.button>
+              <div className="flex items-center justify-center lg:justify-start gap-2 text-blue-100">
+                <Calendar className="w-5 h-5 text-blue-300" />
+                <span>Age 8 (Born 2016)</span>
               </div>
-            </div>
-          </div>
+              
+              <div className="flex items-center justify-center lg:justify-start gap-2 text-blue-100">
+                <Building className="w-5 h-5 text-blue-300" />
+                <span>Sporthood U10 Elite Squad</span>
+              </div>
+              
+              <div className="flex items-center justify-center lg:justify-start gap-2 text-blue-100">
+                <Star className="w-5 h-5 text-blue-300" />
+                <span>2025-26 Season</span>
+              </div>
+              
+              <div className="flex items-center justify-center lg:justify-start gap-2 text-blue-100">
+                <MapPin className="w-5 h-5 text-blue-300" />
+                <span className="text-sm">Sporthood Center of Excellence, HAL Sports Club</span>
+              </div>
+            </motion.div>
 
-          <motion.p 
-            className="text-lg text-white mt-4 max-w-2xl"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            style={{
-              textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)'
-            }}
+            <motion.p 
+              className="text-lg text-blue-100 leading-relaxed max-w-lg mx-auto lg:mx-0"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.6 }}
+              style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)' }}
+            >
+              Track your football journey with comprehensive analytics and performance insights.
+            </motion.p>
+          </motion.div>
+          
+          {/* Season Highlights Card */}
+          <motion.div 
+            className="lg:col-span-2"
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
           >
-            Track your football journey with comprehensive analytics and performance insights.
-          </motion.p>
-        </motion.div>
+            <div className="bg-white/15 backdrop-blur-lg rounded-3xl p-8 border border-white/30 shadow-2xl">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl">
+                  <TrendingUp className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-white font-bold text-xl">Season Highlights</h3>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-6 mb-8">
+                <motion.div 
+                  className="text-center p-4 bg-white/10 rounded-2xl"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.8, type: "spring", stiffness: 200 }}
+                >
+                  <div className="text-3xl font-bold text-white mb-1">12</div>
+                  <div className="text-blue-200 text-sm font-medium">Games</div>
+                </motion.div>
+                
+                <motion.div 
+                  className="text-center p-4 bg-white/10 rounded-2xl"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 1, type: "spring", stiffness: 200 }}
+                >
+                  <div className="text-3xl font-bold text-yellow-300 mb-1">8</div>
+                  <div className="text-blue-200 text-sm font-medium">Goals</div>
+                </motion.div>
+                
+                <motion.div 
+                  className="text-center p-4 bg-white/10 rounded-2xl"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 1.2, type: "spring", stiffness: 200 }}
+                >
+                  <div className="text-3xl font-bold text-green-300 mb-1">5</div>
+                  <div className="text-blue-200 text-sm font-medium">Assists</div>
+                </motion.div>
+                
+                <motion.div 
+                  className="text-center p-4 bg-white/10 rounded-2xl"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 1.4, type: "spring", stiffness: 200 }}
+                >
+                  <div className="text-3xl font-bold text-blue-300 mb-1">75%</div>
+                  <div className="text-blue-200 text-sm font-medium">Win Rate</div>
+                </motion.div>
+              </div>
+              
+              <motion.button
+                onClick={onQuickAdd}
+                className="bg-gradient-to-r from-white to-blue-50 text-blue-700 hover:from-blue-50 hover:to-white px-6 py-3 rounded-2xl font-semibold transition-all duration-300 flex items-center justify-center gap-3 shadow-lg w-full group"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.6, duration: 0.6 }}
+                whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(0,0,0,0.2)" }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Target className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
+                <span>Add New Performance</span>
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </div>
   );
