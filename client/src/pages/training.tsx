@@ -426,6 +426,7 @@ export default function Training() {
             views={[Views.MONTH, Views.WEEK, Views.DAY]}
             step={30}
             showMultiDayTimes
+            culture="en-GB"
             components={{
               toolbar: CustomToolbar,
             }}
