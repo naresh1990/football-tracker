@@ -12,14 +12,15 @@ import TournamentTracking from "@/components/dashboard/tournament-tracking";
 import SquadDetails from "@/components/dashboard/squad-details";
 import QuickAddModal from "@/components/modals/quick-add-modal";
 import { 
-  Trophy, 
-  Target, 
+  Goal, 
+  Users2, 
   Users, 
   TrendingUp,
   Calendar,
   Star,
-  Award,
-  Activity
+  Trophy,
+  Activity,
+  Award
 } from "lucide-react";
 
 const containerVariants = {
@@ -99,14 +100,14 @@ export default function Dashboard() {
             <ColorfulCard
               title="Total Goals"
               value={stats?.totalGoals || 0}
-              icon={<Target />}
+              icon={<Goal />}
               color="success"
               trend={{ value: "+15%", isPositive: true }}
             />
             <ColorfulCard
               title="Total Assists"
               value={stats?.totalAssists || 0}
-              icon={<Users />}
+              icon={<Users2 />}
               color="info"
               trend={{ value: "+8%", isPositive: true }}
             />

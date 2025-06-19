@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TrendingUp, Target, BarChart3 } from "lucide-react";
+import { Goal, Users2, BarChart3, TrendingUp, Activity } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface ProgressChartProps {
@@ -82,16 +82,16 @@ export default function ProgressChart({ playerId }: ProgressChartProps) {
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <Target className="w-5 h-5 text-blue-600" />
+                  <Activity className="w-5 h-5 text-blue-600" />
                   <h4 className="font-semibold text-gray-800">Goals & Assists</h4>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-1">
-                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <Goal className="w-3 h-3 text-green-500" />
                     <span className="text-xs font-medium text-gray-600">Goals</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                    <Users2 className="w-3 h-3 text-orange-500" />
                     <span className="text-xs font-medium text-gray-600">Assists</span>
                   </div>
                 </div>
