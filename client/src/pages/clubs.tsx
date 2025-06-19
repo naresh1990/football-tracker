@@ -39,6 +39,37 @@ export default function Clubs() {
     },
   });
 
+  const logoUploadMutation = useMutation({
+    mutationFn: ({ clubId, file }: { clubId: number; file: File }) => {
+      const formData = new FormData();
+      formData.append("logo", file);
+      return fetch(`/api/clubs/${clubId}/logo`, {
+        method: "POST",
+        body: formData,
+      }).then(res => res.json());
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/clubs"] });
+      toast({
+        title: "Success",
+        description: "Club logo updated successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to upload logo",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleLogoUpload = (clubId: number, file: File | undefined) => {
+    if (file) {
+      logoUploadMutation.mutate({ clubId, file });
+    }
+  };
+
   const getClubCoaches = (clubId: number) => {
     return coaches?.filter((coach: any) => coach.clubId === clubId) || [];
   };
@@ -95,12 +126,12 @@ export default function Clubs() {
                 <CardHeader className="pb-4">
                   <div className="flex justify-between items-start">
                     <div className="flex items-center space-x-4">
-                      <div className="w-14 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                      <div className="w-14 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
                         {club.logo ? (
                           <img 
                             src={club.logo} 
                             alt={`${club.name} logo`}
-                            className="w-10 h-10 object-cover rounded-lg"
+                            className="w-full h-full object-cover"
                           />
                         ) : (
                           <div className="text-2xl text-white">{getTypeIcon(club.type)}</div>
@@ -127,6 +158,20 @@ export default function Clubs() {
                     </div>
                     
                     <div className="flex items-center space-x-2">
+                      <label htmlFor={`logo-upload-${club.id}`}>
+                        <Button variant="ghost" size="sm" className="text-gray-600 hover:text-green-600 hover:bg-green-50" asChild>
+                          <span className="cursor-pointer">
+                            <Plus className="w-4 h-4" />
+                          </span>
+                        </Button>
+                      </label>
+                      <input
+                        id={`logo-upload-${club.id}`}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => handleLogoUpload(club.id, e.target.files?.[0])}
+                      />
                       <Button variant="ghost" size="sm" className="text-gray-600 hover:text-blue-600 hover:bg-blue-50">
                         <Edit className="w-4 h-4" />
                       </Button>
