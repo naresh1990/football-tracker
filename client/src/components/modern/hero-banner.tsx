@@ -21,12 +21,26 @@ interface HeroBannerProps {
 }
 
 export default function HeroBanner({ player, activeClub, squadMembers, onQuickAdd }: HeroBannerProps) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
   // Fetch real stats data
   const { data: stats } = useQuery({
     queryKey: ["/api/stats/summary"],
     staleTime: 0,
     cacheTime: 0,
   });
+
+  const { data: upcomingTraining } = useQuery({
+    queryKey: ["/api/training/upcoming"],
+  });
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % 2);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + 2) % 2);
+  };
 
   if (!player) return null;
 
@@ -154,7 +168,7 @@ export default function HeroBanner({ player, activeClub, squadMembers, onQuickAd
             </motion.p>
           </motion.div>
           
-          {/* Season Highlights Card */}
+          {/* Carousel Container */}
           <motion.div 
             className="lg:col-span-2"
             initial={{ opacity: 0, x: 30 }}
@@ -162,53 +176,131 @@ export default function HeroBanner({ player, activeClub, squadMembers, onQuickAd
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <div className="bg-white/15 backdrop-blur-lg rounded-3xl p-8 border border-white/30 shadow-2xl">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl">
-                  <TrendingUp className="w-6 h-6 text-white" />
+              {/* Carousel Header */}
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl">
+                    {currentSlide === 0 ? <TrendingUp className="w-6 h-6 text-white" /> : <Dumbbell className="w-6 h-6 text-white" />}
+                  </div>
+                  <h3 className="text-white font-bold text-xl">
+                    {currentSlide === 0 ? "Season Highlights" : "Upcoming Training"}
+                  </h3>
                 </div>
-                <h3 className="text-white font-bold text-xl">Darshil's Season Highlights</h3>
+                
+                <div className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={prevSlide}
+                    className="h-8 w-8 p-0 text-white/80 hover:text-white hover:bg-white/10"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={nextSlide}
+                    className="h-8 w-8 p-0 text-white/80 hover:text-white hover:bg-white/10"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
-              
-              <div className="grid grid-cols-2 gap-6 mb-8">
-                <motion.div 
-                  className="text-center p-4 bg-white/10 rounded-2xl"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.8, type: "spring", stiffness: 200 }}
-                >
-                  <div className="text-3xl font-bold text-white mb-1">{stats?.totalGames || 0}</div>
-                  <div className="text-blue-200 text-sm font-medium">Games</div>
-                </motion.div>
-                
-                <motion.div 
-                  className="text-center p-4 bg-white/10 rounded-2xl"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 1, type: "spring", stiffness: 200 }}
-                >
-                  <div className="text-3xl font-bold text-yellow-300 mb-1">{stats?.totalGoals || 0}</div>
-                  <div className="text-blue-200 text-sm font-medium">Goals</div>
-                </motion.div>
-                
-                <motion.div 
-                  className="text-center p-4 bg-white/10 rounded-2xl"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 1.2, type: "spring", stiffness: 200 }}
-                >
-                  <div className="text-3xl font-bold text-green-300 mb-1">{stats?.totalAssists || 0}</div>
-                  <div className="text-blue-200 text-sm font-medium">Assists</div>
-                </motion.div>
-                
-                <motion.div 
-                  className="text-center p-4 bg-white/10 rounded-2xl"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 1.4, type: "spring", stiffness: 200 }}
-                >
-                  <div className="text-3xl font-bold text-blue-300 mb-1">{stats?.winRate || 0}%</div>
-                  <div className="text-blue-200 text-sm font-medium">Win Rate</div>
-                </motion.div>
+
+              {/* Slide Content */}
+              <div className="mb-8">
+                {currentSlide === 0 ? (
+                  // Season Highlights Slide
+                  <div className="grid grid-cols-2 gap-6">
+                    <motion.div 
+                      className="text-center p-4 bg-white/10 rounded-2xl"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.8, type: "spring", stiffness: 200 }}
+                    >
+                      <div className="text-3xl font-bold text-white mb-1">{stats?.totalGames || 0}</div>
+                      <div className="text-blue-200 text-sm font-medium">Games</div>
+                    </motion.div>
+                    
+                    <motion.div 
+                      className="text-center p-4 bg-white/10 rounded-2xl"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 1, type: "spring", stiffness: 200 }}
+                    >
+                      <div className="text-3xl font-bold text-yellow-300 mb-1">{stats?.totalGoals || 0}</div>
+                      <div className="text-blue-200 text-sm font-medium">Goals</div>
+                    </motion.div>
+                    
+                    <motion.div 
+                      className="text-center p-4 bg-white/10 rounded-2xl"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 1.2, type: "spring", stiffness: 200 }}
+                    >
+                      <div className="text-3xl font-bold text-green-300 mb-1">{stats?.totalAssists || 0}</div>
+                      <div className="text-blue-200 text-sm font-medium">Assists</div>
+                    </motion.div>
+                    
+                    <motion.div 
+                      className="text-center p-4 bg-white/10 rounded-2xl"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 1.4, type: "spring", stiffness: 200 }}
+                    >
+                      <div className="text-3xl font-bold text-blue-300 mb-1">{stats?.winRate || 0}%</div>
+                      <div className="text-blue-200 text-sm font-medium">Win Rate</div>
+                    </motion.div>
+                  </div>
+                ) : (
+                  // Upcoming Training Slide
+                  <div className="space-y-4">
+                    {upcomingTraining && upcomingTraining.length > 0 ? (
+                      upcomingTraining.slice(0, 3).map((session: any) => (
+                        <div key={session.id} className="bg-white/10 rounded-2xl p-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 bg-gradient-to-br from-green-400 to-green-600 rounded-lg">
+                                <Dumbbell className="w-4 h-4 text-white" />
+                              </div>
+                              <div>
+                                <h4 className="font-semibold text-white">{session.type}</h4>
+                                <div className="flex items-center gap-4 text-sm text-blue-200">
+                                  <div className="flex items-center gap-1">
+                                    <Calendar className="w-3 h-3" />
+                                    {moment.tz(session.date, 'Asia/Kolkata').format('MMM DD')}
+                                  </div>
+                                  <div className="flex items-center gap-1">
+                                    <Clock className="w-3 h-3" />
+                                    {moment.tz(session.date, 'Asia/Kolkata').format('h:mm A')}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-center py-8">
+                        <Dumbbell className="w-12 h-12 text-white/60 mx-auto mb-3" />
+                        <p className="text-white/80">No upcoming training sessions</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Slide Indicators */}
+              <div className="flex justify-center gap-2 mb-6">
+                {[0, 1].map((index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                      index === currentSlide ? 'bg-white' : 'bg-white/40'
+                    }`}
+                  />
+                ))}
               </div>
               
               <motion.button
