@@ -168,7 +168,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
                 <SelectTrigger>
                   <SelectValue placeholder="Select format" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="z-[9999] max-h-[200px] bg-white" position="popper" sideOffset={4}>
                   <SelectItem value="League">League</SelectItem>
                   <SelectItem value="Knockout">Knockout</SelectItem>
                   <SelectItem value="Round Robin">Round Robin</SelectItem>

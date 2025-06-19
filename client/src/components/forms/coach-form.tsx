@@ -125,7 +125,7 @@ export default function CoachForm({ onSuccess, onCancel, clubId, trigger }: Coac
                       <SelectValue placeholder="Select club" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
+                  <SelectContent className="z-[9999] max-h-[200px] bg-white" position="popper" sideOffset={4}>
                     {clubs?.map((club: any) => (
                       <SelectItem key={club.id} value={club.id.toString()}>
                         {club.name}
@@ -151,7 +151,7 @@ export default function CoachForm({ onSuccess, onCancel, clubId, trigger }: Coac
                     <SelectValue placeholder="Select coach title" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
+                <SelectContent className="z-[9999] max-h-[200px] bg-white" position="popper" sideOffset={4}>
                   <SelectItem value="Head Coach">Head Coach</SelectItem>
                   <SelectItem value="Assistant Coach">Assistant Coach</SelectItem>
                   <SelectItem value="Adhoc Coach">Adhoc Coach</SelectItem>

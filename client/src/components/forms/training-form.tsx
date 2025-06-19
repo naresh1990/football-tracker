@@ -161,8 +161,8 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
                 <SelectContent className="z-[9999] max-h-[200px] bg-white" position="popper" sideOffset={4}>
-                  <SelectItem value="false" className="text-gray-900 hover:bg-green-50 hover:text-green-900 cursor-pointer">Scheduled</SelectItem>
-                  <SelectItem value="true" className="text-gray-900 hover:bg-green-50 hover:text-green-900 cursor-pointer">Completed</SelectItem>
+                  <SelectItem value="false">Scheduled</SelectItem>
+                  <SelectItem value="true">Completed</SelectItem>
                 </SelectContent>
               </Select>
             </div>

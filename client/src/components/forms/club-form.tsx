@@ -206,9 +206,9 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
                 <SelectContent className="z-[9999] max-h-[200px] bg-white" position="popper" sideOffset={4}>
-                  <SelectItem value="Active" className="text-gray-900 hover:bg-blue-50 hover:text-blue-900 cursor-pointer">Active</SelectItem>
-                  <SelectItem value="Inactive" className="text-gray-900 hover:bg-blue-50 hover:text-blue-900 cursor-pointer">Inactive</SelectItem>
-                  <SelectItem value="Former" className="text-gray-900 hover:bg-blue-50 hover:text-blue-900 cursor-pointer">Former</SelectItem>
+                  <SelectItem value="Active">Active</SelectItem>
+                  <SelectItem value="Inactive">Inactive</SelectItem>
+                  <SelectItem value="Former">Former</SelectItem>
                 </SelectContent>
               </Select>
             </div>
