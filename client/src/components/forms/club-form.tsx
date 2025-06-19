@@ -97,9 +97,9 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
       squadLevel: formData.level || null,
       seasonStart: formData.seasonStart ? new Date(formData.seasonStart).toISOString() : null,
       seasonEnd: formData.seasonEnd ? new Date(formData.seasonEnd).toISOString() : null,
-      status: formData.status.toLowerCase(), // Convert to lowercase to match database default
+      status: formData.status.toLowerCase(),
       description: formData.description || null,
-      logo: formData.logo || null,
+      logoFile: logoFile, // Pass the actual file
     };
     
     console.log("Submitting club data:", submitData);
