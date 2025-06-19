@@ -345,16 +345,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const id = parseInt(req.params.id);
       const logoUrl = handleImageUpload(req.file);
-      const validatedData = insertClubSchema.partial().parse({
-        ...req.body,
-        logo: logoUrl || undefined
-      });
+      
+      // Only include logo in update if a new file was uploaded
+      const updateData: any = { ...req.body };
+      if (logoUrl) {
+        updateData.logo = logoUrl;
+      }
+      
+      const validatedData = insertClubSchema.partial().parse(updateData);
       const club = await storage.updateClub(id, validatedData);
       if (!club) {
         return res.status(404).json({ error: "Club not found" });
       }
       res.json(club);
     } catch (error) {
+      console.error("Club update error:", error);
       res.status(400).json({ error: "Invalid club data" });
     }
   });
