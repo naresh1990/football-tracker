@@ -71,7 +71,7 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
               const resultIcon = result === 'win' ? Check : X;
               const resultColor = result === 'win' ? 'text-green-600' : 'text-red-600';
               const resultBg = result === 'win' ? 'bg-green-100' : 'bg-red-100';
-              const cardBg = result === 'win' ? 'bg-green-50/50' : 'bg-red-50/50';
+              const cardBg = 'bg-white/80';
 
               return (
                 <TooltipProvider key={game.id}>
@@ -138,7 +138,7 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
                                 <span className="text-green-700 font-semibold">{game.playerGoals}</span>
                               </div>
                             </TooltipTrigger>
-                            <TooltipContent>
+                            <TooltipContent side="top" align="center" className="bg-gray-900 text-white border-gray-800 z-50">
                               <p>Goals scored by Darshil in this game</p>
                             </TooltipContent>
                           </Tooltip>
@@ -151,7 +151,7 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
                                 <span className="text-orange-700 font-semibold">{game.playerAssists}</span>
                               </div>
                             </TooltipTrigger>
-                            <TooltipContent>
+                            <TooltipContent side="top" align="center" className="bg-gray-900 text-white border-gray-800 z-50">
                               <p>Assists made by Darshil in this game</p>
                             </TooltipContent>
                           </Tooltip>
