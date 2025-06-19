@@ -332,15 +332,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/clubs", upload.single('logo'), async (req, res) => {
     try {
-      const logoUrl = handleImageUpload(req.file);
-      const validatedData = insertClubSchema.parse({
-        ...req.body,
-        logo: logoUrl
-      });
+      console.log("Raw club request body:", req.body);
+      console.log("Club file upload:", req.file);
+      
+      let logoUrl = null;
+      
+      // Handle file upload if provided
+      if (req.file) {
+        logoUrl = handleImageUpload(req.file);
+      }
+      
+      // Transform and validate data
+      const clubData: any = { ...req.body };
+      
+      // Convert playerId to number if it's a string
+      if (clubData.playerId) {
+        clubData.playerId = parseInt(clubData.playerId);
+      }
+      
+      // Convert date strings to Date objects if present
+      if (clubData.seasonStart && clubData.seasonStart !== '') {
+        clubData.seasonStart = new Date(clubData.seasonStart);
+      } else {
+        clubData.seasonStart = null;
+      }
+      
+      if (clubData.seasonEnd && clubData.seasonEnd !== '') {
+        clubData.seasonEnd = new Date(clubData.seasonEnd);
+      } else {
+        clubData.seasonEnd = null;
+      }
+      
+      // Handle logo URL from file upload or existing URL
+      if (logoUrl) {
+        clubData.logo = logoUrl;
+      } else if (!clubData.logo || clubData.logo.startsWith('blob:')) {
+        clubData.logo = null; // Don't save blob URLs
+      }
+      
+      console.log("Processing club data before validation:", clubData);
+      const validatedData = insertClubSchema.parse(clubData);
+      console.log("Validated club data:", validatedData);
       const club = await storage.createClub(validatedData);
       res.status(201).json(club);
     } catch (error) {
-      res.status(400).json({ error: "Invalid club data" });
+      console.error("Error creating club:", error);
+      console.error("Error details:", error.message);
+      res.status(400).json({ error: "Invalid club data", details: error.message });
     }
   });
 
