@@ -1052,11 +1052,14 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getTrainingSessionsByPlayer(playerId: number): Promise<TrainingSession[]> {
-    return await db.select().from(trainingSessions).where(eq(trainingSessions.playerId, playerId)).orderBy(desc(trainingSessions.date));
+    return await db.select().from(trainingSessions).where(eq(trainingSessions.playerId, playerId)).orderBy(trainingSessions.date);
   }
 
   async getUpcomingTraining(playerId: number): Promise<TrainingSession[]> {
-    return await db.select().from(trainingSessions).where(eq(trainingSessions.playerId, playerId)).orderBy(trainingSessions.date);
+    const now = new Date();
+    return await db.select().from(trainingSessions)
+      .where(eq(trainingSessions.playerId, playerId))
+      .orderBy(trainingSessions.date);
   }
 
   async getCoachFeedback(id: number): Promise<CoachFeedback | undefined> {
