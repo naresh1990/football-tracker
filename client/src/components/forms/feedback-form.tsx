@@ -17,6 +17,31 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { X, Plus } from "lucide-react";
 
+// Coach dropdown component
+function CoachDropdown({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+  const { data: coaches } = useQuery({
+    queryKey: ["/api/coaches/active", { playerId: 1 }],
+  });
+
+  return (
+    <Select onValueChange={onChange} value={value}>
+      <FormControl>
+        <SelectTrigger>
+          <SelectValue placeholder="Select coach" />
+        </SelectTrigger>
+      </FormControl>
+      <SelectContent>
+        {coaches?.map((coach: any) => (
+          <SelectItem key={coach.id} value={coach.name}>
+            {coach.name} ({coach.title})
+          </SelectItem>
+        ))}
+        <SelectItem value="other">Other Coach</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+}
+
 const feedbackFormSchema = insertCoachFeedbackSchema.extend({
   date: z.string().min(1, "Date is required"),
   strengths: z.array(z.string()).default([]),
@@ -128,10 +153,8 @@ export default function FeedbackForm({ onSuccess, onCancel }: FeedbackFormProps)
                 name="coach"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Coach Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., Coach Martinez" {...field} />
-                    </FormControl>
+                    <FormLabel>Coach</FormLabel>
+                    <CoachDropdown value={field.value} onChange={field.onChange} />
                     <FormMessage />
                   </FormItem>
                 )}

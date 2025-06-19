@@ -289,6 +289,122 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Club routes
+  app.get("/api/clubs", async (req, res) => {
+    try {
+      const playerId = 1; // Default to Darshil's ID
+      const clubs = await storage.getClubsByPlayer(playerId);
+      res.json(clubs);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch clubs" });
+    }
+  });
+
+  app.get("/api/clubs/active", async (req, res) => {
+    try {
+      const playerId = 1; // Default to Darshil's ID
+      const clubs = await storage.getActiveClubs(playerId);
+      res.json(clubs);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch active clubs" });
+    }
+  });
+
+  app.post("/api/clubs", async (req, res) => {
+    try {
+      const validatedData = insertClubSchema.parse(req.body);
+      const club = await storage.createClub(validatedData);
+      res.status(201).json(club);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid club data" });
+    }
+  });
+
+  app.put("/api/clubs/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const validatedData = insertClubSchema.partial().parse(req.body);
+      const club = await storage.updateClub(id, validatedData);
+      if (!club) {
+        return res.status(404).json({ error: "Club not found" });
+      }
+      res.json(club);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid club data" });
+    }
+  });
+
+  app.delete("/api/clubs/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const deleted = await storage.deleteClub(id);
+      if (!deleted) {
+        return res.status(404).json({ error: "Club not found" });
+      }
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete club" });
+    }
+  });
+
+  // Coach routes
+  app.get("/api/coaches", async (req, res) => {
+    try {
+      const playerId = 1; // Default to Darshil's ID
+      const coaches = await storage.getCoachesByPlayer(playerId);
+      res.json(coaches);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch coaches" });
+    }
+  });
+
+  app.get("/api/coaches/active", async (req, res) => {
+    try {
+      const playerId = 1; // Default to Darshil's ID
+      const coaches = await storage.getActiveCoaches(playerId);
+      res.json(coaches);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch active coaches" });
+    }
+  });
+
+  app.post("/api/coaches", async (req, res) => {
+    try {
+      const validatedData = insertCoachSchema.parse(req.body);
+      const coach = await storage.createCoach(validatedData);
+      res.status(201).json(coach);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid coach data" });
+    }
+  });
+
+  app.put("/api/coaches/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const validatedData = insertCoachSchema.partial().parse(req.body);
+      const coach = await storage.updateCoach(id, validatedData);
+      if (!coach) {
+        return res.status(404).json({ error: "Coach not found" });
+      }
+      res.json(coach);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid coach data" });
+    }
+  });
+
+  app.delete("/api/coaches/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const deleted = await storage.deleteCoach(id);
+      if (!deleted) {
+        return res.status(404).json({ error: "Coach not found" });
+      }
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete coach" });
+    }
+  });
+
   // Coaching staff routes
   app.get("/api/coaching-staff", async (req, res) => {
     try {

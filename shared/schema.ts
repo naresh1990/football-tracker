@@ -106,6 +106,8 @@ export const insertTournamentSchema = createInsertSchema(tournaments).omit({ id:
 export const insertTrainingSessionSchema = createInsertSchema(trainingSessions).omit({ id: true });
 export const insertCoachFeedbackSchema = createInsertSchema(coachFeedback).omit({ id: true });
 export const insertSquadMemberSchema = createInsertSchema(squadMembers).omit({ id: true });
+export const insertClubSchema = createInsertSchema(clubs).omit({ id: true });
+export const insertCoachSchema = createInsertSchema(coaches).omit({ id: true });
 export const insertCoachingStaffSchema = createInsertSchema(coachingStaff).omit({ id: true });
 
 // Create types
@@ -126,6 +128,12 @@ export type CoachFeedback = typeof coachFeedback.$inferSelect;
 
 export type InsertSquadMember = z.infer<typeof insertSquadMemberSchema>;
 export type SquadMember = typeof squadMembers.$inferSelect;
+
+export type InsertClub = z.infer<typeof insertClubSchema>;
+export type Club = typeof clubs.$inferSelect;
+
+export type InsertCoach = z.infer<typeof insertCoachSchema>;
+export type Coach = typeof coaches.$inferSelect;
 
 export type InsertCoachingStaff = z.infer<typeof insertCoachingStaffSchema>;
 export type CoachingStaff = typeof coachingStaff.$inferSelect;

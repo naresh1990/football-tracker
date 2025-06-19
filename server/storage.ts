@@ -54,6 +54,23 @@ export interface IStorage {
   deleteSquadMember(id: number): Promise<boolean>;
   getSquadByPlayer(playerId: number): Promise<SquadMember[]>;
 
+  // Club methods
+  getClub(id: number): Promise<Club | undefined>;
+  createClub(club: InsertClub): Promise<Club>;
+  updateClub(id: number, club: Partial<InsertClub>): Promise<Club | undefined>;
+  deleteClub(id: number): Promise<boolean>;
+  getClubsByPlayer(playerId: number): Promise<Club[]>;
+  getActiveClubs(playerId: number): Promise<Club[]>;
+
+  // Coach methods
+  getCoach(id: number): Promise<Coach | undefined>;
+  createCoach(coach: InsertCoach): Promise<Coach>;
+  updateCoach(id: number, coach: Partial<InsertCoach>): Promise<Coach | undefined>;
+  deleteCoach(id: number): Promise<boolean>;
+  getCoachesByPlayer(playerId: number): Promise<Coach[]>;
+  getCoachesByClub(clubId: number): Promise<Coach[]>;
+  getActiveCoaches(playerId: number): Promise<Coach[]>;
+
   // Coaching staff methods
   getCoachingStaffMember(id: number): Promise<CoachingStaff | undefined>;
   createCoachingStaffMember(coach: InsertCoachingStaff): Promise<CoachingStaff>;
@@ -69,6 +86,8 @@ export class MemStorage implements IStorage {
   private trainingSessions: Map<number, TrainingSession> = new Map();
   private coachFeedback: Map<number, CoachFeedback> = new Map();
   private squadMembers: Map<number, SquadMember> = new Map();
+  private clubs: Map<number, Club> = new Map();
+  private coaches: Map<number, Coach> = new Map();
   private coachingStaff: Map<number, CoachingStaff> = new Map();
 
   private playerId = 1;
@@ -77,7 +96,9 @@ export class MemStorage implements IStorage {
   private trainingId = 1;
   private feedbackId = 1;
   private squadId = 1;
+  private clubId = 1;
   private coachId = 1;
+  private coachingStaffId = 1;
 
   constructor() {
     // Initialize with Darshil's profile and some sample data

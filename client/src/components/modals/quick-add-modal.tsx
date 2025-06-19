@@ -6,13 +6,15 @@ import GameForm from "@/components/forms/game-form";
 import TrainingForm from "@/components/forms/training-form";
 import FeedbackForm from "@/components/forms/feedback-form";
 import TournamentForm from "@/components/forms/tournament-form";
+import ClubForm from "@/components/forms/club-form";
+import CoachForm from "@/components/forms/coach-form";
 
 interface QuickAddModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-type FormType = "menu" | "game" | "training" | "feedback" | "tournament";
+type FormType = "menu" | "game" | "training" | "feedback" | "tournament" | "club" | "coach";
 
 export default function QuickAddModal({ isOpen, onClose }: QuickAddModalProps) {
   const [currentForm, setCurrentForm] = useState<FormType>("menu");

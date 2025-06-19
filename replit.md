@@ -104,6 +104,12 @@ This is a comprehensive football player tracking application built for monitorin
 
 ```
 Changelog:
+- June 19, 2025. Added club and coach management system
+  - Added club management with primary (Sporthood) and adhoc clubs (Consient Sports, Indian City FC)
+  - Implemented coach management with titles (Head Coach, Assistant Coach, Adhoc Coach)
+  - Created coach dropdown selections throughout the application
+  - Added club association with season tracking for primary clubs
+  - Integrated coach-club relationships for better organization
 - June 19, 2025. Enhanced game tracking with match types and post-match stats
   - Added game types: Practice, Friendly, Tournament matches
   - Added match formats: 2v2, 4v4, 5v5, 7v7
