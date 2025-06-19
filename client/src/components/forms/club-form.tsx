@@ -120,12 +120,12 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
                 <SelectTrigger>
                   <SelectValue placeholder="Select club type" />
                 </SelectTrigger>
-                <SelectContent className="z-[9999] max-h-[200px]" position="popper" sideOffset={4}>
-                  <SelectItem value="Academy">Academy</SelectItem>
-                  <SelectItem value="School Team">School Team</SelectItem>
-                  <SelectItem value="Local Club">Local Club</SelectItem>
-                  <SelectItem value="Professional Club">Professional Club</SelectItem>
-                  <SelectItem value="Training Center">Training Center</SelectItem>
+                <SelectContent className="z-[9999] max-h-[200px] bg-white" position="popper" sideOffset={4}>
+                  <SelectItem value="Academy" className="text-gray-900 hover:bg-blue-50 hover:text-blue-900 cursor-pointer">Academy</SelectItem>
+                  <SelectItem value="School Team" className="text-gray-900 hover:bg-blue-50 hover:text-blue-900 cursor-pointer">School Team</SelectItem>
+                  <SelectItem value="Local Club" className="text-gray-900 hover:bg-blue-50 hover:text-blue-900 cursor-pointer">Local Club</SelectItem>
+                  <SelectItem value="Professional Club" className="text-gray-900 hover:bg-blue-50 hover:text-blue-900 cursor-pointer">Professional Club</SelectItem>
+                  <SelectItem value="Training Center" className="text-gray-900 hover:bg-blue-50 hover:text-blue-900 cursor-pointer">Training Center</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -147,10 +147,10 @@ export default function ClubForm({ trigger, onSuccess, club, mode = 'add' }: Clu
                 <SelectTrigger>
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Active">Active</SelectItem>
-                  <SelectItem value="Inactive">Inactive</SelectItem>
-                  <SelectItem value="Former">Former</SelectItem>
+                <SelectContent className="z-[9999] max-h-[200px] bg-white" position="popper" sideOffset={4}>
+                  <SelectItem value="Active" className="text-gray-900 hover:bg-blue-50 hover:text-blue-900 cursor-pointer">Active</SelectItem>
+                  <SelectItem value="Inactive" className="text-gray-900 hover:bg-blue-50 hover:text-blue-900 cursor-pointer">Inactive</SelectItem>
+                  <SelectItem value="Former" className="text-gray-900 hover:bg-blue-50 hover:text-blue-900 cursor-pointer">Former</SelectItem>
                 </SelectContent>
               </Select>
             </div>

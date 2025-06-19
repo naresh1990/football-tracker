@@ -193,10 +193,10 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
               <SelectTrigger>
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
-              <SelectContent className="z-[9999] max-h-[200px]" position="popper" sideOffset={4}>
-                <SelectItem value="upcoming">Upcoming</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
+              <SelectContent className="z-[9999] max-h-[200px] bg-white" position="popper" sideOffset={4}>
+                <SelectItem value="upcoming" className="text-gray-900 hover:bg-yellow-50 hover:text-yellow-900 cursor-pointer">Upcoming</SelectItem>
+                <SelectItem value="active" className="text-gray-900 hover:bg-yellow-50 hover:text-yellow-900 cursor-pointer">Active</SelectItem>
+                <SelectItem value="completed" className="text-gray-900 hover:bg-yellow-50 hover:text-yellow-900 cursor-pointer">Completed</SelectItem>
               </SelectContent>
             </Select>
           </div>

@@ -106,14 +106,14 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
               <SelectTrigger>
                 <SelectValue placeholder="Select training type" />
               </SelectTrigger>
-              <SelectContent className="z-[9999] max-h-[200px]" position="popper" sideOffset={4}>
-                <SelectItem value="Speed & Agility">Speed & Agility</SelectItem>
-                <SelectItem value="Ball Control">Ball Control</SelectItem>
-                <SelectItem value="Team Practice">Team Practice</SelectItem>
-                <SelectItem value="Fitness Training">Fitness Training</SelectItem>
-                <SelectItem value="Shooting Practice">Shooting Practice</SelectItem>
-                <SelectItem value="Tactical Training">Tactical Training</SelectItem>
-                <SelectItem value="Conditioning">Conditioning</SelectItem>
+              <SelectContent className="z-[9999] max-h-[200px] bg-white" position="popper" sideOffset={4}>
+                <SelectItem value="Speed & Agility" className="text-gray-900 hover:bg-green-50 hover:text-green-900 cursor-pointer">Speed & Agility</SelectItem>
+                <SelectItem value="Ball Control" className="text-gray-900 hover:bg-green-50 hover:text-green-900 cursor-pointer">Ball Control</SelectItem>
+                <SelectItem value="Team Practice" className="text-gray-900 hover:bg-green-50 hover:text-green-900 cursor-pointer">Team Practice</SelectItem>
+                <SelectItem value="Fitness Training" className="text-gray-900 hover:bg-green-50 hover:text-green-900 cursor-pointer">Fitness Training</SelectItem>
+                <SelectItem value="Shooting Practice" className="text-gray-900 hover:bg-green-50 hover:text-green-900 cursor-pointer">Shooting Practice</SelectItem>
+                <SelectItem value="Tactical Training" className="text-gray-900 hover:bg-green-50 hover:text-green-900 cursor-pointer">Tactical Training</SelectItem>
+                <SelectItem value="Conditioning" className="text-gray-900 hover:bg-green-50 hover:text-green-900 cursor-pointer">Conditioning</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -160,9 +160,9 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
                 <SelectTrigger>
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
-                <SelectContent className="z-[9999] max-h-[200px]" position="popper" sideOffset={4}>
-                  <SelectItem value="false">Scheduled</SelectItem>
-                  <SelectItem value="true">Completed</SelectItem>
+                <SelectContent className="z-[9999] max-h-[200px] bg-white" position="popper" sideOffset={4}>
+                  <SelectItem value="false" className="text-gray-900 hover:bg-green-50 hover:text-green-900 cursor-pointer">Scheduled</SelectItem>
+                  <SelectItem value="true" className="text-gray-900 hover:bg-green-50 hover:text-green-900 cursor-pointer">Completed</SelectItem>
                 </SelectContent>
               </Select>
             </div>

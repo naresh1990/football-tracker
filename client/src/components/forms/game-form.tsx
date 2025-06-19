@@ -190,12 +190,12 @@ export default function GameForm({ trigger, onSuccess }: GameFormProps) {
                 <SelectTrigger>
                   <SelectValue placeholder="Select position" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Goalkeeper">Goalkeeper</SelectItem>
-                  <SelectItem value="Defender">Defender</SelectItem>
-                  <SelectItem value="Midfielder">Midfielder</SelectItem>
-                  <SelectItem value="Forward">Forward</SelectItem>
-                  <SelectItem value="Winger">Winger</SelectItem>
+                <SelectContent className="z-[9999] max-h-[200px] bg-white" position="popper" sideOffset={4}>
+                  <SelectItem value="Goalkeeper" className="text-gray-900 hover:bg-blue-50 hover:text-blue-900 cursor-pointer">Goalkeeper</SelectItem>
+                  <SelectItem value="Defender" className="text-gray-900 hover:bg-blue-50 hover:text-blue-900 cursor-pointer">Defender</SelectItem>
+                  <SelectItem value="Midfielder" className="text-gray-900 hover:bg-blue-50 hover:text-blue-900 cursor-pointer">Midfielder</SelectItem>
+                  <SelectItem value="Forward" className="text-gray-900 hover:bg-blue-50 hover:text-blue-900 cursor-pointer">Forward</SelectItem>
+                  <SelectItem value="Winger" className="text-gray-900 hover:bg-blue-50 hover:text-blue-900 cursor-pointer">Winger</SelectItem>
                 </SelectContent>
               </Select>
             </div>
