@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import darshilPhoto from "@assets/aa76083e-a3c3-414a-bdaf-a0a1404820ec_1750331355860.JPG";
 import { 
   Trophy, 
   Target, 
