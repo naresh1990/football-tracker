@@ -65,7 +65,7 @@ export default function HeroBanner({ player, onQuickAdd }: HeroBannerProps) {
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-2 text-white/90">
                     <Trophy className="w-4 h-4" />
-                    <span className="text-lg font-bold">#18</span>
+                    <span className="text-lg font-bold">#9</span>
                     <span className="text-sm font-medium">"Darsh"</span>
                   </div>
                 </div>

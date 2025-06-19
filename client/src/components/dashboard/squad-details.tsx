@@ -153,11 +153,18 @@ export default function SquadDetails({ playerId }: SquadDetailsProps) {
 
           {/* Squad Members Section */}
           <div className="mt-6 mx-4 p-6 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-xl shadow-sm">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                <Users className="w-4 h-4 text-white" />
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                  <Users className="w-4 h-4 text-white" />
+                </div>
+                <h4 className="font-semibold text-gray-900">Squad Members</h4>
               </div>
-              <h4 className="font-semibold text-gray-900">Squad Members</h4>
+              <div className="bg-orange-100 px-3 py-1 rounded-full">
+                <span className="text-sm font-medium text-orange-700">
+                  {squadMembers?.length || 0} Players
+                </span>
+              </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {squadMembers?.map((member: any, index: number) => (

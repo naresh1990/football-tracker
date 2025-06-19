@@ -114,7 +114,7 @@ export class MemStorage implements IStorage {
       age: 12,
       position: "Midfielder",
       teamName: "Lions FC",
-      jerseyNumber: "#10",
+      jerseyNumber: "#9",
       isCaptain: true,
       division: "U12 Premier"
     });
