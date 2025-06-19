@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,12 +6,15 @@ import { Plus, Edit, Trash2, Building, Users } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { queryClient } from "@/lib/queryClient";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import ClubForm from "@/components/forms/club-form";
 
 export default function Clubs() {
   const { toast } = useToast();
+  const [editingClub, setEditingClub] = useState<any>(null);
 
   const { data: clubs, isLoading } = useQuery({
     queryKey: ["/api/clubs", { playerId: 1 }],
