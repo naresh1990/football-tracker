@@ -363,8 +363,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Only include logo in update if a new file was uploaded
+      // Don't pass undefined logo to preserve existing logo
       if (logoUrl) {
         updateData.logo = logoUrl;
+      } else {
+        // Remove logo from updateData to preserve existing logo
+        delete updateData.logo;
       }
       
       const validatedData = insertClubSchema.partial().parse(updateData);

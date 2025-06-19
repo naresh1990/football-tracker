@@ -900,4 +900,246 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Database Storage Implementation
+export class DatabaseStorage implements IStorage {
+  async getPlayer(id: number): Promise<Player | undefined> {
+    const [player] = await db.select().from(players).where(eq(players.id, id));
+    return player || undefined;
+  }
+
+  async createPlayer(player: InsertPlayer): Promise<Player> {
+    const [newPlayer] = await db.insert(players).values(player).returning();
+    return newPlayer;
+  }
+
+  async updatePlayer(id: number, player: Partial<InsertPlayer>): Promise<Player | undefined> {
+    const [updated] = await db.update(players).set(player).where(eq(players.id, id)).returning();
+    return updated || undefined;
+  }
+
+  async getAllPlayers(): Promise<Player[]> {
+    return await db.select().from(players);
+  }
+
+  async getGame(id: number): Promise<Game | undefined> {
+    const [game] = await db.select().from(games).where(eq(games.id, id));
+    return game || undefined;
+  }
+
+  async createGame(game: InsertGame): Promise<Game> {
+    const [newGame] = await db.insert(games).values(game).returning();
+    return newGame;
+  }
+
+  async updateGame(id: number, game: Partial<InsertGame>): Promise<Game | undefined> {
+    const [updated] = await db.update(games).set(game).where(eq(games.id, id)).returning();
+    return updated || undefined;
+  }
+
+  async deleteGame(id: number): Promise<boolean> {
+    const result = await db.delete(games).where(eq(games.id, id));
+    return result.rowCount > 0;
+  }
+
+  async getGamesByPlayer(playerId: number): Promise<Game[]> {
+    return await db.select().from(games).where(eq(games.playerId, playerId)).orderBy(desc(games.date));
+  }
+
+  async getRecentGames(playerId: number, limit = 5): Promise<Game[]> {
+    return await db.select().from(games).where(eq(games.playerId, playerId)).orderBy(desc(games.date)).limit(limit);
+  }
+
+  async getTournament(id: number): Promise<Tournament | undefined> {
+    const [tournament] = await db.select().from(tournaments).where(eq(tournaments.id, id));
+    return tournament || undefined;
+  }
+
+  async createTournament(tournament: InsertTournament): Promise<Tournament> {
+    const [newTournament] = await db.insert(tournaments).values(tournament).returning();
+    return newTournament;
+  }
+
+  async updateTournament(id: number, tournament: Partial<InsertTournament>): Promise<Tournament | undefined> {
+    const [updated] = await db.update(tournaments).set(tournament).where(eq(tournaments.id, id)).returning();
+    return updated || undefined;
+  }
+
+  async deleteTournament(id: number): Promise<boolean> {
+    const result = await db.delete(tournaments).where(eq(tournaments.id, id));
+    return result.rowCount > 0;
+  }
+
+  async getTournamentsByPlayer(playerId: number): Promise<Tournament[]> {
+    return await db.select().from(tournaments).where(eq(tournaments.playerId, playerId)).orderBy(desc(tournaments.startDate));
+  }
+
+  async getActiveTournaments(playerId: number): Promise<Tournament[]> {
+    return await db.select().from(tournaments).where(eq(tournaments.playerId, playerId));
+  }
+
+  async getTrainingSession(id: number): Promise<TrainingSession | undefined> {
+    const [session] = await db.select().from(trainingSessions).where(eq(trainingSessions.id, id));
+    return session || undefined;
+  }
+
+  async createTrainingSession(session: InsertTrainingSession): Promise<TrainingSession> {
+    const [newSession] = await db.insert(trainingSessions).values(session).returning();
+    return newSession;
+  }
+
+  async updateTrainingSession(id: number, session: Partial<InsertTrainingSession>): Promise<TrainingSession | undefined> {
+    const [updated] = await db.update(trainingSessions).set(session).where(eq(trainingSessions.id, id)).returning();
+    return updated || undefined;
+  }
+
+  async deleteTrainingSession(id: number): Promise<boolean> {
+    const result = await db.delete(trainingSessions).where(eq(trainingSessions.id, id));
+    return result.rowCount > 0;
+  }
+
+  async getTrainingSessionsByPlayer(playerId: number): Promise<TrainingSession[]> {
+    return await db.select().from(trainingSessions).where(eq(trainingSessions.playerId, playerId)).orderBy(desc(trainingSessions.date));
+  }
+
+  async getUpcomingTraining(playerId: number): Promise<TrainingSession[]> {
+    return await db.select().from(trainingSessions).where(eq(trainingSessions.playerId, playerId)).orderBy(trainingSessions.date);
+  }
+
+  async getCoachFeedback(id: number): Promise<CoachFeedback | undefined> {
+    const [feedback] = await db.select().from(coachFeedback).where(eq(coachFeedback.id, id));
+    return feedback || undefined;
+  }
+
+  async createCoachFeedback(feedback: InsertCoachFeedback): Promise<CoachFeedback> {
+    const [newFeedback] = await db.insert(coachFeedback).values(feedback).returning();
+    return newFeedback;
+  }
+
+  async updateCoachFeedback(id: number, feedback: Partial<InsertCoachFeedback>): Promise<CoachFeedback | undefined> {
+    const [updated] = await db.update(coachFeedback).set(feedback).where(eq(coachFeedback.id, id)).returning();
+    return updated || undefined;
+  }
+
+  async deleteCoachFeedback(id: number): Promise<boolean> {
+    const result = await db.delete(coachFeedback).where(eq(coachFeedback.id, id));
+    return result.rowCount > 0;
+  }
+
+  async getFeedbackByPlayer(playerId: number): Promise<CoachFeedback[]> {
+    return await db.select().from(coachFeedback).where(eq(coachFeedback.playerId, playerId)).orderBy(desc(coachFeedback.date));
+  }
+
+  async getRecentFeedback(playerId: number, limit = 5): Promise<CoachFeedback[]> {
+    return await db.select().from(coachFeedback).where(eq(coachFeedback.playerId, playerId)).orderBy(desc(coachFeedback.date)).limit(limit);
+  }
+
+  async getSquadMember(id: number): Promise<SquadMember | undefined> {
+    const [member] = await db.select().from(squadMembers).where(eq(squadMembers.id, id));
+    return member || undefined;
+  }
+
+  async createSquadMember(member: InsertSquadMember): Promise<SquadMember> {
+    const [newMember] = await db.insert(squadMembers).values(member).returning();
+    return newMember;
+  }
+
+  async updateSquadMember(id: number, member: Partial<InsertSquadMember>): Promise<SquadMember | undefined> {
+    const [updated] = await db.update(squadMembers).set(member).where(eq(squadMembers.id, id)).returning();
+    return updated || undefined;
+  }
+
+  async deleteSquadMember(id: number): Promise<boolean> {
+    const result = await db.delete(squadMembers).where(eq(squadMembers.id, id));
+    return result.rowCount > 0;
+  }
+
+  async getSquadByPlayer(playerId: number): Promise<SquadMember[]> {
+    return await db.select().from(squadMembers).where(eq(squadMembers.playerId, playerId));
+  }
+
+  async getClub(id: number): Promise<Club | undefined> {
+    const [club] = await db.select().from(clubs).where(eq(clubs.id, id));
+    return club || undefined;
+  }
+
+  async createClub(club: InsertClub): Promise<Club> {
+    const [newClub] = await db.insert(clubs).values(club).returning();
+    return newClub;
+  }
+
+  async updateClub(id: number, club: Partial<InsertClub>): Promise<Club | undefined> {
+    const [updated] = await db.update(clubs).set(club).where(eq(clubs.id, id)).returning();
+    return updated || undefined;
+  }
+
+  async deleteClub(id: number): Promise<boolean> {
+    const result = await db.delete(clubs).where(eq(clubs.id, id));
+    return result.rowCount > 0;
+  }
+
+  async getClubsByPlayer(playerId: number): Promise<Club[]> {
+    return await db.select().from(clubs).where(eq(clubs.playerId, playerId));
+  }
+
+  async getActiveClubs(playerId: number): Promise<Club[]> {
+    return await db.select().from(clubs).where(eq(clubs.playerId, playerId));
+  }
+
+  async getCoach(id: number): Promise<Coach | undefined> {
+    const [coach] = await db.select().from(coaches).where(eq(coaches.id, id));
+    return coach || undefined;
+  }
+
+  async createCoach(coach: InsertCoach): Promise<Coach> {
+    const [newCoach] = await db.insert(coaches).values(coach).returning();
+    return newCoach;
+  }
+
+  async updateCoach(id: number, coach: Partial<InsertCoach>): Promise<Coach | undefined> {
+    const [updated] = await db.update(coaches).set(coach).where(eq(coaches.id, id)).returning();
+    return updated || undefined;
+  }
+
+  async deleteCoach(id: number): Promise<boolean> {
+    const result = await db.delete(coaches).where(eq(coaches.id, id));
+    return result.rowCount > 0;
+  }
+
+  async getCoachesByPlayer(playerId: number): Promise<Coach[]> {
+    return await db.select().from(coaches).where(eq(coaches.playerId, playerId));
+  }
+
+  async getCoachesByClub(clubId: number): Promise<Coach[]> {
+    return await db.select().from(coaches).where(eq(coaches.clubId, clubId));
+  }
+
+  async getActiveCoaches(playerId: number): Promise<Coach[]> {
+    return await db.select().from(coaches).where(eq(coaches.playerId, playerId));
+  }
+
+  async getCoachingStaffMember(id: number): Promise<CoachingStaff | undefined> {
+    const [staff] = await db.select().from(coachingStaff).where(eq(coachingStaff.id, id));
+    return staff || undefined;
+  }
+
+  async createCoachingStaffMember(staff: InsertCoachingStaff): Promise<CoachingStaff> {
+    const [newStaff] = await db.insert(coachingStaff).values(staff).returning();
+    return newStaff;
+  }
+
+  async updateCoachingStaffMember(id: number, staff: Partial<InsertCoachingStaff>): Promise<CoachingStaff | undefined> {
+    const [updated] = await db.update(coachingStaff).set(staff).where(eq(coachingStaff.id, id)).returning();
+    return updated || undefined;
+  }
+
+  async deleteCoachingStaffMember(id: number): Promise<boolean> {
+    const result = await db.delete(coachingStaff).where(eq(coachingStaff.id, id));
+    return result.rowCount > 0;
+  }
+
+  async getCoachingStaffByPlayer(playerId: number): Promise<CoachingStaff[]> {
+    return await db.select().from(coachingStaff).where(eq(coachingStaff.playerId, playerId));
+  }
+}
+
+export const storage = new DatabaseStorage();
