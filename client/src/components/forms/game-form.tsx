@@ -28,6 +28,11 @@ interface GameFormProps {
 export default function GameForm({ onSuccess, onCancel }: GameFormProps) {
   const { toast } = useToast();
   
+  // Get tournaments for linking tournament games
+  const { data: tournaments } = useQuery({
+    queryKey: ["/api/tournaments", { playerId: 1 }],
+  });
+  
   const form = useForm<GameFormData>({
     resolver: zodResolver(gameFormSchema),
     defaultValues: {

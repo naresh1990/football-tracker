@@ -315,8 +315,11 @@ export class MemStorage implements IStorage {
       playerGoals: game.playerGoals ?? null,
       playerAssists: game.playerAssists ?? null,
       minutesPlayed: game.minutesPlayed ?? null,
+      mistakes: game.mistakes ?? null,
       rating: game.rating ?? null,
-      notes: game.notes ?? null
+      coachFeedback: game.coachFeedback ?? null,
+      notes: game.notes ?? null,
+      tournamentId: game.tournamentId ?? null
     };
     this.games.set(id, newGame);
     return newGame;
