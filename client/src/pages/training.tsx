@@ -272,10 +272,14 @@ export default function Training() {
   const EventComponent = ({ event }: { event: any }) => {
     const session = event.resource;
     const TrainingIcon = getTrainingIcon(session.type);
+    const iconColor = getTypeColor(session.type);
     
     return (
       <div className="flex items-center gap-1 text-xs">
-        <TrainingIcon className="w-3 h-3 flex-shrink-0" />
+        <TrainingIcon 
+          className="w-3 h-3 flex-shrink-0" 
+          style={{ color: iconColor }}
+        />
         <span className="truncate">
           {event.title}
         </span>
