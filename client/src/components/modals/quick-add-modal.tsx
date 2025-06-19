@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { ModernButton } from "@/components/ui/modern-button";
-import { ModernCard } from "@/components/ui/modern-card";
-import { Target, Zap, MessageSquare, Trophy, Building, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Target, Zap, MessageSquare, Trophy, Building, User, ArrowLeft } from "lucide-react";
 import GameForm from "@/components/forms/game-form";
 import TrainingForm from "@/components/forms/training-form";
 import FeedbackForm from "@/components/forms/feedback-form";
@@ -150,29 +149,28 @@ export default function QuickAddModal({ isOpen, onClose }: QuickAddModalProps) {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      <ModernCard
-                        interactive
-                        className="p-6 cursor-pointer group hover:shadow-football border-2 border-transparent hover:border-football/20"
+                      <div
+                        className="p-6 cursor-pointer group hover:shadow-xl border border-gray-200 hover:border-blue-300 rounded-xl bg-white hover:bg-blue-50 transition-all duration-300"
                         onClick={action.action}
                       >
                         <div className="flex items-center space-x-4">
                           <div className={`
-                            w-14 h-14 rounded-2xl bg-gradient-to-br ${action.color} 
+                            w-14 h-14 rounded-xl bg-gradient-to-br ${action.color} 
                             flex items-center justify-center text-white shadow-lg
                             group-hover:scale-110 transition-transform duration-300
                           `}>
                             <Icon className="w-7 h-7" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-semibold text-lg text-gray-900 mb-1">
+                            <h3 className="font-semibold text-lg text-gray-900 mb-1 group-hover:text-blue-600">
                               {action.title}
                             </h3>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-sm text-gray-600">
                               {action.description}
                             </p>
                           </div>
                         </div>
-                      </ModernCard>
+                      </div>
                     </motion.div>
                   );
                 })}
@@ -185,12 +183,12 @@ export default function QuickAddModal({ isOpen, onClose }: QuickAddModalProps) {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
             >
-              <ModernButton
-                variant="ghost"
+              <button
                 onClick={() => onClose()}
+                className="px-6 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 Cancel
-              </ModernButton>
+              </button>
             </motion.div>
           </motion.div>
         );
