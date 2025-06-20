@@ -576,7 +576,7 @@ export default function Training() {
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-gray-800">
                 <Activity className="w-5 h-5 text-blue-600" />
-                Training Attendance Overview
+                Training Progress Overview
               </CardTitle>
             </CardHeader>
             <CardContent>
