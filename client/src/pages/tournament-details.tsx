@@ -120,77 +120,97 @@ export default function TournamentDetails() {
         </div>
 
         {/* Tournament Info Card */}
-        <Card className="mb-8">
-          <CardHeader>
-            <div className="flex justify-between items-start">
-              <div className="flex items-start gap-4">
-                {/* Tournament/Club Logo */}
-                <div className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-2 border-gray-200">
-                  {tournament.logo ? (
-                    <img 
-                      src={tournament.logo} 
-                      alt={`${tournament.name} logo`}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-                      <Trophy className="w-8 h-8 text-white" />
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <CardTitle className="text-2xl font-bold text-gray-900 mb-2">
-                    {tournament.name}
-                  </CardTitle>
-                  <p className="text-gray-600 mb-4">{tournament.description}</p>
-                  <div className="flex items-center gap-4 text-sm text-gray-600">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      {tournament.startDate ? formatDate(tournament.startDate) : 'TBD'}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4" />
-                      {tournament.venue || 'TBD'}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Users className="w-4 h-4" />
-                      {tournament.matchFormat || 'TBD'}
+        <Card className="mb-8 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 backdrop-blur-sm border border-gray-200/50 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300">
+          {/* Header Section with Logo */}
+          <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 p-6 text-white">
+            <div className="absolute inset-0 bg-black/10"></div>
+            <div className="relative flex items-start gap-4">
+              {/* Tournament Logo */}
+              <div className="w-20 h-20 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-3 border-white/30 bg-white/10 backdrop-blur-sm">
+                {tournament.logo ? (
+                  <img 
+                    src={tournament.logo} 
+                    alt={`${tournament.name} logo`}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <Trophy className="w-10 h-10 text-white/80" />
+                )}
+              </div>
+              
+              {/* Tournament Info */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <h1 className="text-3xl font-bold text-white leading-tight mb-2">
+                      {tournament.name}
+                    </h1>
+                    <p className="text-blue-100 text-lg leading-relaxed mb-4">
+                      {tournament.description}
+                    </p>
+                    
+                    {/* Tournament Details */}
+                    <div className="flex items-center gap-6 text-blue-100">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-5 h-5" />
+                        <span className="font-medium">
+                          {tournament.startDate ? formatDate(tournament.startDate) : 'TBD'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-5 h-5" />
+                        <span className="font-medium">{tournament.venue || 'TBD'}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Users className="w-5 h-5" />
+                        <span className="font-medium">{tournament.matchFormat || 'TBD'}</span>
+                      </div>
+                      <Badge 
+                        className={`${getStatusColor(tournament.status)} text-xs px-3 py-1 font-semibold border-0 shadow-lg`}
+                        variant="secondary"
+                      >
+                        {tournament.status}
+                      </Badge>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="flex gap-2">
-                <TournamentForm 
-                  mode="edit"
-                  tournament={tournament}
-                  trigger={
-                    <Button variant="outline">
-                      <Edit className="w-4 h-4 mr-2" />
-                      Edit Tournament
-                    </Button>
-                  }
-                />
-                <TournamentLogoUpload 
-                  tournament={tournament}
-                  trigger={
-                    <Button variant="outline">
-                      <Upload className="w-4 h-4 mr-2" />
-                      Edit Logo
-                    </Button>
-                  }
-                />
-                <TournamentPointsForm 
-                  tournament={tournament}
-                  trigger={
-                    <Button variant="outline">
-                      <Upload className="w-4 h-4 mr-2" />
-                      Points Table
-                    </Button>
-                  }
-                />
-              </div>
             </div>
-          </CardHeader>
+          </div>
+
+          {/* Action Buttons Section */}
+          <div className="p-6 bg-white/50">
+            <div className="flex gap-2 flex-wrap">
+              <TournamentForm 
+                mode="edit"
+                tournament={tournament}
+                trigger={
+                  <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
+                    <Edit className="w-4 h-4 mr-2" />
+                    Edit Tournament
+                  </Button>
+                }
+              />
+              <TournamentLogoUpload 
+                tournament={tournament}
+                trigger={
+                  <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
+                    <Upload className="w-4 h-4 mr-2" />
+                    Edit Logo
+                  </Button>
+                }
+              />
+              <TournamentPointsForm 
+                tournament={tournament}
+                trigger={
+                  <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
+                    <Upload className="w-4 h-4 mr-2" />
+                    Points Table
+                  </Button>
+                }
+              />
+            </div>
+          </div>
         </Card>
 
         {/* Tournament Stages */}
