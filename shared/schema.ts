@@ -22,6 +22,7 @@ export const games = pgTable("games", {
   matchFormat: text("match_format").notNull(), // "2v2", "4v4", "5v5", "7v7"
   tournamentId: integer("tournament_id"), // linked to tournament if game_type is "tournament"
   opponent: text("opponent").notNull(),
+  venue: text("venue"), // game venue/location
   date: timestamp("date").notNull(),
   homeAway: text("home_away").notNull(), // 'home' or 'away'
   teamScore: integer("team_score").notNull(),

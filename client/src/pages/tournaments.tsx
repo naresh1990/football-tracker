@@ -120,12 +120,12 @@ export default function Tournaments() {
                       <span className="font-medium">{tournament.format || 'League'}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Age Group:</span>
-                      <span className="font-medium">{tournament.ageGroup || 'U12'}</span>
+                      <span className="text-gray-600">Total Teams:</span>
+                      <span className="font-medium">{tournament.totalTeams || 'TBD'}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Location:</span>
-                      <span className="font-medium">{tournament.location || 'Local Area'}</span>
+                      <span className="text-gray-600">Venue:</span>
+                      <span className="font-medium">{tournament.venue || 'TBD'}</span>
                     </div>
                   </div>
                 </div>

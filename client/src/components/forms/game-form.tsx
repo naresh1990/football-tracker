@@ -73,6 +73,10 @@ export default function GameForm({ trigger, onSuccess }: GameFormProps) {
     createGameMutation.mutate({
       ...formData,
       playerId: 1,
+      gameType: "friendly",
+      matchFormat: "11v11",
+      homeAway: "away",
+      venue: formData.venue || null,
       teamScore: parseInt(formData.teamScore),
       opponentScore: parseInt(formData.opponentScore),
       playerGoals: parseInt(formData.playerGoals) || 0,

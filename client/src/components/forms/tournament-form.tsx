@@ -52,6 +52,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
       setFormData({
         name: "",
         description: "",
+        venue: "",
         startDate: "",
         endDate: "",
         format: "",
@@ -76,6 +77,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
       ...formData,
       playerId: 1,
       clubId: parseInt(formData.clubId) || null,
+      venue: formData.venue || null,
       startDate: formData.startDate ? new Date(formData.startDate).toISOString() : null,
       endDate: formData.endDate ? new Date(formData.endDate).toISOString() : null,
       totalTeams: parseInt(formData.totalTeams) || null,
@@ -137,6 +139,16 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               placeholder="Tournament details, format, rules..."
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="venue">Venue</Label>
+            <Input
+              id="venue"
+              value={formData.venue}
+              onChange={(e) => setFormData({ ...formData, venue: e.target.value })}
+              placeholder="Tournament location/venue"
             />
           </div>
 
