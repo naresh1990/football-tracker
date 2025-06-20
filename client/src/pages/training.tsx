@@ -24,7 +24,8 @@ import {
   ChevronRight,
   MessageSquare,
   Camera,
-  Plus
+  Plus,
+  Upload
 } from "lucide-react";
 import { motion } from "framer-motion";
 import TrainingForm from "@/components/forms/training-form";
@@ -41,6 +42,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import moment from 'moment-timezone';
