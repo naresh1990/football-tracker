@@ -85,6 +85,11 @@ export interface IStorage {
   updateCoachingStaffMember(id: number, coach: Partial<InsertCoachingStaff>): Promise<CoachingStaff | undefined>;
   deleteCoachingStaffMember(id: number): Promise<boolean>;
   getCoachingStaffByPlayer(playerId: number): Promise<CoachingStaff[]>;
+
+  // Gallery photo methods
+  getGalleryPhotos(playerId: number): Promise<GalleryPhoto[]>;
+  createGalleryPhoto(data: InsertGalleryPhoto): Promise<GalleryPhoto>;
+  deleteGalleryPhoto(id: number): Promise<boolean>;
 }
 
 export class MemStorage implements IStorage {
@@ -1231,6 +1236,37 @@ export class DatabaseStorage implements IStorage {
 
   async getCoachingStaffByPlayer(playerId: number): Promise<CoachingStaff[]> {
     return await db.select().from(coachingStaff).where(eq(coachingStaff.playerId, playerId));
+  }
+
+  // Gallery photo methods
+  async getGalleryPhotos(playerId: number): Promise<GalleryPhoto[]> {
+    try {
+      const photos = await db.select().from(galleryPhotos).where(eq(galleryPhotos.playerId, playerId)).orderBy(desc(galleryPhotos.uploadedAt));
+      return photos;
+    } catch (error) {
+      console.error("Error fetching gallery photos:", error);
+      return [];
+    }
+  }
+
+  async createGalleryPhoto(data: InsertGalleryPhoto): Promise<GalleryPhoto> {
+    try {
+      const [photo] = await db.insert(galleryPhotos).values(data).returning();
+      return photo;
+    } catch (error) {
+      console.error("Error creating gallery photo:", error);
+      throw error;
+    }
+  }
+
+  async deleteGalleryPhoto(id: number): Promise<boolean> {
+    try {
+      const [deleted] = await db.delete(galleryPhotos).where(eq(galleryPhotos.id, id)).returning();
+      return !!deleted;
+    } catch (error) {
+      console.error("Error deleting gallery photo:", error);
+      return false;
+    }
   }
 
   // Method to get active club for a player
