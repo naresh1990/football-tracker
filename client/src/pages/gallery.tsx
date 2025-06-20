@@ -207,7 +207,7 @@ export default function Gallery() {
 
         {filteredPhotos.length === 0 ? (
           <EmptyState
-            icon={<ImageIcon className="w-16 h-16 text-gray-400" />}
+            icon={ImageIcon}
             title={filterBySession === 'all' ? "No photos yet" : "No photos found"}
             description={filterBySession === 'all' 
               ? "Start building your gallery by uploading your first photos"
@@ -241,15 +241,24 @@ export default function Gallery() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             {sortedDates.map((date) => (
-              <div key={date} className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    {moment(date).format('MMMM DD, YYYY')}
-                  </h3>
-                  <div className="flex-1 h-px bg-gray-200"></div>
-                  <span className="text-sm text-gray-500">
-                    {photosByDate[date].length} photo{photosByDate[date].length !== 1 ? 's' : ''}
-                  </span>
+              <div key={date} className="mb-8">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-5 h-5 text-blue-500" />
+                      <h2 className="text-xl font-semibold text-gray-900">
+                        {moment.tz(date, 'Asia/Kolkata').format('dddd, MMMM DD, YYYY')}
+                      </h2>
+                    </div>
+                    <Badge variant="secondary" className="px-3 py-1">
+                      {photosByDate[date].length} photo{photosByDate[date].length !== 1 ? 's' : ''}
+                    </Badge>
+                  </div>
+                  {filterBySession !== 'all' && (
+                    <Badge variant="outline" className="text-blue-600 border-blue-200">
+                      Filtered by training session
+                    </Badge>
+                  )}
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -273,19 +282,17 @@ export default function Gallery() {
                             />
                             <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300" />
                           </div>
-                          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <Button
-                              variant="destructive"
-                              size="sm"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleDelete(photo.id);
-                              }}
-                              className="w-8 h-8 p-0"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
-                          </div>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDelete(photo.id);
+                            }}
+                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-8 h-8 p-0"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
                           {(photo.caption || photo.uploadedAt || photo.trainingSessionId) && (
                             <div className="p-4 space-y-2">
                               {photo.caption && (
