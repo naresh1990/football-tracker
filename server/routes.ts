@@ -903,13 +903,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const allGames = await storage.getGamesByPlayer(playerId);
       
-      // Filter games to only include those from active club (Sporthood FC)
-      // Since we don't have direct club linking in games, filter by date from when Sporthood FC became active
-      const sportsHoodStartDate = new Date('2024-06-01'); // Approximate start of Sporthood FC membership
-      const activeClubGames = allGames.filter(game => {
-        const gameDate = new Date(game.date);
-        return gameDate >= sportsHoodStartDate;
-      });
+      // All games in database are from Sporthood FC period (Sept 2024 tournament)
+      // No need to filter as there are no Indian City FC games in the database
+      const activeClubGames = allGames;
       
       const totalGoals = activeClubGames.reduce((sum, game) => sum + (game.playerGoals || 0), 0);
       const totalAssists = activeClubGames.reduce((sum, game) => sum + (game.playerAssists || 0), 0);
