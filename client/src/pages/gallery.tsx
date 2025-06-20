@@ -25,7 +25,7 @@ import {
 import type { GalleryPhoto } from "@shared/schema";
 import moment from "moment-timezone";
 import EmptyState from "@/components/ui/empty-state";
-import TrainingSessionModal from "@/components/training/training-session-modal";
+
 
 export default function Gallery() {
   const [showUploadDialog, setShowUploadDialog] = useState(false);
@@ -33,7 +33,7 @@ export default function Gallery() {
   const [uploadFiles, setUploadFiles] = useState<File[]>([]);
   const [photoCaptions, setPhotoCaptions] = useState<{[key: string]: string}>({});
   const [linkedSession, setLinkedSession] = useState<string>('');
-  const [selectedTrainingSession, setSelectedTrainingSession] = useState<any>(null);
+  const [filterBySession, setFilterBySession] = useState<string>('all');
   
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -125,8 +125,15 @@ export default function Gallery() {
     }
   };
 
-  // Group photos by date
-  const photosByDate = photos.reduce((groups: any, photo: any) => {
+  // Filter photos by selected training session
+  const filteredPhotos = filterBySession === 'all' 
+    ? photos 
+    : filterBySession === 'no-session'
+    ? photos.filter((photo: any) => !photo.trainingSessionId)
+    : photos.filter((photo: any) => photo.trainingSessionId?.toString() === filterBySession);
+
+  // Group filtered photos by date
+  const photosByDate = filteredPhotos.reduce((groups: any, photo: any) => {
     const date = moment.tz(photo.uploadedAt, 'Asia/Kolkata').format('YYYY-MM-DD');
     if (!groups[date]) {
       groups[date] = [];
@@ -136,6 +143,11 @@ export default function Gallery() {
   }, {});
 
   const sortedDates = Object.keys(photosByDate).sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+
+  // Get training sessions that have photos
+  const sessionsWithPhotos = trainingSessions.filter((session: any) => 
+    photos.some((photo: any) => photo.trainingSessionId === session.id)
+  );
 
   const handleDelete = (photoId: number) => {
     deleteMutation.mutate(photoId);
@@ -261,29 +273,8 @@ export default function Gallery() {
                               {photo.trainingSessionId && (
                                 <div className="flex items-center gap-2">
                                   <Dumbbell className="w-3 h-3 text-blue-500" />
-                                  <span className="text-xs text-blue-600 hover:text-blue-800 cursor-pointer flex items-center gap-1"
-                                        onClick={(e) => {
-                                          e.preventDefault();
-                                          e.stopPropagation();
-                                          
-                                          const handleClick = async () => {
-                                            try {
-                                              const session = await apiRequest(`/api/training/${photo.trainingSessionId}`);
-                                              setSelectedTrainingSession(session);
-                                            } catch (error) {
-                                              console.error('Error loading training session:', error);
-                                              toast({
-                                                title: "Error",
-                                                description: "Failed to load training session details",
-                                                variant: "destructive",
-                                              });
-                                            }
-                                          };
-                                          
-                                          handleClick().catch(console.error);
-                                        }}>
-                                    View Training Session
-                                    <ExternalLink className="w-3 h-3" />
+                                  <span className="text-xs text-blue-600">
+                                    Training session linked
                                   </span>
                                 </div>
                               )}
@@ -477,29 +468,13 @@ export default function Gallery() {
                     <Button
                       variant="link"
                       size="sm"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        const handleClick = async () => {
-                          try {
-                            const session = await apiRequest(`/api/training/${selectedPhoto.trainingSessionId}`);
-                            setSelectedTrainingSession(session);
-                          } catch (error) {
-                            console.error('Error loading training session:', error);
-                            toast({
-                              title: "Error",
-                              description: "Failed to load training session details",
-                              variant: "destructive",
-                            });
-                          }
-                        };
-                        
-                        handleClick().catch(console.error);
+                      onClick={() => {
+                        setFilterBySession(selectedPhoto.trainingSessionId.toString());
+                        setSelectedPhoto(null);
                       }}
                       className="text-blue-600 p-0 h-auto"
                     >
-                      View Session <ExternalLink className="w-3 h-3 ml-1" />
+                      Filter by session <ExternalLink className="w-3 h-3 ml-1" />
                     </Button>
                   </div>
                 )}
@@ -508,14 +483,7 @@ export default function Gallery() {
           </Dialog>
         )}
 
-        {/* Training Session Modal */}
-        {selectedTrainingSession && (
-          <TrainingSessionModal
-            isOpen={!!selectedTrainingSession}
-            onClose={() => setSelectedTrainingSession(null)}
-            session={selectedTrainingSession}
-          />
-        )}
+
       </div>
     </div>
   );
