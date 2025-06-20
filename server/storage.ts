@@ -1066,8 +1066,9 @@ export class DatabaseStorage implements IStorage {
   async getUpcomingTraining(playerId: number): Promise<TrainingSession[]> {
     const now = new Date();
     return await db.select().from(trainingSessions)
-      .where(eq(trainingSessions.playerId, playerId))
-      .orderBy(trainingSessions.date);
+      .where(and(eq(trainingSessions.playerId, playerId), gte(trainingSessions.date, now)))
+      .orderBy(trainingSessions.date)
+      .limit(5);
   }
 
   async getCoachFeedback(id: number): Promise<CoachFeedback | undefined> {
