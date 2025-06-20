@@ -3,6 +3,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MessageSquare, Star, Calendar, ChevronLeft, ChevronRight, Clock, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import moment from "moment-timezone";
+
+const formatDynamicDate = (date: string | Date) => {
+  const sessionDate = moment.tz(date, 'Asia/Kolkata');
+  const today = moment.tz('Asia/Kolkata');
+  const tomorrow = moment.tz('Asia/Kolkata').add(1, 'day');
+  const yesterday = moment.tz('Asia/Kolkata').subtract(1, 'day');
+  
+  if (sessionDate.isSame(today, 'day')) {
+    return 'Today';
+  } else if (sessionDate.isSame(tomorrow, 'day')) {
+    return 'Tomorrow';
+  } else if (sessionDate.isSame(yesterday, 'day')) {
+    return 'Yesterday';
+  } else {
+    return sessionDate.format('MMM DD');
+  }
+};
 import { useState } from "react";
 
 interface CoachFeedbackProps {
@@ -91,7 +108,7 @@ export default function CoachFeedback({ playerId }: CoachFeedbackProps) {
                     <h4 className="font-semibold text-gray-900 text-sm">{session.type}</h4>
                     <div className="flex items-center gap-1 text-xs text-gray-500">
                       <Calendar className="w-3 h-3" />
-                      {moment.tz(session.date, 'Asia/Kolkata').format('MMM DD')}
+                      {formatDynamicDate(session.date)}
                     </div>
                   </div>
                   <p className="text-sm text-gray-700 leading-relaxed">{session.coachFeedback}</p>

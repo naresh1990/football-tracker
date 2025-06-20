@@ -5,6 +5,23 @@ import darshilPhoto from "../../assets/darshil-photo.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import moment from "moment-timezone";
+
+const formatDynamicDate = (date: string | Date) => {
+  const sessionDate = moment.tz(date, 'Asia/Kolkata');
+  const today = moment.tz('Asia/Kolkata');
+  const tomorrow = moment.tz('Asia/Kolkata').add(1, 'day');
+  const yesterday = moment.tz('Asia/Kolkata').subtract(1, 'day');
+  
+  if (sessionDate.isSame(today, 'day')) {
+    return 'Today';
+  } else if (sessionDate.isSame(tomorrow, 'day')) {
+    return 'Tomorrow';
+  } else if (sessionDate.isSame(yesterday, 'day')) {
+    return 'Yesterday';
+  } else {
+    return sessionDate.format('dddd, MMM DD');
+  }
+};
 import { 
   Trophy, 
   Target, 
@@ -305,7 +322,7 @@ export default function HeroBanner({ player, activeClub, squadMembers, onQuickAd
                                   <div className="flex items-center gap-4 text-sm text-blue-200">
                                     <div className="flex items-center gap-1">
                                       <Calendar className="w-3 h-3" />
-                                      {moment.tz(session.date, 'Asia/Kolkata').format('dddd, MMM DD')}
+                                      {formatDynamicDate(session.date)}
                                     </div>
                                     <div className="flex items-center gap-1">
                                       <Clock className="w-3 h-3" />
