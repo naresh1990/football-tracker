@@ -16,10 +16,21 @@ export function formatDate(date: Date | string): string {
 
 export function formatShortDate(date: Date | string): string {
   const d = typeof date === 'string' ? new Date(date) : date;
-  return d.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric'
-  });
+  const currentYear = new Date().getFullYear();
+  const gameYear = d.getFullYear();
+  
+  if (gameYear !== currentYear) {
+    return d.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  } else {
+    return d.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric'
+    });
+  }
 }
 
 export function formatTime(date: Date | string): string {
