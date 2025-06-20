@@ -38,7 +38,10 @@ export default function Games() {
     return (
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-gray-900">Games</h1>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Fixtures & Results</h1>
+            <p className="text-gray-600">Track your match performance and statistics</p>
+          </div>
           <GameForm 
             trigger={
               <Button>
