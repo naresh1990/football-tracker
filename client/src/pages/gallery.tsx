@@ -102,8 +102,9 @@ export default function Gallery() {
       const response = await apiRequest(`/api/gallery/${photoId}`, {
         method: 'DELETE',
       });
-      console.log('Delete response:', response);
-      return response;
+      const result = await response.json();
+      console.log('Delete response:', result);
+      return result;
     },
     onSuccess: (data, photoId) => {
       console.log('Delete successful for photo:', photoId);
