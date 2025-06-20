@@ -21,8 +21,13 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
     queryKey: ['/api/games'],
   });
 
+  // Filter only active tournaments (not completed)
+  const activeTournaments = tournaments?.filter((tournament: any) => 
+    tournament.status !== 'completed'
+  ) || [];
+
   // Calculate aggregated tournament data same as tournament details page
-  const tournamentsWithStats = tournaments?.map((tournament: any) => {
+  const tournamentsWithStats = activeTournaments?.map((tournament: any) => {
     const tournamentGames = games.filter((game: any) => game.tournamentId === tournament.id);
     
     // Calculate points (3 for win, 1 for draw, 0 for loss)
@@ -90,9 +95,9 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
         
         <div>
           <div className="space-y-4">
-            {tournaments?.length === 0 ? (
+            {activeTournaments?.length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-gray-500">No tournaments found</p>
+                <p className="text-gray-500">No active tournaments found</p>
               </div>
             ) : (
               tournamentsWithStats?.map((tournament: any) => (
