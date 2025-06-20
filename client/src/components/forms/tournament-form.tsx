@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,6 +26,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
     format: "",
     ageGroup: "",
     status: "upcoming",
+    clubId: "",
     currentPosition: "",
     totalGames: "",
     gamesPlayed: "",
@@ -37,8 +38,16 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
+  // Fetch clubs for dropdown
+  const { data: clubs } = useQuery({
+    queryKey: ["/api/clubs"],
+  });
+
   const createTournamentMutation = useMutation({
-    mutationFn: (data: any) => apiRequest("POST", "/api/tournaments", data),
+    mutationFn: (data: any) => apiRequest("/api/tournaments", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/tournaments"] });
       toast({
@@ -55,6 +64,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
         format: "",
         ageGroup: "",
         status: "upcoming",
+        clubId: "",
         currentPosition: "",
         totalGames: "",
         gamesPlayed: "",
@@ -78,6 +88,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
     createTournamentMutation.mutate({
       ...formData,
       playerId: 1,
+      clubId: parseInt(formData.clubId) || null,
       startDate: formData.startDate ? new Date(formData.startDate).toISOString() : null,
       endDate: formData.endDate ? new Date(formData.endDate).toISOString() : null,
       currentPosition: parseInt(formData.currentPosition) || null,
@@ -119,6 +130,22 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
             />
+          </div>
+
+          <div>
+            <Label htmlFor="clubId">Club</Label>
+            <Select value={formData.clubId} onValueChange={(value) => setFormData({ ...formData, clubId: value })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select club" />
+              </SelectTrigger>
+              <SelectContent className="z-[9999] max-h-[200px] bg-white" position="popper" sideOffset={4}>
+                {clubs?.map((club: any) => (
+                  <SelectItem key={club.id} value={club.id.toString()}>
+                    {club.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div>
@@ -278,7 +305,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
             </Button>
             <Button
               type="submit"
-              disabled={createTournamentMutation.isPending}
+              disabled={createTournamentMutation.isPending || !formData.clubId}
               className="flex-1 bg-yellow-500 hover:bg-yellow-600"
             >
               {createTournamentMutation.isPending ? "Adding..." : "Add Tournament"}

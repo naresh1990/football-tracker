@@ -40,6 +40,7 @@ export const games = pgTable("games", {
 export const tournaments = pgTable("tournaments", {
   id: serial("id").primaryKey(),
   playerId: integer("player_id").notNull(),
+  clubId: integer("club_id"), // linked to club
   name: text("name").notNull(),
   description: text("description"),
   startDate: timestamp("start_date"),
