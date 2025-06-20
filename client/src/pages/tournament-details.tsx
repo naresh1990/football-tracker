@@ -319,6 +319,14 @@ export default function TournamentDetails() {
                                   {game.positionPlayed || 'N/A'}
                                 </div>
                               </div>
+
+                              {/* Notes Section */}
+                              {game.notes && (
+                                <div className="mt-3 p-3 bg-gray-50 rounded-lg border-l-4 border-blue-500">
+                                  <div className="text-sm font-medium text-gray-700 mb-1">Notes</div>
+                                  <div className="text-sm text-gray-600">{game.notes}</div>
+                                </div>
+                              )}
                             </div>
                           )}
                         </CardContent>
