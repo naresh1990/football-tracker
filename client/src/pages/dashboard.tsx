@@ -77,7 +77,7 @@ export default function Dashboard() {
 
   // Fetch summary stats
   const { data: stats, isLoading: statsLoading } = useQuery({
-    queryKey: ["/api/stats/summary"],
+    queryKey: ["/api/stats/all-time"],
     refetchOnMount: true,
     staleTime: 0,
     cacheTime: 0,
