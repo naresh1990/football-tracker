@@ -98,20 +98,25 @@ export default function Gallery() {
   // Delete photo mutation
   const deleteMutation = useMutation({
     mutationFn: async (photoId: number) => {
-      return apiRequest(`/api/gallery/${photoId}`, {
+      console.log('Deleting photo with ID:', photoId);
+      const response = await apiRequest(`/api/gallery/${photoId}`, {
         method: 'DELETE',
       });
+      console.log('Delete response:', response);
+      return response;
     },
-    onSuccess: () => {
+    onSuccess: (data, photoId) => {
+      console.log('Delete successful for photo:', photoId);
       queryClient.invalidateQueries({ queryKey: ["/api/gallery"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/training"] });
       setSelectedPhoto(null);
       toast({
         title: "Photo deleted",
         description: "Photo has been removed from gallery",
       });
     },
-    onError: (error) => {
-      console.error('Delete error:', error);
+    onError: (error, photoId) => {
+      console.error('Delete error for photo:', photoId, error);
       toast({
         title: "Delete failed", 
         description: "Failed to delete photo. Please try again.",

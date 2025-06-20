@@ -915,7 +915,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/gallery/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
+      console.log(`Attempting to delete photo with ID: ${id}`);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid photo ID" });
+      }
+      
       const success = await storage.deleteGalleryPhoto(id);
+      console.log(`Delete result for photo ${id}:`, success);
       
       if (success) {
         res.json({ message: "Photo deleted successfully" });
@@ -924,7 +931,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     } catch (error) {
       console.error("Error deleting photo:", error);
-      res.status(500).json({ error: "Failed to delete photo" });
+      res.status(500).json({ error: "Failed to delete photo", details: error.message });
     }
   });
 
