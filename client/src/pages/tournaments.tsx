@@ -18,8 +18,43 @@ export default function Tournaments() {
   const [selectedTournament, setSelectedTournament] = useState<any>(null);
   const [, setLocation] = useLocation();
 
-  const { data: tournaments, isLoading } = useQuery({
+  const { data: tournaments = [], isLoading } = useQuery({
     queryKey: ["/api/tournaments", { playerId }],
+  });
+
+  const { data: games = [] } = useQuery({
+    queryKey: ['/api/games'],
+  });
+
+  // Calculate aggregated tournament data
+  const tournamentsWithStats = tournaments.map((tournament: any) => {
+    const tournamentGames = games.filter((game: any) => game.tournamentId === tournament.id);
+    
+    // Calculate total points earned
+    const totalPointsEarned = tournamentGames.reduce((sum: number, game: any) => {
+      return sum + (game.pointsEarned || 0);
+    }, 0);
+    
+    // Calculate other stats
+    const wins = tournamentGames.filter((game: any) => game.teamScore > game.opponentScore).length;
+    const draws = tournamentGames.filter((game: any) => game.teamScore === game.opponentScore).length;
+    const losses = tournamentGames.filter((game: any) => game.teamScore < game.opponentScore).length;
+    const totalGames = tournamentGames.length;
+    const winRate = totalGames > 0 ? `${Math.round((wins / totalGames) * 100)}%` : '0%';
+    
+    const teamGoalsScored = tournamentGames.reduce((sum: number, game: any) => sum + (game.teamScore || 0), 0);
+    const playerGoalsScored = tournamentGames.reduce((sum: number, game: any) => sum + (game.playerGoals || 0), 0);
+    
+    return {
+      ...tournament,
+      points: totalPointsEarned,
+      wins,
+      draws,
+      losses,
+      winRate,
+      teamGoalsScored,
+      playerGoalsScored
+    };
   });
 
   const getStatusColor = (status: string) => {
