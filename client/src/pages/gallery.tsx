@@ -25,6 +25,7 @@ import {
 import type { GalleryPhoto } from "@shared/schema";
 import moment from "moment-timezone";
 import EmptyState from "@/components/ui/empty-state";
+import TrainingSessionModal from "@/components/training/training-session-modal";
 
 export default function Gallery() {
   const [showUploadDialog, setShowUploadDialog] = useState(false);
@@ -32,6 +33,7 @@ export default function Gallery() {
   const [uploadFiles, setUploadFiles] = useState<File[]>([]);
   const [photoCaptions, setPhotoCaptions] = useState<{[key: string]: string}>({});
   const [linkedSession, setLinkedSession] = useState<string>('');
+  const [selectedTrainingSession, setSelectedTrainingSession] = useState<any>(null);
   
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -260,7 +262,18 @@ export default function Gallery() {
                                 <div className="flex items-center gap-2">
                                   <Dumbbell className="w-3 h-3 text-blue-500" />
                                   <span className="text-xs text-blue-600 hover:text-blue-800 cursor-pointer flex items-center gap-1"
-                                        onClick={() => window.location.href = '/training'}>
+                                        onClick={async () => {
+                                          try {
+                                            const session = await apiRequest(`/api/training/${photo.trainingSessionId}`);
+                                            setSelectedTrainingSession(session);
+                                          } catch (error) {
+                                            toast({
+                                              title: "Error",
+                                              description: "Failed to load training session details",
+                                              variant: "destructive",
+                                            });
+                                          }
+                                        }}>
                                     View Training Session
                                     <ExternalLink className="w-3 h-3" />
                                   </span>
@@ -456,7 +469,18 @@ export default function Gallery() {
                     <Button
                       variant="link"
                       size="sm"
-                      onClick={() => window.location.href = '/training'}
+                      onClick={async () => {
+                        try {
+                          const session = await apiRequest(`/api/training/${selectedPhoto.trainingSessionId}`);
+                          setSelectedTrainingSession(session);
+                        } catch (error) {
+                          toast({
+                            title: "Error",
+                            description: "Failed to load training session details",
+                            variant: "destructive",
+                          });
+                        }
+                      }}
                       className="text-blue-600 p-0 h-auto"
                     >
                       View Session <ExternalLink className="w-3 h-3 ml-1" />
@@ -466,6 +490,15 @@ export default function Gallery() {
               </div>
             </DialogContent>
           </Dialog>
+        )}
+
+        {/* Training Session Modal */}
+        {selectedTrainingSession && (
+          <TrainingSessionModal
+            isOpen={!!selectedTrainingSession}
+            onClose={() => setSelectedTrainingSession(null)}
+            session={selectedTrainingSession}
+          />
         )}
       </div>
     </div>
