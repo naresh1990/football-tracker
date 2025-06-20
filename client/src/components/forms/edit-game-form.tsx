@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Edit } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -103,11 +103,15 @@ export default function EditGameForm({ game, tournament }: EditGameFormProps) {
           <Edit className="w-4 h-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] flex flex-col">
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle>Edit Game</DialogTitle>
+          <DialogDescription>
+            Update game details and performance statistics
+          </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="flex-1 overflow-y-auto pr-2">
+          <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="opponent">Opponent</Label>
@@ -261,15 +265,20 @@ export default function EditGameForm({ game, tournament }: EditGameFormProps) {
             />
           </div>
 
-          <div className="flex justify-end space-x-2">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={updateGameMutation.isPending}>
-              {updateGameMutation.isPending ? "Updating..." : "Update Game"}
-            </Button>
-          </div>
-        </form>
+          </form>
+        </div>
+        <div className="flex-shrink-0 flex justify-end space-x-2 pt-4 border-t">
+          <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button 
+            type="submit" 
+            disabled={updateGameMutation.isPending}
+            onClick={handleSubmit}
+          >
+            {updateGameMutation.isPending ? "Updating..." : "Update Game"}
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );
