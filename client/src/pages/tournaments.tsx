@@ -66,7 +66,7 @@ export default function Tournaments() {
 
   const updatePositionMutation = useMutation({
     mutationFn: (data: { id: number; currentPosition: string }) => 
-      apiRequest("PUT", `/api/tournaments/${data.id}`, { currentPosition: data.currentPosition }),
+      apiRequest("PUT", `/api/tournaments/${data.id}`, { currentPosition: parseInt(data.currentPosition) || null }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/tournaments"] });
       toast({
