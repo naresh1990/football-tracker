@@ -35,6 +35,7 @@ export const games = pgTable("games", {
   mistakes: integer("mistakes").default(0), // number of mistakes made
   rating: text("rating"), // coach rating
   coachFeedback: text("coach_feedback"), // immediate post-match feedback
+  pointsEarned: integer("points_earned").default(0), // points earned for this game (for tournaments)
   notes: text("notes"),
 });
 
