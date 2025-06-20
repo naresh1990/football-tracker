@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +16,7 @@ import TournamentStages from "@/components/tournament/tournament-stages";
 export default function Tournaments() {
   const playerId = 1;
   const [selectedTournament, setSelectedTournament] = useState<any>(null);
+  const [, setLocation] = useLocation();
 
   const { data: tournaments, isLoading } = useQuery({
     queryKey: ["/api/tournaments", { playerId }],
@@ -162,7 +164,7 @@ export default function Tournaments() {
                   variant="ghost" 
                   size="sm" 
                   className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                  onClick={() => window.location.href = `/tournament/${tournament.id}`}
+                  onClick={() => setLocation(`/tournament/${tournament.id}`)}
                 >
                   <Eye className="w-4 h-4 mr-2" />
                   View Details

@@ -7,6 +7,7 @@ import { useState } from "react";
 import Dashboard from "@/pages/dashboard";
 import Games from "@/pages/games";
 import Tournaments from "@/pages/tournaments";
+import TournamentDetails from "@/pages/tournament-details";
 import Training from "@/pages/training";
 import Statistics from "@/pages/statistics";
 import Clubs from "@/pages/clubs";
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/games" component={Games} />
       <Route path="/tournaments" component={Tournaments} />
+      <Route path="/tournament/:id" component={TournamentDetails} />
       <Route path="/training" component={Training} />
       <Route path="/statistics" component={Statistics} />
       <Route path="/clubs" component={Clubs} />
