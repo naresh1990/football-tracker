@@ -4,7 +4,7 @@ import { useRoute } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Plus, Calendar, MapPin, Users, Trophy, Edit, Upload, Trash2 } from "lucide-react";
+import { ArrowLeft, Plus, Calendar, MapPin, Users, Trophy, Edit, Upload, Trash2, Target, HandHeart, Clock, Award, Star } from "lucide-react";
 import { formatDate, getGameResult } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
@@ -203,58 +203,103 @@ export default function TournamentDetails() {
                   {stageGames.map((game: any) => {
                     const result = getGameResult(game.teamScore, game.opponentScore);
                     return (
-                      <Card key={game.id} className="bg-white/80 backdrop-blur-sm border border-gray-200 hover:bg-white/90 transition-all duration-200">
-                        <CardContent className="p-4">
-                          <div className="flex justify-between items-start">
-                            <div className="space-y-2">
+                      <Card key={game.id} className="bg-white/90 backdrop-blur-sm border border-gray-200 hover:bg-white hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden">
+                        <CardContent className="p-0">
+                          {/* Header with Tournament Logo */}
+                          <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 border-b border-gray-100">
+                            <div className="flex items-center justify-between">
                               <div className="flex items-center gap-3">
-                                <h4 className="font-bold text-gray-900">vs {game.opponent}</h4>
-                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                  result === 'Win' ? 'bg-green-100 text-green-800' :
-                                  result === 'Loss' ? 'bg-red-100 text-red-800' :
-                                  'bg-yellow-100 text-yellow-800'
-                                }`}>
-                                  {result}
-                                </span>
+                                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                                  <Trophy className="w-4 h-4 text-white" />
+                                </div>
+                                <div>
+                                  <h4 className="font-bold text-gray-900 text-lg">vs {game.opponent}</h4>
+                                  <div className="flex items-center gap-2 mt-1">
+                                    <span className="text-xs text-gray-600">{tournament.name}</span>
+                                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                      result === 'Win' ? 'bg-green-100 text-green-800' :
+                                      result === 'Loss' ? 'bg-red-100 text-red-800' :
+                                      'bg-yellow-100 text-yellow-800'
+                                    }`}>
+                                      {result}
+                                    </span>
+                                  </div>
+                                </div>
                               </div>
-                              <div className="flex items-center gap-4 text-sm text-gray-600">
-                                <div className="flex items-center gap-1">
-                                  <Calendar className="w-4 h-4" />
-                                  {formatDate(game.date)}
-                                </div>
-                                <div className="flex items-center gap-1">
-                                  <MapPin className="w-4 h-4" />
-                                  {game.venue || tournament.venue || 'TBD'}
-                                </div>
-                                <div className="flex items-center gap-1">
-                                  <Users className="w-4 h-4" />
-                                  {game.matchFormat || tournament.matchFormat}
-                                </div>
+                              <div className="flex gap-1">
+                                <EditGameForm game={game} tournament={tournament} />
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
+                                  onClick={() => {
+                                    if (window.confirm("Are you sure you want to delete this game?")) {
+                                      deleteGameMutation.mutate(game.id);
+                                    }
+                                  }}
+                                  disabled={deleteGameMutation.isPending}
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
                               </div>
                             </div>
-                            <div className="text-right">
-                              <div className="font-bold text-2xl text-gray-900">
-                                {game.teamScore}-{game.opponentScore}
+                          </div>
+
+                          {/* Match Result */}
+                          <div className="p-4">
+                            <div className="flex items-center justify-between mb-4">
+                              <div className="text-center">
+                                <div className="text-sm font-medium text-gray-600 mb-1">Darshil's Team</div>
+                                <div className="text-3xl font-bold text-gray-900">{game.teamScore}</div>
                               </div>
-                              <div className="text-sm text-gray-600">
-                                Goals: {game.playerGoals} | Assists: {game.playerAssists}
+                              <div className="flex flex-col items-center">
+                                <div className="text-lg font-bold text-gray-400 mb-1">VS</div>
+                                <div className="text-xs text-gray-500">{game.matchFormat || tournament.matchFormat}</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="text-sm font-medium text-gray-600 mb-1">{game.opponent}</div>
+                                <div className="text-3xl font-bold text-gray-900">{game.opponentScore}</div>
                               </div>
                             </div>
-                            <div className="flex gap-1">
-                              <EditGameForm game={game} tournament={tournament} />
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
-                                onClick={() => {
-                                  if (window.confirm("Are you sure you want to delete this game?")) {
-                                    deleteGameMutation.mutate(game.id);
-                                  }
-                                }}
-                                disabled={deleteGameMutation.isPending}
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
+
+                            {/* Performance Stats */}
+                            <div className="grid grid-cols-4 gap-4 mb-4">
+                              <div className="text-center p-3 bg-green-50 rounded-lg">
+                                <Target className="w-5 h-5 text-green-600 mx-auto mb-1" />
+                                <div className="text-xl font-bold text-green-800">{game.playerGoals}</div>
+                                <div className="text-xs text-green-600">Goals</div>
+                              </div>
+                              <div className="text-center p-3 bg-blue-50 rounded-lg">
+                                <HandHeart className="w-5 h-5 text-blue-600 mx-auto mb-1" />
+                                <div className="text-xl font-bold text-blue-800">{game.playerAssists}</div>
+                                <div className="text-xs text-blue-600">Assists</div>
+                              </div>
+                              <div className="text-center p-3 bg-purple-50 rounded-lg">
+                                <Clock className="w-5 h-5 text-purple-600 mx-auto mb-1" />
+                                <div className="text-xl font-bold text-purple-800">{game.minutesPlayed}</div>
+                                <div className="text-xs text-purple-600">Minutes</div>
+                              </div>
+                              <div className="text-center p-3 bg-orange-50 rounded-lg">
+                                <Star className="w-5 h-5 text-orange-600 mx-auto mb-1" />
+                                <div className="text-xl font-bold text-orange-800">{game.rating || 'N/A'}</div>
+                                <div className="text-xs text-orange-600">Rating</div>
+                              </div>
+                            </div>
+
+                            {/* Match Details */}
+                            <div className="flex items-center gap-4 text-sm text-gray-600 border-t pt-3">
+                              <div className="flex items-center gap-1">
+                                <Calendar className="w-4 h-4" />
+                                {formatDate(game.date)}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <MapPin className="w-4 h-4" />
+                                {game.venue || tournament.venue || 'TBD'}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Award className="w-4 h-4" />
+                                {game.positionPlayed || 'N/A'}
+                              </div>
                             </div>
                           </div>
                         </CardContent>

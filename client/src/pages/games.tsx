@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Edit, Trash2, Check, X, Calendar, MapPin, Users, Clock, Goal, Circle, Trophy } from "lucide-react";
+import { Plus, Edit, Trash2, Check, X, Calendar, MapPin, Users, Clock, Target, HandHeart, Circle, Trophy, Star, Award } from "lucide-react";
 import { formatDate, getGameResult } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { queryClient } from "@/lib/queryClient";
@@ -110,22 +110,26 @@ export default function Games() {
                     className="bg-white/90 backdrop-blur-sm rounded-xl p-6 hover:bg-white transition-all duration-300 border border-gray-200 shadow-sm"
                   >
                     {/* Fixture Header */}
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center justify-between mb-4 p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
                       <div className="flex items-center gap-4">
-                        <div className="text-sm text-gray-600">
-                          {formatDate(game.date)}
+                        <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                          <Trophy className="w-4 h-4 text-white" />
                         </div>
-                        {tournament && (
-                          <div className="flex items-center gap-1">
-                            <Trophy className="w-3 h-3 text-blue-600" />
-                            <span className="text-xs font-medium text-blue-600">{tournament.name}</span>
+                        <div>
+                          <div className="text-sm font-medium text-gray-900">
+                            {formatDate(game.date)}
                           </div>
-                        )}
-                        {game.tournamentStage && (
-                          <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
-                            {game.tournamentStage.replace('-', ' ')}
-                          </span>
-                        )}
+                          {tournament && (
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="text-xs font-medium text-blue-600">{tournament.name}</span>
+                              {game.tournamentStage && (
+                                <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
+                                  {game.tournamentStage.replace('-', ' ')}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
                       </div>
                       <div className="flex gap-1">
                         <EditGameForm 
