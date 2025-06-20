@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trophy, Eye, Calendar, Target, Upload, Users } from "lucide-react";
+import { Plus, Trophy, Eye, Calendar, Target, Upload, Users, MapPin } from "lucide-react";
 import { formatShortDate } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
@@ -81,7 +81,7 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
                       <span className="text-sm">{tournament.matchFormat || '5v5'}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Target className="w-4 h-4" />
+                      <MapPin className="w-4 h-4" />
                       <span className="text-sm">{tournament.venue}</span>
                     </div>
                   </div>
