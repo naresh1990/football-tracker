@@ -24,6 +24,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
     startDate: "",
     endDate: "",
     format: "",
+    matchFormat: "",
     status: "upcoming",
     clubId: "",
     totalTeams: ""
@@ -56,6 +57,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
         startDate: "",
         endDate: "",
         format: "",
+        matchFormat: "",
         status: "upcoming",
         clubId: "",
         totalTeams: ""
@@ -173,9 +175,9 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div>
-              <Label htmlFor="format">Format</Label>
+              <Label htmlFor="format">Tournament Format</Label>
               <Select value={formData.format} onValueChange={(value) => setFormData({ ...formData, format: value })}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select format" />
@@ -185,6 +187,20 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
                   <SelectItem value="Knockout">Knockout</SelectItem>
                   <SelectItem value="Round Robin">Round Robin</SelectItem>
                   <SelectItem value="Group Stage">Group Stage</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="matchFormat">Match Format</Label>
+              <Select value={formData.matchFormat} onValueChange={(value) => setFormData({ ...formData, matchFormat: value })}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select format" />
+                </SelectTrigger>
+                <SelectContent className="z-[9999] max-h-[200px] bg-white" position="popper" sideOffset={4}>
+                  <SelectItem value="5v5">5v5</SelectItem>
+                  <SelectItem value="7v7">7v7</SelectItem>
+                  <SelectItem value="9v9">9v9</SelectItem>
+                  <SelectItem value="11v11">11v11</SelectItem>
                 </SelectContent>
               </Select>
             </div>

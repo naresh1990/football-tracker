@@ -120,6 +120,10 @@ export default function Tournaments() {
                       <span className="font-medium">{tournament.format || 'League'}</span>
                     </div>
                     <div className="flex justify-between">
+                      <span className="text-gray-600">Match Format:</span>
+                      <span className="font-medium">{tournament.matchFormat || 'TBD'}</span>
+                    </div>
+                    <div className="flex justify-between">
                       <span className="text-gray-600">Total Teams:</span>
                       <span className="font-medium">{tournament.totalTeams || 'TBD'}</span>
                     </div>

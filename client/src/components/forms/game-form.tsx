@@ -136,6 +136,7 @@ export default function GameForm({ trigger, onSuccess }: GameFormProps) {
               id="venue"
               value={formData.venue}
               onChange={(e) => setFormData({ ...formData, venue: e.target.value })}
+              placeholder="Playing venue"
             />
           </div>
 
