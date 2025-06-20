@@ -74,7 +74,7 @@ export default function GameForm({ trigger, onSuccess, tournament }: GameFormPro
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    createGameMutation.mutate({
+    const gameData = {
       ...formData,
       playerId: 1,
       gameType: tournament ? "tournament" : "friendly",
@@ -88,8 +88,11 @@ export default function GameForm({ trigger, onSuccess, tournament }: GameFormPro
       playerGoals: parseInt(formData.playerGoals) || 0,
       playerAssists: parseInt(formData.playerAssists) || 0,
       minutesPlayed: parseInt(formData.minutesPlayed) || 0,
-      date: new Date(formData.date).toISOString(),
-    });
+      date: formData.date, // Send as string, let server transform it
+    };
+    
+    console.log("Submitting game data:", gameData);
+    createGameMutation.mutate(gameData);
   };
 
   return (

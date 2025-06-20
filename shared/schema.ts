@@ -135,7 +135,9 @@ export const coachingStaff = pgTable("coaching_staff", {
 
 // Create insert schemas
 export const insertPlayerSchema = createInsertSchema(players).omit({ id: true });
-export const insertGameSchema = createInsertSchema(games).omit({ id: true });
+export const insertGameSchema = createInsertSchema(games).omit({ id: true }).extend({
+  date: z.string().transform((str) => new Date(str)),
+});
 export const insertTournamentSchema = createInsertSchema(tournaments).omit({ id: true }).extend({
   startDate: z.string().nullable().transform((str) => str ? new Date(str) : null),
   endDate: z.string().nullable().transform((str) => str ? new Date(str) : null)
