@@ -781,8 +781,8 @@ export default function Training() {
 
         {/* Photo Upload Modal */}
         <Dialog open={showPhotoUpload} onOpenChange={setShowPhotoUpload}>
-          <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
+          <DialogContent className="sm:max-w-2xl max-h-[85vh] flex flex-col">
+            <DialogHeader className="flex-shrink-0">
               <DialogTitle className="flex items-center gap-2">
                 <Upload className="w-5 h-5" />
                 Upload Session Photos
@@ -791,8 +791,9 @@ export default function Training() {
                 Add multiple photos to this training session with individual captions.
               </DialogDescription>
             </DialogHeader>
-            <div className="space-y-4 p-1">
-              <div>
+            
+            <div className="flex-1 overflow-y-auto space-y-4 pr-1">
+              <div className="flex-shrink-0">
                 <Label htmlFor="session-photos-upload">Select Photos</Label>
                 <Input
                   id="session-photos-upload"
@@ -829,70 +830,72 @@ export default function Training() {
               </div>
               
               {selectedPhotos.length > 0 && (
-                <div className="space-y-3 max-h-60 overflow-y-auto">
+                <div className="space-y-3">
                   <Label className="text-sm font-medium">Photo Captions</Label>
-                  {selectedPhotos.map((photo, index) => (
-                    <div key={`${photo.name}-${index}`} className="border rounded-lg p-3 space-y-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        <span className="text-sm font-medium truncate">{photo.name}</span>
-                        <span className="text-xs text-gray-500">
-                          ({(photo.size / 1024 / 1024).toFixed(1)} MB)
-                        </span>
+                  <div className="space-y-3">
+                    {selectedPhotos.map((photo, index) => (
+                      <div key={`${photo.name}-${index}`} className="border rounded-lg p-3 space-y-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                          <span className="text-sm font-medium truncate">{photo.name}</span>
+                          <span className="text-xs text-gray-500 flex-shrink-0">
+                            ({(photo.size / 1024 / 1024).toFixed(1)} MB)
+                          </span>
+                        </div>
+                        <Textarea
+                          placeholder={`Caption for ${photo.name} (optional)...`}
+                          value={photoCaptions[photo.name] || ''}
+                          onChange={(e) => setPhotoCaptions(prev => ({
+                            ...prev,
+                            [photo.name]: e.target.value
+                          }))}
+                          rows={2}
+                          className="text-sm resize-none"
+                        />
                       </div>
-                      <Textarea
-                        placeholder={`Caption for ${photo.name} (optional)...`}
-                        value={photoCaptions[photo.name] || ''}
-                        onChange={(e) => setPhotoCaptions(prev => ({
-                          ...prev,
-                          [photo.name]: e.target.value
-                        }))}
-                        rows={2}
-                        className="text-sm"
-                      />
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               )}
-              
-              <div className="flex gap-3">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setShowPhotoUpload(false);
-                    setSelectedPhotos([]);
-                    setPhotoCaptions({});
-                  }}
-                  className="flex-1"
-                >
-                  Cancel
-                </Button>
-                <Button 
-                  onClick={() => {
-                    if (selectedPhotos.length > 0 && selectedEvent) {
-                      uploadPhotosMutation.mutate({
-                        photos: selectedPhotos,
-                        captions: photoCaptions,
-                        sessionId: selectedEvent.id,
-                      });
-                    }
-                  }}
-                  disabled={uploadPhotosMutation.isPending || selectedPhotos.length === 0}
-                  className="flex-1 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
-                >
-                  {uploadPhotosMutation.isPending ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                      Uploading {selectedPhotos.length} photo(s)...
-                    </>
-                  ) : (
-                    <>
-                      <Upload className="w-4 h-4 mr-2" />
-                      Upload {selectedPhotos.length > 0 ? selectedPhotos.length : ''} Photo{selectedPhotos.length !== 1 ? 's' : ''}
-                    </>
-                  )}
-                </Button>
-              </div>
+            </div>
+            
+            <div className="flex gap-3 flex-shrink-0 pt-4 border-t">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowPhotoUpload(false);
+                  setSelectedPhotos([]);
+                  setPhotoCaptions({});
+                }}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={() => {
+                  if (selectedPhotos.length > 0 && selectedEvent) {
+                    uploadPhotosMutation.mutate({
+                      photos: selectedPhotos,
+                      captions: photoCaptions,
+                      sessionId: selectedEvent.id,
+                    });
+                  }
+                }}
+                disabled={uploadPhotosMutation.isPending || selectedPhotos.length === 0}
+                className="flex-1 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
+              >
+                {uploadPhotosMutation.isPending ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    Uploading {selectedPhotos.length} photo(s)...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-4 h-4 mr-2" />
+                    Upload {selectedPhotos.length > 0 ? selectedPhotos.length : ''} Photo{selectedPhotos.length !== 1 ? 's' : ''}
+                  </>
+                )}
+              </Button>
             </div>
           </DialogContent>
         </Dialog>

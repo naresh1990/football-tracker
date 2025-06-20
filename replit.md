@@ -102,6 +102,11 @@ This is a comprehensive football player tracking application built for monitorin
 
 ## Recent Changes
 
+- June 20, 2025: Fixed photo upload modal scroll issues with improved layout structure
+  - Restructured dialog content with proper flex layout for better scrolling
+  - Fixed header and footer positioning to remain visible while content scrolls
+  - Enhanced textarea resizing behavior and improved responsive design
+  - Added proper border separator between content and action buttons
 - June 20, 2025: Enhanced training session photo upload to support multiple photos at once
   - Users can now select multiple photos simultaneously using file input
   - Each photo can have individual captions with a scrollable interface
