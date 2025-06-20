@@ -87,6 +87,7 @@ export interface IStorage {
   getCoachingStaffByPlayer(playerId: number): Promise<CoachingStaff[]>;
 
   // Gallery photo methods
+  getAllGalleryPhotos(): Promise<GalleryPhoto[]>;
   getGalleryPhotos(playerId: number): Promise<GalleryPhoto[]>;
   createGalleryPhoto(data: InsertGalleryPhoto): Promise<GalleryPhoto>;
   deleteGalleryPhoto(id: number): Promise<boolean>;
@@ -1239,6 +1240,15 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Gallery photo methods
+  async getAllGalleryPhotos(): Promise<GalleryPhoto[]> {
+    try {
+      return await db.select().from(galleryPhotos).orderBy(desc(galleryPhotos.uploadedAt));
+    } catch (error) {
+      console.error("Error fetching all gallery photos:", error);
+      return [];
+    }
+  }
+
   async getGalleryPhotos(playerId: number): Promise<GalleryPhoto[]> {
     try {
       const photos = await db.select().from(galleryPhotos).where(eq(galleryPhotos.playerId, playerId)).orderBy(desc(galleryPhotos.uploadedAt));

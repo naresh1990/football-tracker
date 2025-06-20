@@ -118,7 +118,7 @@ export default function Gallery() {
       uploadMutation.mutate({
         photos: uploadFiles,
         captions: photoCaptions,
-        sessionId: linkedSession || undefined,
+        sessionId: linkedSession && linkedSession !== 'none' ? linkedSession : undefined,
       });
     }
   };
@@ -340,7 +340,7 @@ export default function Gallery() {
                       <SelectValue placeholder="Select a training session" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">No session link</SelectItem>
+                      <SelectItem value="none">No session link</SelectItem>
                       {trainingSessions.map((session: any) => (
                         <SelectItem key={session.id} value={session.id.toString()}>
                           {session.type} - {moment.tz(session.date, 'Asia/Kolkata').format('MMM DD, YYYY')}
