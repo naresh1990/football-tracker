@@ -40,7 +40,7 @@ export default function Games() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Fixtures & Results</h1>
@@ -65,7 +65,7 @@ export default function Games() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Fixtures & Results</h1>
@@ -84,7 +84,7 @@ export default function Games() {
         />
       </div>
 
-      <div className="space-y-4 mx-4">
+      <div className="space-y-4">
         {!games || games.length === 0 ? (
           <motion.div
             className="text-center py-12"
