@@ -458,8 +458,17 @@ export default function Training() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-green-700">Completed</p>
-                    <p className="text-2xl font-bold text-green-800">{sessions?.filter(s => s.attendance === 'completed').length || 0}</p>
-                    <p className="text-xs text-green-600">{sessions?.length > 0 ? Math.round((sessions.filter(s => s.attendance === 'completed').length / sessions.length) * 100) : 0}% attendance</p>
+                    <p className="text-2xl font-bold text-green-800">
+                      {sessions?.filter(s => s.attendance === 'completed').length || 0}
+                    </p>
+                    <p className="text-xs text-green-600">
+                      {(() => {
+                        const today = moment().tz('Asia/Kolkata').startOf('day');
+                        const pastSessions = sessions?.filter(s => moment(s.date).tz('Asia/Kolkata').isBefore(today, 'day') || moment(s.date).tz('Asia/Kolkata').isSame(today, 'day')) || [];
+                        const completed = pastSessions.filter(s => s.attendance === 'completed').length;
+                        return pastSessions.length > 0 ? Math.round((completed / pastSessions.length) * 100) : 0;
+                      })()}% attendance
+                    </p>
                   </div>
                   <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
                     <CheckCircle2 className="w-5 h-5 text-white" />
@@ -478,9 +487,14 @@ export default function Training() {
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-blue-700">Pending</p>
-                    <p className="text-2xl font-bold text-blue-800">{sessions?.filter(s => s.attendance === 'pending' || !s.attendance).length || 0}</p>
-                    <p className="text-xs text-blue-600">{sessions?.length > 0 ? Math.round((sessions.filter(s => s.attendance === 'pending' || !s.attendance).length / sessions.length) * 100) : 0}% scheduled</p>
+                    <p className="text-sm font-medium text-blue-700">Upcoming</p>
+                    <p className="text-2xl font-bold text-blue-800">
+                      {(() => {
+                        const today = moment().tz('Asia/Kolkata').startOf('day');
+                        return sessions?.filter(s => moment(s.date).tz('Asia/Kolkata').isAfter(today, 'day')).length || 0;
+                      })()}
+                    </p>
+                    <p className="text-xs text-blue-600">future sessions</p>
                   </div>
                   <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
                     <Clock className="w-5 h-5 text-white" />
@@ -500,8 +514,17 @@ export default function Training() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-red-700">Missed</p>
-                    <p className="text-2xl font-bold text-red-800">{sessions?.filter(s => s.attendance === 'missed').length || 0}</p>
-                    <p className="text-xs text-red-600">{sessions?.length > 0 ? Math.round((sessions.filter(s => s.attendance === 'missed').length / sessions.length) * 100) : 0}% missed</p>
+                    <p className="text-2xl font-bold text-red-800">
+                      {sessions?.filter(s => s.attendance === 'missed').length || 0}
+                    </p>
+                    <p className="text-xs text-red-600">
+                      {(() => {
+                        const today = moment().tz('Asia/Kolkata').startOf('day');
+                        const pastSessions = sessions?.filter(s => moment(s.date).tz('Asia/Kolkata').isBefore(today, 'day') || moment(s.date).tz('Asia/Kolkata').isSame(today, 'day')) || [];
+                        const missed = pastSessions.filter(s => s.attendance === 'missed').length;
+                        return pastSessions.length > 0 ? Math.round((missed / pastSessions.length) * 100) : 0;
+                      })()}% missed
+                    </p>
                   </div>
                   <div className="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
                     <X className="w-5 h-5 text-white" />
@@ -521,8 +544,17 @@ export default function Training() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-yellow-700">Cancelled</p>
-                    <p className="text-2xl font-bold text-yellow-800">{sessions?.filter(s => s.attendance === 'cancelled').length || 0}</p>
-                    <p className="text-xs text-yellow-600">{sessions?.length > 0 ? Math.round((sessions.filter(s => s.attendance === 'cancelled').length / sessions.length) * 100) : 0}% cancelled</p>
+                    <p className="text-2xl font-bold text-yellow-800">
+                      {sessions?.filter(s => s.attendance === 'cancelled').length || 0}
+                    </p>
+                    <p className="text-xs text-yellow-600">
+                      {(() => {
+                        const today = moment().tz('Asia/Kolkata').startOf('day');
+                        const pastSessions = sessions?.filter(s => moment(s.date).tz('Asia/Kolkata').isBefore(today, 'day') || moment(s.date).tz('Asia/Kolkata').isSame(today, 'day')) || [];
+                        const cancelled = pastSessions.filter(s => s.attendance === 'cancelled').length;
+                        return pastSessions.length > 0 ? Math.round((cancelled / pastSessions.length) * 100) : 0;
+                      })()}% cancelled
+                    </p>
                   </div>
                   <div className="w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center">
                     <CalendarIcon className="w-5 h-5 text-white" />
@@ -550,18 +582,31 @@ export default function Training() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-gray-900 mb-1">{sessions?.length || 0}</div>
-                  <div className="text-sm text-gray-600">Total Sessions</div>
+                  <div className="text-3xl font-bold text-gray-900 mb-1">
+                    {(() => {
+                      const today = moment().tz('Asia/Kolkata').startOf('day');
+                      return sessions?.filter(s => moment(s.date).tz('Asia/Kolkata').isBefore(today, 'day') || moment(s.date).tz('Asia/Kolkata').isSame(today, 'day')).length || 0;
+                    })()}
+                  </div>
+                  <div className="text-sm text-gray-600">Sessions to Date</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-green-600 mb-1">
-                    {sessions?.length > 0 ? Math.round((sessions.filter(s => s.attendance === 'completed').length / sessions.length) * 100) : 0}%
+                    {(() => {
+                      const today = moment().tz('Asia/Kolkata').startOf('day');
+                      const pastSessions = sessions?.filter(s => moment(s.date).tz('Asia/Kolkata').isBefore(today, 'day') || moment(s.date).tz('Asia/Kolkata').isSame(today, 'day')) || [];
+                      const completed = pastSessions.filter(s => s.attendance === 'completed').length;
+                      return pastSessions.length > 0 ? Math.round((completed / pastSessions.length) * 100) : 0;
+                    })()}%
                   </div>
                   <div className="text-sm text-gray-600">Attendance Rate</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-blue-600 mb-1">
-                    {sessions?.length > 0 ? Math.round((sessions.filter(s => s.attendance === 'pending' || !s.attendance).length / sessions.length) * 100) : 0}%
+                    {(() => {
+                      const today = moment().tz('Asia/Kolkata').startOf('day');
+                      return sessions?.filter(s => moment(s.date).tz('Asia/Kolkata').isAfter(today, 'day')).length || 0;
+                    })()}
                   </div>
                   <div className="text-sm text-gray-600">Upcoming Sessions</div>
                 </div>
@@ -572,14 +617,24 @@ export default function Training() {
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-gray-700">Attendance Progress</span>
                   <span className="text-sm text-gray-500">
-                    {sessions?.filter(s => s.attendance === 'completed').length || 0} of {sessions?.length || 0} completed
+                    {(() => {
+                      const today = moment().tz('Asia/Kolkata').startOf('day');
+                      const pastSessions = sessions?.filter(s => moment(s.date).tz('Asia/Kolkata').isBefore(today, 'day') || moment(s.date).tz('Asia/Kolkata').isSame(today, 'day')) || [];
+                      const completed = pastSessions.filter(s => s.attendance === 'completed').length;
+                      return `${completed} of ${pastSessions.length} completed`;
+                    })()}
                   </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-3">
                   <div 
                     className="bg-gradient-to-r from-green-500 to-emerald-500 h-3 rounded-full transition-all duration-300"
                     style={{ 
-                      width: `${sessions?.length > 0 ? Math.round((sessions.filter(s => s.attendance === 'completed').length / sessions.length) * 100) : 0}%` 
+                      width: `${(() => {
+                        const today = moment().tz('Asia/Kolkata').startOf('day');
+                        const pastSessions = sessions?.filter(s => moment(s.date).tz('Asia/Kolkata').isBefore(today, 'day') || moment(s.date).tz('Asia/Kolkata').isSame(today, 'day')) || [];
+                        const completed = pastSessions.filter(s => s.attendance === 'completed').length;
+                        return pastSessions.length > 0 ? Math.round((completed / pastSessions.length) * 100) : 0;
+                      })()}%` 
                     }}
                   ></div>
                 </div>
