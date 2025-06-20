@@ -21,7 +21,8 @@ import {
   Calendar,
   FileText,
   ExternalLink,
-  Dumbbell
+  Dumbbell,
+  Pencil
 } from "lucide-react";
 import type { GalleryPhoto } from "@shared/schema";
 import moment from "moment-timezone";
