@@ -615,25 +615,25 @@ export default function Training() {
               {/* Progress Bar */}
               <div className="mt-6">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-700">Attendance Progress</span>
+                  <span className="text-sm font-medium text-gray-700">Session Completion Progress</span>
                   <span className="text-sm text-gray-500">
                     {(() => {
                       const today = moment().tz('Asia/Kolkata').startOf('day');
                       const pastSessions = sessions?.filter(s => moment(s.date).tz('Asia/Kolkata').isBefore(today, 'day') || moment(s.date).tz('Asia/Kolkata').isSame(today, 'day')) || [];
-                      const completed = pastSessions.filter(s => s.attendance === 'completed').length;
-                      return `${completed} of ${pastSessions.length} completed`;
+                      const totalSessions = sessions?.length || 0;
+                      return `${pastSessions.length} of ${totalSessions} sessions completed`;
                     })()}
                   </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-3">
                   <div 
-                    className="bg-gradient-to-r from-green-500 to-emerald-500 h-3 rounded-full transition-all duration-300"
+                    className="bg-gradient-to-r from-blue-500 to-indigo-500 h-3 rounded-full transition-all duration-300"
                     style={{ 
                       width: `${(() => {
                         const today = moment().tz('Asia/Kolkata').startOf('day');
                         const pastSessions = sessions?.filter(s => moment(s.date).tz('Asia/Kolkata').isBefore(today, 'day') || moment(s.date).tz('Asia/Kolkata').isSame(today, 'day')) || [];
-                        const completed = pastSessions.filter(s => s.attendance === 'completed').length;
-                        return pastSessions.length > 0 ? Math.round((completed / pastSessions.length) * 100) : 0;
+                        const totalSessions = sessions?.length || 0;
+                        return totalSessions > 0 ? Math.round((pastSessions.length / totalSessions) * 100) : 0;
                       })()}%` 
                     }}
                   ></div>
