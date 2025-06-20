@@ -213,28 +213,37 @@ export default function TournamentDetails() {
                                   <Trophy className="w-4 h-4 text-white" />
                                 </div>
                                 <div>
-                                  <div className="flex items-center gap-3">
-                                    <h4 className="font-bold text-gray-900 text-lg">vs {game.opponent}</h4>
-                                    <div className="flex items-center gap-2">
-                                      <span className="text-2xl font-bold text-gray-900">{game.teamScore}</span>
-                                      <span className="text-lg font-bold text-gray-400">-</span>
-                                      <span className="text-2xl font-bold text-gray-900">{game.opponentScore}</span>
-                                      <div className={`px-3 py-1 rounded-lg font-bold text-sm shadow-md border ${
-                                        result === 'Win' ? 'bg-green-600 text-white border-green-700' :
-                                        result === 'Loss' ? 'bg-red-600 text-white border-red-700' :
-                                        result === 'Draw' ? 'bg-orange-600 text-white border-orange-700' :
-                                        'bg-gray-500 text-white border-gray-600'
-                                      }`}>
-                                        {result}
-                                      </div>
-                                    </div>
-                                  </div>
+                                  <h4 className="font-bold text-gray-900 text-lg">vs {game.opponent}</h4>
                                   <div className="flex items-center gap-2 mt-1">
                                     <span className="text-xs text-gray-600">{tournament.name}</span>
                                     <span className="text-xs text-gray-500">• {game.matchFormat || tournament.matchFormat}</span>
                                   </div>
                                 </div>
                               </div>
+                              
+                              {/* Centered Score Card */}
+                              <div className="flex items-center gap-4">
+                                <div className="text-center">
+                                  <div className="text-sm font-medium text-gray-600 mb-1">Darshil's Team</div>
+                                  <div className="text-2xl font-bold text-gray-900">{game.teamScore}</div>
+                                </div>
+                                <div className="flex flex-col items-center">
+                                  <div className="text-lg font-bold text-gray-400 mb-1">VS</div>
+                                  <div className={`px-3 py-1 rounded-lg font-bold text-sm shadow-lg border-2 ${
+                                    result === 'Win' ? 'bg-green-600 text-white border-green-700 shadow-green-200' :
+                                    result === 'Loss' ? 'bg-red-600 text-white border-red-700 shadow-red-200' :
+                                    result === 'Draw' ? 'bg-orange-600 text-white border-orange-700 shadow-orange-200' :
+                                    'bg-gray-500 text-white border-gray-600 shadow-gray-200'
+                                  }`}>
+                                    {result}
+                                  </div>
+                                </div>
+                                <div className="text-center">
+                                  <div className="text-sm font-medium text-gray-600 mb-1">{game.opponent}</div>
+                                  <div className="text-2xl font-bold text-gray-900">{game.opponentScore}</div>
+                                </div>
+                              </div>
+                              
                               <div className="flex gap-1">
                                 <EditGameForm game={game} tournament={tournament} />
                                 <Button
