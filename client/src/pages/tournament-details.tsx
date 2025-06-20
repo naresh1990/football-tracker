@@ -28,6 +28,10 @@ export default function TournamentDetails() {
 
   // Filter games for this tournament
   const tournamentGames = games?.filter((game: any) => game.tournamentId === tournamentId) || [];
+  
+  console.log('Tournament ID:', tournamentId);
+  console.log('All games:', games);
+  console.log('Tournament games:', tournamentGames);
 
   // Group games by stage
   const gamesByStage = tournamentGames.reduce((acc: any, game: any) => {
@@ -38,6 +42,8 @@ export default function TournamentDetails() {
     acc[stage].push(game);
     return acc;
   }, {});
+  
+  console.log('Games by stage:', gamesByStage);
 
   const stageOrder = ['league', 'knockout', 'round-of-16', 'quarter-final', 'semi-final', 'final', 'unassigned'];
   const stageLabels: { [key: string]: string } = {
