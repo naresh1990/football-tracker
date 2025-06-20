@@ -1,10 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Upload, Eye, Edit, Trophy, Calendar, Users, CheckCircle, XCircle, MinusCircle } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Plus, Upload, Eye, Edit, Trophy, Calendar, Users, CheckCircle, XCircle, MinusCircle, Check, X } from "lucide-react";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { formatDate } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -16,7 +19,11 @@ import TournamentStages from "@/components/tournament/tournament-stages";
 export default function Tournaments() {
   const playerId = 1;
   const [selectedTournament, setSelectedTournament] = useState<any>(null);
+  const [editingPosition, setEditingPosition] = useState<number | null>(null);
+  const [positionValue, setPositionValue] = useState<string>("");
   const [, setLocation] = useLocation();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const { data: tournaments = [], isLoading } = useQuery({
     queryKey: ["/api/tournaments", { playerId }],
@@ -56,6 +63,41 @@ export default function Tournaments() {
       playerGoalsScored
     };
   });
+
+  const updatePositionMutation = useMutation({
+    mutationFn: (data: { id: number; currentPosition: string }) => 
+      apiRequest("PUT", `/api/tournaments/${data.id}`, { currentPosition: data.currentPosition }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/tournaments"] });
+      toast({
+        title: "Success",
+        description: "Tournament position updated successfully",
+      });
+      setEditingPosition(null);
+      setPositionValue("");
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to update tournament position",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handlePositionEdit = (tournament: any) => {
+    setEditingPosition(tournament.id);
+    setPositionValue(tournament.currentPosition || "");
+  };
+
+  const handlePositionSave = (tournamentId: number) => {
+    updatePositionMutation.mutate({ id: tournamentId, currentPosition: positionValue });
+  };
+
+  const handlePositionCancel = () => {
+    setEditingPosition(null);
+    setPositionValue("");
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -183,10 +225,54 @@ export default function Tournaments() {
               <div className="p-6">
                 {/* Performance Metrics */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                  <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl border border-blue-200/50">
-                    <div className="text-2xl font-bold text-blue-900 mb-1">
-                      {tournament.currentPosition || 'TBD'}
-                    </div>
+                  <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl border border-blue-200/50 relative group">
+                    {editingPosition === tournament.id ? (
+                      <div className="flex items-center gap-1">
+                        <Input
+                          value={positionValue}
+                          onChange={(e) => setPositionValue(e.target.value)}
+                          className="h-8 text-center text-lg font-bold"
+                          placeholder="Position"
+                          autoFocus
+                        />
+                        <div className="flex flex-col gap-1">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-4 w-4 p-0 text-green-600 hover:text-green-700"
+                            onClick={() => handlePositionSave(tournament.id)}
+                            disabled={updatePositionMutation.isPending}
+                          >
+                            <Check className="w-3 h-3" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-4 w-4 p-0 text-red-600 hover:text-red-700"
+                            onClick={handlePositionCancel}
+                          >
+                            <X className="w-3 h-3" />
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div 
+                          className="text-2xl font-bold text-blue-900 mb-1 cursor-pointer hover:text-blue-700 transition-colors"
+                          onClick={() => handlePositionEdit(tournament)}
+                        >
+                          {tournament.currentPosition || 'TBD'}
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="absolute top-1 right-1 h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                          onClick={() => handlePositionEdit(tournament)}
+                        >
+                          <Edit className="w-3 h-3" />
+                        </Button>
+                      </>
+                    )}
                     <div className="text-xs text-blue-600 font-medium">Position</div>
                   </div>
                   <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100/50 rounded-xl border border-green-200/50">
