@@ -356,14 +356,7 @@ export default function Gallery() {
                                   <p className="text-sm text-gray-700 line-clamp-2">{photo.caption}</p>
                                 </div>
                               )}
-                              {photo.trainingSessionId && (
-                                <div className="flex items-center gap-2">
-                                  <Dumbbell className="w-3 h-3 text-blue-500" />
-                                  <span className="text-xs text-blue-600">
-                                    Training session linked
-                                  </span>
-                                </div>
-                              )}
+                              
                               <div className="flex items-center gap-2 text-xs text-gray-500">
                                 <Calendar className="w-3 h-3" />
                                 {moment.tz(photo.uploadedAt, 'Asia/Kolkata').format('h:mm A')}
@@ -437,7 +430,7 @@ export default function Gallery() {
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder="Select a training session" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white shadow-lg border rounded-md">
                       <SelectItem value="none">No session link</SelectItem>
                       {trainingSessions.map((session: any) => (
                         <SelectItem key={session.id} value={session.id.toString()}>
