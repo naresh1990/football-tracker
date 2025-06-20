@@ -4,7 +4,7 @@ import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Upload, Eye, Edit, Trophy, Calendar } from "lucide-react";
+import { Plus, Upload, Eye, Edit, Trophy, Calendar, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import { formatDate } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -87,109 +87,154 @@ export default function Tournaments() {
           </motion.div>
         ) : tournaments && tournaments.length > 0 ? (
           tournaments?.map((tournament: any) => (
-            <div key={tournament.id} className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-6 hover:bg-white/90 transition-all duration-200 shadow-sm">
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 leading-tight mb-2">{tournament.name}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{tournament.description}</p>
-                </div>
-                <Badge className={`text-xs px-3 py-1 font-medium ${getStatusColor(tournament.status)}`} variant="secondary">
-                  {tournament.status}
-                </Badge>
-              </div>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                  <div className="text-lg font-bold text-gray-900">{tournament.currentPosition || 'TBD'}</div>
-                  <div className="text-xs text-gray-600">Position</div>
-                </div>
-                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                  <div className="text-lg font-bold text-gray-900">{tournament.gamesPlayed}/{tournament.totalGames || '?'}</div>
-                  <div className="text-xs text-gray-600">Games Played</div>
-                </div>
-                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                  <div className="text-lg font-bold text-gray-900">{tournament.points}</div>
-                  <div className="text-xs text-gray-600">Points</div>
-                </div>
-                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                  <div className="text-lg font-bold text-gray-900">{tournament.startDate ? formatDate(tournament.startDate) : 'TBD'}</div>
-                  <div className="text-xs text-gray-600">Start Date</div>
+            <motion.div 
+              key={tournament.id} 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 backdrop-blur-sm border border-gray-200/50 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group"
+            >
+              {/* Header Section with Logo */}
+              <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 p-6 text-white">
+                <div className="absolute inset-0 bg-black/10"></div>
+                <div className="relative flex items-start gap-4">
+                  {/* Tournament Logo */}
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-3 border-white/30 bg-white/10 backdrop-blur-sm">
+                    {tournament.logo ? (
+                      <img 
+                        src={tournament.logo} 
+                        alt={`${tournament.name} logo`}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <Trophy className="w-8 h-8 text-white/80" />
+                    )}
+                  </div>
+                  
+                  {/* Tournament Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-xl font-bold text-white leading-tight mb-1 truncate">
+                          {tournament.name}
+                        </h3>
+                        <p className="text-blue-100 text-sm leading-relaxed line-clamp-2">
+                          {tournament.description}
+                        </p>
+                      </div>
+                      <Badge 
+                        className={`${getStatusColor(tournament.status)} text-xs px-3 py-1 font-semibold border-0 shadow-lg`}
+                        variant="secondary"
+                      >
+                        {tournament.status}
+                      </Badge>
+                    </div>
+                    
+                    {/* Quick Stats */}
+                    <div className="flex items-center gap-4 mt-3 text-blue-100 text-sm">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-4 h-4" />
+                        {tournament.startDate ? formatDate(tournament.startDate) : 'TBD'}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Users className="w-4 h-4" />
+                        {tournament.matchFormat || 'TBD'}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div className="space-y-2">
-                  <h4 className="font-semibold text-gray-900">Tournament Details</h4>
-                  <div className="text-sm space-y-1">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Format:</span>
-                      <span className="font-medium">{tournament.format || 'League'}</span>
+              {/* Content Section */}
+              <div className="p-6">
+                {/* Performance Metrics */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                  <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl border border-blue-200/50">
+                    <div className="text-2xl font-bold text-blue-900 mb-1">
+                      {tournament.currentPosition || 'TBD'}
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Match Format:</span>
-                      <span className="font-medium">{tournament.matchFormat || 'TBD'}</span>
+                    <div className="text-xs text-blue-600 font-medium">Position</div>
+                  </div>
+                  <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100/50 rounded-xl border border-green-200/50">
+                    <div className="text-2xl font-bold text-green-900 mb-1">
+                      {tournament.points}
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Total Teams:</span>
-                      <span className="font-medium">{tournament.totalTeams || 'TBD'}</span>
+                    <div className="text-xs text-green-600 font-medium">Points</div>
+                  </div>
+                  <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-xl border border-purple-200/50">
+                    <div className="text-2xl font-bold text-purple-900 mb-1">
+                      {tournament.totalTeams || 'TBD'}
                     </div>
-                    <div className="flex justify-between">
+                    <div className="text-xs text-purple-600 font-medium">Teams</div>
+                  </div>
+                  <div className="text-center p-4 bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-xl border border-orange-200/50">
+                    <div className="text-2xl font-bold text-orange-900 mb-1">
+                      {tournament.format || 'League'}
+                    </div>
+                    <div className="text-xs text-orange-600 font-medium">Format</div>
+                  </div>
+                </div>
+
+                {/* Tournament Details */}
+                <div className="bg-gray-50/50 rounded-xl p-4 mb-6">
+                  <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <Trophy className="w-4 h-4 text-yellow-600" />
+                    Tournament Details
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                    <div className="flex justify-between items-center py-1">
                       <span className="text-gray-600">Venue:</span>
-                      <span className="font-medium">{tournament.venue || 'TBD'}</span>
+                      <span className="font-medium text-gray-900 text-right max-w-[180px] truncate" title={tournament.venue}>
+                        {tournament.venue || 'TBD'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center py-1">
+                      <span className="text-gray-600">Goals Scored:</span>
+                      <span className="font-medium text-gray-900">{tournament.goalsScored || 0}</span>
+                    </div>
+                    <div className="flex justify-between items-center py-1">
+                      <span className="text-gray-600">Games Played:</span>
+                      <span className="font-medium text-gray-900">{tournament.gamesPlayed || 0}/{tournament.totalGames || '?'}</span>
+                    </div>
+                    <div className="flex justify-between items-center py-1">
+                      <span className="text-gray-600">Win Rate:</span>
+                      <span className="font-medium text-gray-900">{tournament.winRate || '0%'}</span>
                     </div>
                   </div>
                 </div>
                 
-                <div className="space-y-2">
-                  <h4 className="font-semibold text-gray-900">Performance</h4>
-                  <div className="text-sm space-y-1">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Goals Scored:</span>
-                      <span className="font-medium">{tournament.goalsScored || 0}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Goals Conceded:</span>
-                      <span className="font-medium">{tournament.goalsConceded || 0}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Win Rate:</span>
-                      <span className="font-medium">{tournament.winRate || '0%'}</span>
-                    </div>
-                  </div>
+                {/* Action Buttons */}
+                <div className="flex gap-2">
+                  <Button 
+                    variant="default" 
+                    size="sm" 
+                    className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-lg hover:shadow-xl transition-all"
+                    onClick={() => setLocation(`/tournament/${tournament.id}`)}
+                  >
+                    <Eye className="w-4 h-4 mr-2" />
+                    View Details
+                  </Button>
+                  <TournamentPointsForm 
+                    tournament={tournament}
+                    trigger={
+                      <Button variant="outline" size="sm" className="flex-1 border-gray-300 hover:bg-gray-50 transition-all">
+                        <Upload className="w-4 h-4 mr-2" />
+                        Points Table
+                      </Button>
+                    }
+                  />
+                  <TournamentForm 
+                    mode="edit"
+                    tournament={tournament}
+                    trigger={
+                      <Button variant="outline" size="sm" className="flex-1 border-gray-300 hover:bg-gray-50 transition-all">
+                        <Edit className="w-4 h-4 mr-2" />
+                        Edit
+                      </Button>
+                    }
+                  />
                 </div>
               </div>
-              
-              <div className="flex gap-2 pt-4 border-t border-gray-100">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                  onClick={() => setLocation(`/tournament/${tournament.id}`)}
-                >
-                  <Eye className="w-4 h-4 mr-2" />
-                  View Details
-                </Button>
-                <TournamentPointsForm 
-                  tournament={tournament}
-                  trigger={
-                    <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
-                      <Upload className="w-4 h-4 mr-2" />
-                      Points Table
-                    </Button>
-                  }
-                />
-                <TournamentForm 
-                  mode="edit"
-                  tournament={tournament}
-                  trigger={
-                    <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
-                      <Edit className="w-4 h-4 mr-2" />
-                      Edit
-                    </Button>
-                  }
-                />
-              </div>
-            </div>
+            </motion.div>
           ))
         ) : null}
         </div>
