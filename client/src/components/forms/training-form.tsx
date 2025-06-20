@@ -43,9 +43,15 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
   const createTrainingMutation = useMutation({
     mutationFn: (data: any) => {
       if (data.isRecurring) {
-        return apiRequest("POST", "/api/training/recurring", data);
+        return apiRequest("/api/training/recurring", {
+          method: "POST",
+          body: JSON.stringify(data),
+        });
       } else {
-        return apiRequest("POST", "/api/training", data);
+        return apiRequest("/api/training", {
+          method: "POST",
+          body: JSON.stringify(data),
+        });
       }
     },
     onSuccess: (_, variables) => {

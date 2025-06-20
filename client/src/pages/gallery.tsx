@@ -295,7 +295,7 @@ export default function Gallery() {
                         {moment.tz(date, 'Asia/Kolkata').format('dddd, MMMM DD, YYYY')}
                       </h2>
                     </div>
-                    <Badge variant="secondary" className="px-3 py-1">
+                    <Badge variant="secondary" className="px-3 py-1 text-[#f5f5f5]">
                       {photosByDate[date].length} photo{photosByDate[date].length !== 1 ? 's' : ''}
                     </Badge>
                   </div>
