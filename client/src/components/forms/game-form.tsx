@@ -22,6 +22,7 @@ export default function GameForm({ trigger, onSuccess, tournament }: GameFormPro
     opponent: "",
     date: "",
     venue: "",
+    tournamentStage: "",
     teamScore: "",
     opponentScore: "",
     playerGoals: "",
@@ -49,6 +50,7 @@ export default function GameForm({ trigger, onSuccess, tournament }: GameFormPro
         opponent: "",
         date: "",
         venue: "",
+        tournamentStage: "",
         teamScore: "",
         opponentScore: "",
         playerGoals: "",
@@ -77,6 +79,7 @@ export default function GameForm({ trigger, onSuccess, tournament }: GameFormPro
       gameType: tournament ? "tournament" : "friendly",
       matchFormat: tournament?.matchFormat || "11v11",
       tournamentId: tournament?.id || null,
+      tournamentStage: tournament && formData.tournamentStage ? formData.tournamentStage : null,
       homeAway: "away",
       venue: formData.venue || null,
       teamScore: parseInt(formData.teamScore),
@@ -148,14 +151,34 @@ export default function GameForm({ trigger, onSuccess, tournament }: GameFormPro
             </div>
           </div>
 
-          <div>
-            <Label htmlFor="venue">Venue</Label>
-            <Input
-              id="venue"
-              value={formData.venue || tournament?.venue || ""}
-              onChange={(e) => setFormData({ ...formData, venue: e.target.value })}
-              placeholder={tournament?.venue || "Playing venue"}
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="venue">Venue</Label>
+              <Input
+                id="venue"
+                value={formData.venue || tournament?.venue || ""}
+                onChange={(e) => setFormData({ ...formData, venue: e.target.value })}
+                placeholder={tournament?.venue || "Playing venue"}
+              />
+            </div>
+            {tournament && (
+              <div>
+                <Label htmlFor="tournamentStage">Tournament Stage</Label>
+                <Select value={formData.tournamentStage} onValueChange={(value) => setFormData({ ...formData, tournamentStage: value })}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select stage" />
+                  </SelectTrigger>
+                  <SelectContent className="z-[9999] max-h-[200px] bg-white" position="popper" sideOffset={4}>
+                    <SelectItem value="league">League Stage</SelectItem>
+                    <SelectItem value="knockout">Knockout Round</SelectItem>
+                    <SelectItem value="round-of-16">Round of 16</SelectItem>
+                    <SelectItem value="quarter-final">Quarter Final</SelectItem>
+                    <SelectItem value="semi-final">Semi Final</SelectItem>
+                    <SelectItem value="final">Final</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">

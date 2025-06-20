@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,9 +10,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import TournamentForm from "@/components/forms/tournament-form";
 import TournamentPointsForm from "@/components/tournament/tournament-points-form";
 import GameForm from "@/components/forms/game-form";
+import TournamentStages from "@/components/tournament/tournament-stages";
 
 export default function Tournaments() {
   const playerId = 1;
+  const [selectedTournament, setSelectedTournament] = useState<any>(null);
 
   const { data: tournaments, isLoading } = useQuery({
     queryKey: ["/api/tournaments", { playerId }],
@@ -164,9 +167,14 @@ export default function Tournaments() {
                     </Button>
                   }
                 />
-                <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                  onClick={() => setSelectedTournament(tournament)}
+                >
                   <Eye className="w-4 h-4 mr-2" />
-                  View Details
+                  View Stages
                 </Button>
                 <TournamentPointsForm 
                   tournament={tournament}
@@ -193,6 +201,27 @@ export default function Tournaments() {
         ) : null}
         </div>
       </div>
+    </div>
+
+    {/* Tournament Stages Modal/View */}
+    {selectedTournament && (
+      <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">{selectedTournament.name}</h2>
+              <p className="text-gray-600">{selectedTournament.description}</p>
+            </div>
+            <Button variant="ghost" onClick={() => setSelectedTournament(null)}>
+              ✕
+            </Button>
+          </div>
+          <div className="p-6">
+            <TournamentStages tournament={selectedTournament} />
+          </div>
+        </div>
+      </div>
+    )}
     </div>
   );
 }

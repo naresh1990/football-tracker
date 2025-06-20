@@ -117,6 +117,12 @@ export default function Games() {
                             <Calendar className="w-3 h-3" />
                             <span>{formatDate(game.date)}</span>
                           </div>
+                          {game.tournamentStage && (
+                            <div className="flex items-center gap-1 text-xs text-blue-600 mt-1">
+                              <Trophy className="w-3 h-3" />
+                              <span className="capitalize">{game.tournamentStage.replace('-', ' ')}</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                       <div className="flex items-start gap-4">

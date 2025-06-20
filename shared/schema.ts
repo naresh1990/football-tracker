@@ -21,6 +21,7 @@ export const games = pgTable("games", {
   gameType: text("game_type").notNull(), // "practice", "friendly", "tournament"
   matchFormat: text("match_format").notNull(), // "2v2", "4v4", "5v5", "7v7"
   tournamentId: integer("tournament_id"), // linked to tournament if game_type is "tournament"
+  tournamentStage: text("tournament_stage"), // "league", "knockout", "quarter-final", "semi-final", "final"
   opponent: text("opponent").notNull(),
   venue: text("venue"), // game venue/location
   date: timestamp("date").notNull(),
