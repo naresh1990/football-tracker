@@ -897,34 +897,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const playerId = 1; // Default to Darshil's ID
 
-      const games = await storage.getGamesByPlayer(playerId);
-      const totalGoals = games.reduce((sum, game) => sum + (game.playerGoals || 0), 0);
-      const totalAssists = games.reduce((sum, game) => sum + (game.playerAssists || 0), 0);
-      const totalGames = games.length;
-      const wins = games.filter(game => game.teamScore > game.opponentScore).length;
+      // Get active club (Sporthood FC)
+      const activeClubs = await storage.getActiveClubs(playerId);
+      const activeClub = activeClubs?.[0]; // Should be Sporthood FC
+      
+      const allGames = await storage.getGamesByPlayer(playerId);
+      
+      // Filter games to only include those from active club (Sporthood FC)
+      // Since we don't have direct club linking in games, filter by date from when Sporthood FC became active
+      const sportsHoodStartDate = new Date('2024-06-01'); // Approximate start of Sporthood FC membership
+      const activeClubGames = allGames.filter(game => {
+        const gameDate = new Date(game.date);
+        return gameDate >= sportsHoodStartDate;
+      });
+      
+      const totalGoals = activeClubGames.reduce((sum, game) => sum + (game.playerGoals || 0), 0);
+      const totalAssists = activeClubGames.reduce((sum, game) => sum + (game.playerAssists || 0), 0);
+      const totalGames = activeClubGames.length;
+      const wins = activeClubGames.filter(game => game.teamScore > game.opponentScore).length;
       const winRate = totalGames > 0 ? Math.round((wins / totalGames) * 100) : 0;
 
-      // Current season stats (last 3 months)
+      // Current season stats (last 3 months from active club games)
       const threeMonthsAgo = new Date();
       threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-      const recentGames = games.filter(game => new Date(game.date) >= threeMonthsAgo);
+      const recentGames = activeClubGames.filter(game => new Date(game.date) >= threeMonthsAgo);
       const seasonGoals = recentGames.reduce((sum, game) => sum + (game.playerGoals || 0), 0);
 
-      // This month stats
+      // This month stats from active club games
       const oneMonthAgo = new Date();
       oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-      const monthlyGames = games.filter(game => new Date(game.date) >= oneMonthAgo);
+      const monthlyGames = activeClubGames.filter(game => new Date(game.date) >= oneMonthAgo);
       const monthAssists = monthlyGames.reduce((sum, game) => sum + (game.playerAssists || 0), 0);
 
       res.json({
         totalGoals,
         totalAssists,
         totalGames,
-        winRate,
+        winRate: `${winRate}%`,
         seasonGoals,
         monthAssists
       });
     } catch (error) {
+      console.error("Stats summary error:", error);
       res.status(500).json({ error: "Failed to fetch statistics" });
     }
   });
