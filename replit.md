@@ -102,6 +102,14 @@ This is a comprehensive football player tracking application built for monitorin
 
 ## Recent Changes
 
+- June 20, 2025: Restructured gallery system by removing session gallery from training popups
+  - Removed Session Gallery section completely from training session popups for cleaner interface
+  - Enhanced main Gallery page with date-based organization showing photos grouped by upload date
+  - Added multiple photo upload functionality to main gallery with individual captions
+  - Implemented optional training session linking when uploading photos to gallery
+  - Gallery now shows photos organized chronologically with clear date separators
+  - Enhanced photo cards to show time of upload and training session links when applicable
+  - Streamlined user experience by centralizing all photo management in dedicated Gallery page
 - June 20, 2025: Fixed photo upload modal scroll issues with improved layout structure
   - Restructured dialog content with proper flex layout for better scrolling
   - Fixed header and footer positioning to remain visible while content scrolls

@@ -62,9 +62,7 @@ export default function Training() {
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   const [feedbackText, setFeedbackText] = useState('');
-  const [showPhotoUpload, setShowPhotoUpload] = useState(false);
-  const [selectedPhotos, setSelectedPhotos] = useState<File[]>([]);
-  const [photoCaptions, setPhotoCaptions] = useState<{[key: string]: string}>({});
+
   const playerId = 1;
   
   const [view, setView] = useState(Views.MONTH);  
@@ -132,49 +130,7 @@ export default function Training() {
     },
   });
 
-  // Multiple photos upload mutation
-  const uploadPhotosMutation = useMutation({
-    mutationFn: async (data: { photos: File[]; captions: {[key: string]: string}; sessionId: number }) => {
-      const uploadPromises = data.photos.map(async (photo) => {
-        const formData = new FormData();
-        formData.append('photo', photo);
-        formData.append('playerId', '1');
-        formData.append('caption', data.captions[photo.name] || '');
-        formData.append('sessionId', data.sessionId.toString());
-        
-        const response = await fetch('/api/training/gallery', {
-          method: 'POST',
-          body: formData,
-        });
-        
-        if (!response.ok) {
-          throw new Error(`Upload failed for ${photo.name}`);
-        }
-        
-        return response.json();
-      });
-      
-      return Promise.all(uploadPromises);
-    },
-    onSuccess: (results) => {
-      queryClient.invalidateQueries({ queryKey: ["/api/training"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/gallery"] });
-      setShowPhotoUpload(false);
-      setSelectedPhotos([]);
-      setPhotoCaptions({});
-      toast({
-        title: "Photos uploaded",
-        description: `${results.length} photo(s) have been added to both the training session and main gallery`,
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: "Upload failed",
-        description: error.message || "Failed to upload photos. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
+
 
   const deleteSessionMutation = useMutation({
     mutationFn: async (id: number) => {
@@ -691,37 +647,7 @@ export default function Training() {
                   </Button>
                 </div>
 
-                {/* Gallery Section */}
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                    <Camera className="w-4 h-4" />
-                    Session Gallery
-                  </h4>
-                  {selectedEvent.gallery && selectedEvent.gallery.length > 0 ? (
-                    <div className="grid grid-cols-3 gap-2 mb-3">
-                      {selectedEvent.gallery.map((image: string, index: number) => (
-                        <div key={index} className="aspect-square bg-gray-200 rounded-lg overflow-hidden">
-                          <img 
-                            src={image} 
-                            alt={`Session photo ${index + 1}`}
-                            className="w-full h-full object-cover hover:scale-105 transition-transform cursor-pointer"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-gray-500 text-sm italic mb-3">No photos added yet</div>
-                  )}
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-green-600 text-green-600 hover:bg-green-50"
-                    onClick={() => setShowPhotoUpload(true)}
-                  >
-                    <Plus className="w-4 h-4 mr-1" />
-                    Add Photos
-                  </Button>
-                </div>
+
               </div>
             )}
           </DialogContent>
@@ -779,126 +705,7 @@ export default function Training() {
           </DialogContent>
         </Dialog>
 
-        {/* Photo Upload Modal */}
-        <Dialog open={showPhotoUpload} onOpenChange={setShowPhotoUpload}>
-          <DialogContent className="sm:max-w-2xl max-h-[80vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <Upload className="w-5 h-5" />
-                Upload Session Photos
-              </DialogTitle>
-              <DialogDescription>
-                Add multiple photos to this training session with individual captions.
-              </DialogDescription>
-            </DialogHeader>
-            
-            <div className="space-y-4 max-h-[50vh] overflow-y-auto border rounded-lg p-4">
-              <div>
-                <Label htmlFor="session-photos-upload">Select Photos</Label>
-                <Input
-                  id="session-photos-upload"
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={(e) => {
-                    const files = Array.from(e.target.files || []);
-                    const validFiles = files.filter(file => file.type.startsWith('image/'));
-                    
-                    if (validFiles.length !== files.length) {
-                      toast({
-                        title: "Invalid file types",
-                        description: "Some files were skipped. Please select only image files.",
-                        variant: "destructive",
-                      });
-                    }
-                    
-                    setSelectedPhotos(validFiles);
-                    // Initialize captions for new photos
-                    const newCaptions: {[key: string]: string} = {};
-                    validFiles.forEach(file => {
-                      newCaptions[file.name] = '';
-                    });
-                    setPhotoCaptions(newCaptions);
-                  }}
-                  className="mt-1"
-                />
-                {selectedPhotos.length > 0 && (
-                  <p className="text-sm text-green-600 mt-1">
-                    Selected: {selectedPhotos.length} photo(s)
-                  </p>
-                )}
-              </div>
-              
-              {selectedPhotos.length > 0 && (
-                <div className="space-y-3">
-                  <Label className="text-sm font-medium">Photo Captions</Label>
-                  <div className="space-y-3">
-                    {selectedPhotos.map((photo, index) => (
-                      <div key={`${photo.name}-${index}`} className="border rounded-lg p-3 space-y-2">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
-                          <span className="text-sm font-medium truncate">{photo.name}</span>
-                          <span className="text-xs text-gray-500 flex-shrink-0">
-                            ({(photo.size / 1024 / 1024).toFixed(1)} MB)
-                          </span>
-                        </div>
-                        <Textarea
-                          placeholder={`Caption for ${photo.name} (optional)...`}
-                          value={photoCaptions[photo.name] || ''}
-                          onChange={(e) => setPhotoCaptions(prev => ({
-                            ...prev,
-                            [photo.name]: e.target.value
-                          }))}
-                          rows={2}
-                          className="text-sm resize-none"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            <div className="flex gap-3 pt-4">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setShowPhotoUpload(false);
-                  setSelectedPhotos([]);
-                  setPhotoCaptions({});
-                }}
-                className="flex-1"
-              >
-                Cancel
-              </Button>
-              <Button 
-                onClick={() => {
-                  if (selectedPhotos.length > 0 && selectedEvent) {
-                    uploadPhotosMutation.mutate({
-                      photos: selectedPhotos,
-                      captions: photoCaptions,
-                      sessionId: selectedEvent.id,
-                    });
-                  }
-                }}
-                disabled={uploadPhotosMutation.isPending || selectedPhotos.length === 0}
-                className="flex-1 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
-              >
-                {uploadPhotosMutation.isPending ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                    Uploading {selectedPhotos.length} photo(s)...
-                  </>
-                ) : (
-                  <>
-                    <Upload className="w-4 h-4 mr-2" />
-                    Upload {selectedPhotos.length > 0 ? selectedPhotos.length : ''} Photo{selectedPhotos.length !== 1 ? 's' : ''}
-                  </>
-                )}
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+
 
         {(!sessions || sessions.length === 0) && (
           <EmptyState
