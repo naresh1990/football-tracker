@@ -167,7 +167,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const games = await storage.getGamesByTournament(tournament.id);
           const totalGames = games.length;
           const wins = games.filter(game => game.teamScore > game.opponentScore).length;
-          const goalsScored = games.reduce((sum, game) => sum + (game.teamScore || 0), 0);
+          const teamGoalsScored = games.reduce((sum, game) => sum + (game.teamScore || 0), 0);
+          const playerGoalsScored = games.reduce((sum, game) => sum + (game.playerGoals || 0), 0);
           const goalsConceded = games.reduce((sum, game) => sum + (game.opponentScore || 0), 0);
           const winRate = totalGames > 0 ? Math.round((wins / totalGames) * 100) + '%' : '0%';
           
@@ -175,7 +176,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             ...tournament,
             gamesPlayed: totalGames,
             totalGames: totalGames,
-            goalsScored,
+            teamGoalsScored,
+            playerGoalsScored,
             goalsConceded,
             winRate
           };

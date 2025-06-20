@@ -189,7 +189,9 @@ export default function Tournaments() {
                     </div>
                     <div className="flex justify-between items-center py-1">
                       <span className="text-gray-600">Goals Scored:</span>
-                      <span className="font-medium text-gray-900">{tournament.goalsScored || 0}</span>
+                      <span className="font-medium text-gray-900">
+                        {tournament.teamGoalsScored || 0} <span className="text-gray-500 text-xs">({tournament.playerGoalsScored || 0} by Darshil)</span>
+                      </span>
                     </div>
                     <div className="flex justify-between items-center py-1">
                       <span className="text-gray-600">Games Played:</span>
