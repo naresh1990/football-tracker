@@ -58,9 +58,9 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center overflow-hidden">
-                        {tournament.logoUrl ? (
+                        {tournament.logo ? (
                           <img 
-                            src={tournament.logoUrl} 
+                            src={tournament.logo} 
                             alt={`${tournament.name} logo`}
                             className="w-full h-full object-cover"
                           />
@@ -101,13 +101,13 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
                       <div className="text-xs text-blue-100">Position</div>
                     </div>
                     <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
-                      <div className="text-2xl font-bold text-white">{tournament.totalPoints || 0}</div>
+                      <div className="text-2xl font-bold text-white">{tournament.points || 0}</div>
                       <div className="text-xs text-blue-100">Points</div>
                     </div>
                     <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
                       <div className="text-xs text-blue-100 mb-2">Team Goals</div>
                       <div className="text-center">
-                        <div className="text-lg font-bold text-white">{tournament.totalGoals || 0} - {tournament.totalConceded || 0}</div>
+                        <div className="text-lg font-bold text-white">{tournament.teamGoalsScored || 0} - {tournament.goalsConceded || 0}</div>
                         <div className="text-xs text-blue-200">For - Against</div>
                       </div>
                     </div>
@@ -115,7 +115,7 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
                       <div className="text-xs text-blue-100 mb-2">Darshil's Stats</div>
                       <div className="flex justify-between items-center">
                         <div className="text-center">
-                          <div className="text-sm font-bold text-white">{tournament.playerGoals || 0}</div>
+                          <div className="text-sm font-bold text-white">{tournament.playerGoalsScored || 0}</div>
                           <div className="text-xs text-green-200">Goals</div>
                         </div>
                         <div className="text-center">
@@ -127,12 +127,12 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
                     <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
                       <div className="text-xs text-blue-100 mb-2">Record</div>
                       <div className="flex justify-between items-center text-xs">
-                        <span className="text-green-300">{tournament.totalWins || 0}W</span>
-                        <span className="text-gray-300">{tournament.totalDraws || 0}D</span>
-                        <span className="text-red-300">{tournament.totalLosses || 0}L</span>
+                        <span className="text-green-300">{tournament.wins || 0}W</span>
+                        <span className="text-gray-300">{tournament.draws || 0}D</span>
+                        <span className="text-red-300">{tournament.losses || 0}L</span>
                       </div>
                       <div className="text-center mt-1">
-                        <span className="text-xs text-blue-200">{tournament.totalGames || 0} Games</span>
+                        <span className="text-xs text-blue-200">{tournament.gamesPlayed || 0} Games</span>
                       </div>
                     </div>
                   </div>
