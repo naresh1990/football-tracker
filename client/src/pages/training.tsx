@@ -83,9 +83,15 @@ export default function Training() {
         method: "PUT",
         body: JSON.stringify({ attendance }),
       }),
-    onSuccess: () => {
+    onSuccess: (updatedSession) => {
       queryClient.invalidateQueries({ queryKey: ["/api/training"] });
       queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
+      
+      // Update the selected event state immediately
+      if (selectedEvent && updatedSession) {
+        setSelectedEvent(updatedSession);
+      }
+      
       toast({
         title: "Attendance Updated",
         description: "Training session attendance has been updated successfully.",
@@ -106,9 +112,15 @@ export default function Training() {
         method: "PUT",
         body: JSON.stringify({ coachFeedback }),
       }),
-    onSuccess: () => {
+    onSuccess: (updatedSession) => {
       queryClient.invalidateQueries({ queryKey: ["/api/training"] });
       queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
+      
+      // Update the selected event state immediately
+      if (selectedEvent && updatedSession) {
+        setSelectedEvent(updatedSession);
+      }
+      
       toast({
         title: "Feedback updated",
         description: "Coach feedback has been saved successfully",
