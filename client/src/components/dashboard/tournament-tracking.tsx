@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trophy, Eye, Calendar, Target, Upload } from "lucide-react";
+import { Plus, Trophy, Eye, Calendar, Target, Upload, Users } from "lucide-react";
 import { formatShortDate } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
@@ -53,44 +53,60 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
               </div>
             ) : (
               tournaments?.map((tournament: any) => (
-                <div key={tournament.id} className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-6 hover:bg-white/90 transition-all duration-200 shadow-sm">
+                <div key={tournament.id} className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300">
+                  {/* Header */}
                   <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-lg font-bold text-gray-900 leading-tight">{tournament.name}</h3>
-                    <Badge className={`${getStatusColor(tournament.status)} text-xs px-2 py-1 font-medium`} variant="secondary">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
+                        <Trophy className="w-6 h-6 text-blue-600" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-white">{tournament.name}</h3>
+                        <p className="text-blue-100 text-sm">{tournament.description}</p>
+                      </div>
+                    </div>
+                    <Badge className="bg-white/20 text-white border-white/30 backdrop-blur-sm">
                       {tournament.status}
                     </Badge>
                   </div>
-                  <p className="text-sm text-gray-600 mb-4 leading-relaxed">{tournament.description}</p>
-                  
-                  <div className="space-y-3 mb-5">
-                    {tournament.currentPosition && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Position:</span>
-                        <span className="font-medium">{tournament.currentPosition} Place</span>
-                      </div>
-                    )}
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Games Played:</span>
-                      <span className="font-medium">
-                        {tournament.gamesPlayed}/{tournament.totalGames || '?'}
-                      </span>
+
+                  {/* Date and Format */}
+                  <div className="flex items-center gap-4 mb-6 text-blue-100">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      <span className="text-sm">September 8, 2024</span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Points:</span>
-                      <span className="font-medium">{tournament.points} pts</span>
+                    <div className="flex items-center gap-2">
+                      <Users className="w-4 h-4" />
+                      <span className="text-sm">5v5</span>
                     </div>
                   </div>
 
-                  <div className="flex gap-3 pt-4 border-t border-gray-100">
-                    <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
-                      <Eye className="w-4 h-4 mr-2" />
-                      View Details
-                    </Button>
-                    <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
-                      <Upload className="w-4 h-4 mr-2" />
-                      Upload
-                    </Button>
+                  {/* Stats Grid */}
+                  <div className="grid grid-cols-4 gap-4 mb-6">
+                    <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
+                      <div className="text-2xl font-bold text-white">{tournament.currentPosition || '1'}</div>
+                      <div className="text-xs text-blue-100">Position</div>
+                    </div>
+                    <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
+                      <div className="text-2xl font-bold text-white">{tournament.points}</div>
+                      <div className="text-xs text-blue-100">Points</div>
+                    </div>
+                    <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
+                      <div className="text-2xl font-bold text-white">{tournament.gamesPlayed}</div>
+                      <div className="text-xs text-blue-100">Teams</div>
+                    </div>
+                    <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
+                      <div className="text-2xl font-bold text-white">League</div>
+                      <div className="text-xs text-blue-100">Format</div>
+                    </div>
                   </div>
+
+                  {/* Action Button */}
+                  <Button className="w-full bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm">
+                    <Eye className="w-4 h-4 mr-2" />
+                    View Details
+                  </Button>
                 </div>
               ))
             )}
