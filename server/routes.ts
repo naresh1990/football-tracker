@@ -857,6 +857,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Training session gallery routes
+  app.post("/api/training/gallery", upload.single('photo'), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "No photo uploaded" });
+      }
+
+      const { playerId, caption, sessionId } = req.body;
+      
+      // Get training session details for context
+      const session = await storage.getTrainingSession(parseInt(sessionId));
+      
+      // Upload to main gallery with training session reference
+      const photoData = {
+        playerId: parseInt(playerId) || 1,
+        filename: req.file.filename,
+        originalName: req.file.originalname,
+        caption: caption ? `${caption}` : (session ? `${session.type} Training` : 'Training Session Photo'),
+        trainingSessionId: parseInt(sessionId),
+      };
+
+      const validatedData = insertGalleryPhotoSchema.parse(photoData);
+      const photo = await storage.createGalleryPhoto(validatedData);
+      
+      // Update training session gallery array
+      if (session) {
+        const currentGallery = session.gallery || [];
+        const updatedGallery = [...currentGallery, `/uploads/${req.file.filename}`];
+        await storage.updateTrainingSession(parseInt(sessionId), { gallery: updatedGallery });
+      }
+      
+      res.json({ photo, session: session });
+    } catch (error) {
+      console.error("Error uploading training photo:", error);
+      res.status(500).json({ error: "Failed to upload training photo" });
+    }
+  });
+
   // Serve static files from uploads directory
   app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 

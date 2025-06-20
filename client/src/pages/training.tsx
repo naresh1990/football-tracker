@@ -65,8 +65,6 @@ export default function Training() {
   const [photoCaption, setPhotoCaption] = useState('');
   const playerId = 1;
   
-  const [view, setView] = useState<'month' | 'week' | 'day'>('month');
-  const [date, setDate] = useState(new Date());
   const [view, setView] = useState(Views.MONTH);  
   const [date, setDate] = useState(new Date());
 
@@ -117,20 +115,56 @@ export default function Training() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/training"] });
       toast({
-        title: selectedEvent?.coachFeedback ? "Feedback Updated" : "Feedback Added",
-        description: selectedEvent?.coachFeedback ? "Coach feedback has been updated successfully." : "Coach feedback has been added successfully.",
+        title: "Feedback updated",
+        description: "Coach feedback has been saved successfully",
       });
       setShowFeedbackForm(false);
       setFeedbackText('');
-      // Update the selected event with new feedback
-      if (selectedEvent) {
-        setSelectedEvent({ ...selectedEvent, coachFeedback: feedbackText.trim() });
-      }
     },
     onError: () => {
       toast({
         title: "Error",
         description: "Failed to add feedback. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Photo upload mutation
+  const uploadPhotoMutation = useMutation({
+    mutationFn: async (data: { photo: File; caption: string; sessionId: number }) => {
+      const formData = new FormData();
+      formData.append('photo', data.photo);
+      formData.append('playerId', '1');
+      formData.append('caption', data.caption);
+      formData.append('sessionId', data.sessionId.toString());
+      
+      const response = await fetch('/api/training/gallery', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/training"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/gallery"] });
+      setShowPhotoUpload(false);
+      setSelectedPhoto(null);
+      setPhotoCaption('');
+      toast({
+        title: "Photo uploaded",
+        description: "Photo has been added to both the training session and main gallery",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Upload failed",
+        description: "Failed to upload photo. Please try again.",
         variant: "destructive",
       });
     },
