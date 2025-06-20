@@ -54,14 +54,21 @@ const localizer = momentLocalizer(moment);
 export default function Training() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  
+  // State variables
+  const [showEventDetails, setShowEventDetails] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [feedbackText, setFeedbackText] = useState('');
+  const [showPhotoUpload, setShowPhotoUpload] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
+  const [photoCaption, setPhotoCaption] = useState('');
   const playerId = 1;
   
   const [view, setView] = useState<'month' | 'week' | 'day'>('month');
   const [date, setDate] = useState(new Date());
-  const [selectedEvent, setSelectedEvent] = useState<any>(null);
-  const [showEventDetails, setShowEventDetails] = useState(false);
-  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
-  const [feedbackText, setFeedbackText] = useState('');
+  const [view, setView] = useState(Views.MONTH);  
+  const [date, setDate] = useState(new Date());
 
   const { data: sessions, isLoading } = useQuery({
     queryKey: ["/api/training", { playerId }],

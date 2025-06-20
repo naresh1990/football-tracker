@@ -70,10 +70,7 @@ export default function CoachFeedback({ playerId }: CoachFeedbackProps) {
       <CardContent className="space-y-3">
         {/* Recent Feedback */}
         <div className="space-y-3">
-          <h3 className="font-medium text-gray-900 text-sm flex items-center gap-2">
-            <MessageSquare className="w-4 h-4 text-blue-600" />
-            Recent Feedback
-          </h3>
+          
           {recentFeedback.length === 0 ? (
             <div className="text-center py-6">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
