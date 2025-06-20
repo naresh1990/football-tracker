@@ -98,7 +98,7 @@ export default function Tournaments() {
         </div>
 
         <div className="space-y-4">
-        {tournaments && tournaments.length === 0 ? (
+        {tournamentsWithStats && tournamentsWithStats.length === 0 ? (
           <motion.div 
             className="text-center py-16"
             initial={{ opacity: 0, scale: 0.9 }}
