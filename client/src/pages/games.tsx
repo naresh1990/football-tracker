@@ -84,7 +84,7 @@ export default function Games() {
         />
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 mx-4">
         {!games || games.length === 0 ? (
           <motion.div
             className="text-center py-12"
