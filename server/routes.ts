@@ -857,6 +857,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Gallery routes
+  app.get("/api/gallery", async (req, res) => {
+    try {
+      const photos = await storage.getAllGalleryPhotos();
+      res.json(photos);
+    } catch (error) {
+      console.error("Error fetching gallery photos:", error);
+      res.status(500).json({ error: "Failed to fetch gallery photos" });
+    }
+  });
+
+  app.post("/api/gallery", upload.single('photo'), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "No photo uploaded" });
+      }
+
+      const { playerId, caption, trainingSessionId } = req.body;
+      
+      const photoData = {
+        playerId: parseInt(playerId) || 1,
+        filename: req.file.filename,
+        originalName: req.file.originalname,
+        caption: caption || null,
+        trainingSessionId: trainingSessionId ? parseInt(trainingSessionId) : null,
+      };
+
+      const validatedData = insertGalleryPhotoSchema.parse(photoData);
+      const photo = await storage.createGalleryPhoto(validatedData);
+      
+      res.json(photo);
+    } catch (error) {
+      console.error("Error uploading photo:", error);
+      res.status(500).json({ error: "Failed to upload photo" });
+    }
+  });
+
+  app.delete("/api/gallery/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.deleteGalleryPhoto(id);
+      
+      if (success) {
+        res.json({ message: "Photo deleted successfully" });
+      } else {
+        res.status(404).json({ error: "Photo not found" });
+      }
+    } catch (error) {
+      console.error("Error deleting photo:", error);
+      res.status(500).json({ error: "Failed to delete photo" });
+    }
+  });
+
   // Training session gallery routes
   app.post("/api/training/gallery", upload.single('photo'), async (req, res) => {
     try {
