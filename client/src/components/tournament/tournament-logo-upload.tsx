@@ -72,22 +72,8 @@ export default function TournamentLogoUpload({ tournament, trigger }: Tournament
           throw new Error("No file path returned from upload");
         }
         
-        // Update tournament with new logo
+        // Update tournament with new logo - only send the logo field
         const updateData = {
-          playerId: tournament.playerId,
-          clubId: tournament.clubId,
-          name: tournament.name,
-          description: tournament.description,
-          venue: tournament.venue,
-          startDate: tournament.startDate,
-          endDate: tournament.endDate,
-          status: tournament.status,
-          format: tournament.format,
-          matchFormat: tournament.matchFormat,
-          totalTeams: tournament.totalTeams,
-          currentPosition: tournament.currentPosition,
-          points: tournament.points,
-          pointsTableImage: tournament.pointsTableImage,
           logo: result.filePath
         };
         
@@ -124,7 +110,6 @@ export default function TournamentLogoUpload({ tournament, trigger }: Tournament
   const removeLogoMutation = useMutation({
     mutationFn: async () => {
       return apiRequest("PUT", `/api/tournaments/${tournament.id}`, {
-        ...tournament,
         logo: null
       });
     },

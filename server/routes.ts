@@ -205,14 +205,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put("/api/tournaments/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
+      console.log("Updating tournament", id, "with data:", req.body);
+      
       const validatedData = insertTournamentSchema.partial().parse(req.body);
+      console.log("Validated tournament data:", validatedData);
+      
       const tournament = await storage.updateTournament(id, validatedData);
       if (!tournament) {
         return res.status(404).json({ error: "Tournament not found" });
       }
       res.json(tournament);
     } catch (error) {
-      res.status(400).json({ error: "Invalid tournament data" });
+      console.error("Tournament update error:", error);
+      res.status(400).json({ error: "Invalid tournament data", details: error.message });
     }
   });
 
@@ -1007,6 +1012,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error uploading training photo:", error);
       res.status(500).json({ error: "Failed to upload training photo" });
+    }
+  });
+
+  // Tournament logo upload endpoint
+  app.post("/api/upload/tournament-logo", upload.single("logo"), async (req, res) => {
+    try {
+      console.log("Tournament logo upload request received");
+      console.log("File:", req.file);
+      
+      if (!req.file) {
+        console.log("No file uploaded");
+        return res.status(400).json({ error: "No logo file uploaded" });
+      }
+      
+      const filePath = handleImageUpload(req.file);
+      console.log("Tournament logo uploaded successfully:", filePath);
+      
+      res.json({ 
+        success: true, 
+        filePath,
+        message: "Tournament logo uploaded successfully" 
+      });
+    } catch (error) {
+      console.error("Tournament logo upload error:", error);
+      res.status(500).json({ error: "Failed to upload tournament logo" });
     }
   });
 
