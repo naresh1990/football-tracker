@@ -1,19 +1,24 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRoute } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Plus, Calendar, MapPin, Users, Trophy, Edit, Upload } from "lucide-react";
+import { ArrowLeft, Plus, Calendar, MapPin, Users, Trophy, Edit, Upload, Trash2 } from "lucide-react";
 import { formatDate, getGameResult } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 import GameForm from "@/components/forms/game-form";
+import EditGameForm from "@/components/forms/edit-game-form";
 import TournamentForm from "@/components/forms/tournament-form";
 import TournamentPointsForm from "@/components/tournament/tournament-points-form";
 
 export default function TournamentDetails() {
   const [, params] = useRoute("/tournament/:id");
   const tournamentId = parseInt(params?.id || "0");
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const { data: tournament, isLoading: tournamentLoading } = useQuery({
     queryKey: ["/api/tournaments", tournamentId],
@@ -24,6 +29,26 @@ export default function TournamentDetails() {
   const { data: games } = useQuery({
     queryKey: ["/api/games", { playerId: 1 }],
     enabled: !!tournamentId,
+  });
+
+  const deleteGameMutation = useMutation({
+    mutationFn: (gameId: number) => apiRequest("DELETE", `/api/games/${gameId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/games"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/games/recent"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/stats/summary"] });
+      toast({
+        title: "Success",
+        description: "Game deleted successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to delete game",
+        variant: "destructive",
+      });
+    },
   });
 
   // Filter games for this tournament
@@ -214,6 +239,22 @@ export default function TournamentDetails() {
                               <div className="text-sm text-gray-600">
                                 Goals: {game.playerGoals} | Assists: {game.playerAssists}
                               </div>
+                            </div>
+                            <div className="flex gap-1">
+                              <EditGameForm game={game} tournament={tournament} />
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
+                                onClick={() => {
+                                  if (window.confirm("Are you sure you want to delete this game?")) {
+                                    deleteGameMutation.mutate(game.id);
+                                  }
+                                }}
+                                disabled={deleteGameMutation.isPending}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
                             </div>
                           </div>
                         </CardContent>

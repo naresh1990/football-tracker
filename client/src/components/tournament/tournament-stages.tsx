@@ -1,19 +1,45 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Trophy, Calendar, MapPin, Users, Plus } from "lucide-react";
+import { Trophy, Calendar, MapPin, Users, Plus, Edit, Trash2 } from "lucide-react";
 import { formatDate, getGameResult } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 import GameForm from "@/components/forms/game-form";
+import EditGameForm from "@/components/forms/edit-game-form";
 
 interface TournamentStagesProps {
   tournament: any;
 }
 
 export default function TournamentStages({ tournament }: TournamentStagesProps) {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  
   const { data: games } = useQuery({
     queryKey: ["/api/games", { playerId: 1 }],
+  });
+
+  const deleteGameMutation = useMutation({
+    mutationFn: (gameId: number) => apiRequest("DELETE", `/api/games/${gameId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/games"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/games/recent"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/stats/summary"] });
+      toast({
+        title: "Success",
+        description: "Game deleted successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to delete game",
+        variant: "destructive",
+      });
+    },
   });
 
   // Filter games for this tournament
