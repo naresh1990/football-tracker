@@ -93,65 +93,89 @@ export default function Games() {
             ) : games && games.length > 0 ? (
               games?.map((game: any, index: number) => {
                 const result = getGameResult(game.teamScore, game.opponentScore);
-                const resultIcon = result === 'win' ? Check : X;
-                const resultColor = result === 'win' ? 'text-green-600' : 'text-red-600';
-                const resultBg = result === 'win' ? 'bg-green-100' : 'bg-red-100';
-
+                const tournament = tournaments?.find((t: any) => t.id === game.tournamentId);
+                
                 return (
                   <motion.div
                     key={game.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/90 transition-all duration-300 border border-white/50 shadow-sm"
+                    className="bg-white/90 backdrop-blur-sm rounded-xl p-6 hover:bg-white transition-all duration-300 border border-gray-200 shadow-sm"
                   >
-                    {/* Header with result and opponent */}
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center space-x-4">
-                        <div className={`w-16 h-16 ${resultBg} rounded-2xl flex items-center justify-center shadow-md`}>
-                          {React.createElement(resultIcon, { className: `${resultColor} w-7 h-7` })}
+                    {/* Fixture Header */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-4">
+                        <div className="text-sm text-gray-600">
+                          {formatDate(game.date)}
                         </div>
-                        <div>
-                          <p className="font-bold text-gray-900 text-xl">vs {game.opponent}</p>
-                          <div className="flex items-center gap-2 text-sm text-gray-600">
-                            <Calendar className="w-3 h-3" />
-                            <span>{formatDate(game.date)}</span>
+                        {tournament && (
+                          <div className="flex items-center gap-1">
+                            <Trophy className="w-3 h-3 text-blue-600" />
+                            <span className="text-xs font-medium text-blue-600">{tournament.name}</span>
                           </div>
-                          {game.tournamentStage && (
-                            <div className="flex items-center gap-1 text-xs text-blue-600 mt-1">
-                              <Trophy className="w-3 h-3" />
-                              <span className="capitalize">{game.tournamentStage.replace('-', ' ')}</span>
-                            </div>
-                          )}
+                        )}
+                        {game.tournamentStage && (
+                          <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
+                            {game.tournamentStage.replace('-', ' ')}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex gap-1">
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 w-8 p-0"
+                          onClick={() => deleteGameMutation.mutate(game.id)}
+                          disabled={deleteGameMutation.isPending}
+                        >
+                          <Trash2 className="w-4 h-4 text-red-500" />
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Fixture Result */}
+                    <div className="flex items-center justify-between mb-4 p-4 bg-gray-50 rounded-lg">
+                      <div className="flex items-center gap-4">
+                        <div className="text-center">
+                          <div className="text-sm font-medium text-gray-600 mb-1">Darshil's Team</div>
+                          <div className="text-2xl font-bold text-gray-900">{game.teamScore}</div>
+                        </div>
+                        <div className="text-xl font-bold text-gray-400">VS</div>
+                        <div className="text-center">
+                          <div className="text-sm font-medium text-gray-600 mb-1">{game.opponent}</div>
+                          <div className="text-2xl font-bold text-gray-900">{game.opponentScore}</div>
                         </div>
                       </div>
-                      <div className="flex items-start gap-4">
-                        <div className="text-right">
-                          <p className="font-black text-gray-900 text-3xl mb-1">
-                            {game.teamScore}-{game.opponentScore}
-                          </p>
-                          <span className={`text-sm font-semibold px-2 py-1 rounded-lg ${
-                            result === 'win' ? 'bg-green-100 text-green-700' : 
-                            result === 'loss' ? 'bg-red-100 text-red-700' : 
-                            'bg-gray-100 text-gray-700'
-                          }`}>
-                            {result === 'win' ? 'Victory' : result === 'loss' ? 'Defeat' : 'Draw'}
-                          </span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 w-8 p-0"
-                            onClick={() => deleteGameMutation.mutate(game.id)}
-                            disabled={deleteGameMutation.isPending}
-                          >
-                            <Trash2 className="w-4 h-4 text-red-500" />
-                          </Button>
-                        </div>
+                      <div className={`px-3 py-2 rounded-lg font-semibold text-sm ${
+                        result === 'Win' ? 'bg-green-100 text-green-800' :
+                        result === 'Loss' ? 'bg-red-100 text-red-800' :
+                        'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        {result}
+                      </div>
+                    </div>
+
+                    {/* Darshil's Performance Stats */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                      <div className="text-center p-3 bg-blue-50 rounded-lg">
+                        <div className="text-lg font-bold text-blue-600">{game.playerGoals}</div>
+                        <div className="text-xs text-gray-600">Goals</div>
+                      </div>
+                      <div className="text-center p-3 bg-green-50 rounded-lg">
+                        <div className="text-lg font-bold text-green-600">{game.playerAssists}</div>
+                        <div className="text-xs text-gray-600">Assists</div>
+                      </div>
+                      <div className="text-center p-3 bg-purple-50 rounded-lg">
+                        <div className="text-lg font-bold text-purple-600">{game.minutesPlayed}</div>
+                        <div className="text-xs text-gray-600">Minutes</div>
+                      </div>
+                      <div className="text-center p-3 bg-orange-50 rounded-lg">
+                        <div className="text-lg font-bold text-orange-600">{game.rating || 'N/A'}</div>
+                        <div className="text-xs text-gray-600">Rating</div>
                       </div>
                     </div>
 

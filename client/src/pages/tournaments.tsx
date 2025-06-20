@@ -158,23 +158,14 @@ export default function Tournaments() {
               </div>
               
               <div className="flex gap-2 pt-4 border-t border-gray-100">
-                <GameForm 
-                  tournament={tournament}
-                  trigger={
-                    <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      Add Game
-                    </Button>
-                  }
-                />
                 <Button 
                   variant="ghost" 
                   size="sm" 
                   className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                  onClick={() => setSelectedTournament(tournament)}
+                  onClick={() => window.location.href = `/tournament/${tournament.id}`}
                 >
                   <Eye className="w-4 h-4 mr-2" />
-                  View Stages
+                  View Details
                 </Button>
                 <TournamentPointsForm 
                   tournament={tournament}
@@ -200,28 +191,27 @@ export default function Tournaments() {
           ))
         ) : null}
         </div>
-      </div>
-    </div>
 
-    {/* Tournament Stages Modal/View */}
-    {selectedTournament && (
-      <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
-          <div className="p-6 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">{selectedTournament.name}</h2>
-              <p className="text-gray-600">{selectedTournament.description}</p>
+        {/* Tournament Stages Modal/View */}
+        {selectedTournament && (
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">{selectedTournament.name}</h2>
+                  <p className="text-gray-600">{selectedTournament.description}</p>
+                </div>
+                <Button variant="ghost" onClick={() => setSelectedTournament(null)}>
+                  ✕
+                </Button>
+              </div>
+              <div className="p-6">
+                <TournamentStages tournament={selectedTournament} />
+              </div>
             </div>
-            <Button variant="ghost" onClick={() => setSelectedTournament(null)}>
-              ✕
-            </Button>
           </div>
-          <div className="p-6">
-            <TournamentStages tournament={selectedTournament} />
-          </div>
-        </div>
+        )}
       </div>
-    )}
     </div>
   );
 }

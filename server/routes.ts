@@ -159,6 +159,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/tournaments/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const tournament = await storage.getTournament(id);
+      if (!tournament) {
+        return res.status(404).json({ error: "Tournament not found" });
+      }
+      res.json(tournament);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch tournament" });
+    }
+  });
+
   app.get("/api/tournaments/active", async (req, res) => {
     try {
       const playerId = 1; // Default to Darshil's ID
