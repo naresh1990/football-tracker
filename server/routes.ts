@@ -893,6 +893,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Statistics endpoints
+  // All-time stats (no filters)
+  app.get("/api/stats/all-time", async (req, res) => {
+    try {
+      const playerId = 1; // Default to Darshil's ID
+      const allGames = await storage.getGamesByPlayer(playerId);
+      
+      const totalGoals = allGames.reduce((sum, game) => sum + (game.playerGoals || 0), 0);
+      const totalAssists = allGames.reduce((sum, game) => sum + (game.playerAssists || 0), 0);
+      const totalGames = allGames.length;
+      const wins = allGames.filter(game => game.teamScore > game.opponentScore).length;
+      const winPercentage = totalGames > 0 ? Math.round((wins / totalGames) * 100) : 0;
+
+      res.json({
+        totalGoals,
+        totalAssists,
+        totalGames,
+        winPercentage
+      });
+    } catch (error) {
+      console.error("All-time stats error:", error);
+      res.status(500).json({ error: "Failed to fetch all-time statistics" });
+    }
+  });
+
+  // Current season stats (filtered by active club)
   app.get("/api/stats/summary", async (req, res) => {
     try {
       const playerId = 1; // Default to Darshil's ID
