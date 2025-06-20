@@ -57,8 +57,16 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
                   {/* Header */}
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
-                        <Trophy className="w-6 h-6 text-blue-600" />
+                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center overflow-hidden">
+                        {tournament.logoUrl ? (
+                          <img 
+                            src={tournament.logoUrl} 
+                            alt={`${tournament.name} logo`}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <Trophy className="w-6 h-6 text-blue-600" />
+                        )}
                       </div>
                       <div>
                         <h3 className="text-xl font-bold text-white">{tournament.name}</h3>
@@ -87,7 +95,7 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
                   </div>
 
                   {/* Stats Grid */}
-                  <div className="grid grid-cols-4 gap-4 mb-6">
+                  <div className="grid grid-cols-5 gap-3 mb-6">
                     <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
                       <div className="text-2xl font-bold text-white">{tournament.currentPosition || '-'}</div>
                       <div className="text-xs text-blue-100">Position</div>
@@ -97,21 +105,28 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
                       <div className="text-xs text-blue-100">Points</div>
                     </div>
                     <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
+                      <div className="text-xs text-blue-100 mb-2">Team Goals</div>
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-white">{tournament.totalGoals || 0} - {tournament.totalConceded || 0}</div>
+                        <div className="text-xs text-blue-200">For - Against</div>
+                      </div>
+                    </div>
+                    <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
                       <div className="text-xs text-blue-100 mb-2">Darshil's Stats</div>
                       <div className="flex justify-between items-center">
                         <div className="text-center">
-                          <div className="text-lg font-bold text-white">{tournament.playerGoals || 0}</div>
+                          <div className="text-sm font-bold text-white">{tournament.playerGoals || 0}</div>
                           <div className="text-xs text-green-200">Goals</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-lg font-bold text-white">{tournament.playerAssists || 0}</div>
+                          <div className="text-sm font-bold text-white">{tournament.playerAssists || 0}</div>
                           <div className="text-xs text-orange-200">Assists</div>
                         </div>
                       </div>
                     </div>
                     <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
-                      <div className="text-xs text-blue-100 mb-2">Match Record</div>
-                      <div className="flex justify-between items-center text-sm">
+                      <div className="text-xs text-blue-100 mb-2">Record</div>
+                      <div className="flex justify-between items-center text-xs">
                         <span className="text-green-300">{tournament.totalWins || 0}W</span>
                         <span className="text-gray-300">{tournament.totalDraws || 0}D</span>
                         <span className="text-red-300">{tournament.totalLosses || 0}L</span>
