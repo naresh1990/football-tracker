@@ -120,8 +120,8 @@ export default function Tournaments() {
               </Button>
             } />
           </motion.div>
-        ) : tournaments && tournaments.length > 0 ? (
-          tournaments?.map((tournament: any) => (
+        ) : tournamentsWithStats && tournamentsWithStats.length > 0 ? (
+          tournamentsWithStats?.map((tournament: any) => (
             <motion.div 
               key={tournament.id} 
               initial={{ opacity: 0, y: 20 }}
