@@ -101,7 +101,7 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
                       </div>
                     </div>
 
-                    {/* Right side - Result, stats and date (4 columns) */}
+                    {/* Right side - Result and date/stats (4 columns) */}
                     <div className="col-span-4 flex items-center justify-end gap-3">
                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                         result === 'win' ? 'bg-green-500 text-white' : 
@@ -111,23 +111,25 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
                         {result === 'win' ? 'Win' : result === 'loss' ? 'Loss' : 'Draw'}
                       </span>
                       
-                      {/* Player stats */}
-                      {game.playerGoals > 0 && (
-                        <div className="flex items-center gap-1 bg-green-100 px-2 py-1 rounded-lg">
-                          <Goal className="w-3 h-3 text-green-600" />
-                          <span className="text-green-700 font-semibold text-sm">{game.playerGoals}</span>
+                      {/* Date and Player stats stacked */}
+                      <div className="text-right">
+                        <div className="text-sm text-gray-500 mb-1">
+                          {formatShortDate(game.date)}
                         </div>
-                      )}
-                      {game.playerAssists > 0 && (
-                        <div className="flex items-center gap-1 bg-orange-100 px-2 py-1 rounded-lg">
-                          <Circle className="w-3 h-3 text-orange-600" />
-                          <span className="text-orange-700 font-semibold text-sm">{game.playerAssists}</span>
+                        <div className="flex items-center justify-end gap-2">
+                          {game.playerGoals > 0 && (
+                            <div className="flex items-center gap-1 bg-green-100 px-2 py-1 rounded-lg">
+                              <Goal className="w-3 h-3 text-green-600" />
+                              <span className="text-green-700 font-semibold text-sm">{game.playerGoals}</span>
+                            </div>
+                          )}
+                          {game.playerAssists > 0 && (
+                            <div className="flex items-center gap-1 bg-orange-100 px-2 py-1 rounded-lg">
+                              <Circle className="w-3 h-3 text-orange-600" />
+                              <span className="text-orange-700 font-semibold text-sm">{game.playerAssists}</span>
+                            </div>
+                          )}
                         </div>
-                      )}
-
-                      {/* Date */}
-                      <div className="text-sm text-gray-500">
-                        {formatShortDate(game.date)}
                       </div>
                     </div>
                   </div>
