@@ -171,11 +171,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/tournaments", async (req, res) => {
     try {
+      console.log("Tournament data received:", req.body);
       const validatedData = insertTournamentSchema.parse(req.body);
+      console.log("Tournament data validated:", validatedData);
       const tournament = await storage.createTournament(validatedData);
       res.status(201).json(tournament);
     } catch (error) {
-      res.status(400).json({ error: "Invalid tournament data" });
+      console.error("Tournament validation error:", error);
+      res.status(400).json({ error: "Invalid tournament data", details: error.message });
     }
   });
 

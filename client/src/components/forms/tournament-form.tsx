@@ -64,10 +64,11 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
       });
       onSuccess?.();
     },
-    onError: () => {
+    onError: (error: any) => {
+      console.error("Tournament creation error:", error);
       toast({
         title: "Error",
-        description: "Failed to add tournament",
+        description: error?.response?.data?.details || "Failed to add tournament",
         variant: "destructive",
       });
     },
@@ -75,15 +76,27 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    createTournamentMutation.mutate({
-      ...formData,
+    console.log("Form data being submitted:", formData);
+    
+    const tournamentData = {
       playerId: 1,
-      clubId: parseInt(formData.clubId) || null,
+      name: formData.name,
+      description: formData.description || null,
       venue: formData.venue || null,
       startDate: formData.startDate ? new Date(formData.startDate).toISOString() : null,
       endDate: formData.endDate ? new Date(formData.endDate).toISOString() : null,
-      totalTeams: parseInt(formData.totalTeams) || null,
-    });
+      status: formData.status,
+      format: formData.format || null,
+      matchFormat: formData.matchFormat || null,
+      totalTeams: formData.totalTeams ? parseInt(formData.totalTeams) : null,
+      clubId: formData.clubId ? parseInt(formData.clubId) : null,
+      currentPosition: null,
+      points: 0,
+      pointsTableImage: null
+    };
+    
+    console.log("Tournament data being sent:", tournamentData);
+    createTournamentMutation.mutate(tournamentData);
   };
 
   return (
