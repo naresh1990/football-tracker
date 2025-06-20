@@ -99,17 +99,22 @@ export default function Dashboard() {
     tournament.status !== 'completed'
   ) || [];
 
-  // Fetch coach feedback to check if any exists
-  const { data: coachFeedback } = useQuery({
-    queryKey: ["/api/coach-feedback", { playerId }],
+  // Fetch training sessions to check for coach feedback
+  const { data: trainingSessions } = useQuery({
+    queryKey: ["/api/training", { playerId }],
   });
+
+  // Filter training sessions that have coach feedback
+  const sessionsWithFeedback = trainingSessions?.filter((session: any) => 
+    session.coachFeedback && session.coachFeedback.trim() !== ''
+  ) || [];
 
   // Collapsible sections state - auto-collapse sections with no data
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({
     training: false,
-    tournaments: false, // Will be updated after data loads
+    tournaments: false,
     recentGames: false,
-    coachFeedback: false, // Will be updated after data loads
+    coachFeedback: false,
     teamProfile: false,
   });
 
@@ -353,7 +358,7 @@ export default function Dashboard() {
                   className="overflow-hidden"
                 >
                   <div className="p-6 m-4 bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-xl shadow-sm">
-                    {coachFeedback?.length > 0 ? (
+                    {sessionsWithFeedback?.length > 0 ? (
                       <CoachFeedback playerId={playerId} />
                     ) : (
                       <div className="text-center py-12">
