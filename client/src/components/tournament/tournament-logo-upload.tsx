@@ -45,26 +45,59 @@ export default function TournamentLogoUpload({ tournament, trigger }: Tournament
 
       setIsUploading(true);
       
-      // Upload logo
-      const logoFormData = new FormData();
-      logoFormData.append("logo", logoFile);
-      
-      const logoResponse = await fetch("/api/upload/tournament-logo", {
-        method: "POST",
-        body: logoFormData,
-      });
-      
-      if (!logoResponse.ok) {
-        throw new Error("Failed to upload logo");
+      try {
+        // Upload logo
+        const logoFormData = new FormData();
+        logoFormData.append("logo", logoFile);
+        
+        console.log("Uploading tournament logo...", logoFile);
+        
+        const logoResponse = await fetch("/api/upload/tournament-logo", {
+          method: "POST",
+          body: logoFormData,
+        });
+        
+        console.log("Logo upload response status:", logoResponse.status);
+        
+        if (!logoResponse.ok) {
+          const errorData = await logoResponse.json();
+          console.error("Logo upload error response:", errorData);
+          throw new Error(errorData.error || "Failed to upload logo");
+        }
+        
+        const result = await logoResponse.json();
+        console.log("Logo upload result:", result);
+        
+        if (!result.filePath) {
+          throw new Error("No file path returned from upload");
+        }
+        
+        // Update tournament with new logo
+        const updateData = {
+          playerId: tournament.playerId,
+          clubId: tournament.clubId,
+          name: tournament.name,
+          description: tournament.description,
+          venue: tournament.venue,
+          startDate: tournament.startDate,
+          endDate: tournament.endDate,
+          status: tournament.status,
+          format: tournament.format,
+          matchFormat: tournament.matchFormat,
+          totalTeams: tournament.totalTeams,
+          currentPosition: tournament.currentPosition,
+          points: tournament.points,
+          pointsTableImage: tournament.pointsTableImage,
+          logo: result.filePath
+        };
+        
+        console.log("Updating tournament with data:", updateData);
+        
+        return apiRequest("PUT", `/api/tournaments/${tournament.id}`, updateData);
+      } catch (error) {
+        console.error("Logo upload mutation error:", error);
+        throw error;
       }
-      
-      const result = await logoResponse.json();
-      
-      // Update tournament with new logo
-      return apiRequest("PUT", `/api/tournaments/${tournament.id}`, {
-        ...tournament,
-        logo: result.filePath
-      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/tournaments"] });
