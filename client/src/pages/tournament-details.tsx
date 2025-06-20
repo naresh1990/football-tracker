@@ -202,7 +202,7 @@ export default function TournamentDetails() {
                 <div className="grid gap-4">
                   {stageGames.map((game: any) => {
                     const result = getGameResult(game.teamScore, game.opponentScore);
-                    const [isExpanded, setIsExpanded] = useState(false);
+                    const isExpanded = expandedGames[game.id] || false;
                     
                     return (
                       <Card key={game.id} className="bg-white/90 backdrop-blur-sm border border-gray-200 hover:bg-white hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden">
@@ -250,7 +250,10 @@ export default function TournamentDetails() {
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  onClick={() => setIsExpanded(!isExpanded)}
+                                  onClick={() => setExpandedGames(prev => ({
+                                    ...prev,
+                                    [game.id]: !isExpanded
+                                  }))}
                                   className="h-8 w-8 p-0"
                                 >
                                   {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
