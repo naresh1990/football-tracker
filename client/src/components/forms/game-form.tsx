@@ -6,16 +6,17 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
+import { Plus, Trophy } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
 interface GameFormProps {
   trigger?: React.ReactNode;
   onSuccess?: () => void;
+  tournament?: any; // For linking games to tournaments
 }
 
-export default function GameForm({ trigger, onSuccess }: GameFormProps) {
+export default function GameForm({ trigger, onSuccess, tournament }: GameFormProps) {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     opponent: "",
@@ -73,8 +74,9 @@ export default function GameForm({ trigger, onSuccess }: GameFormProps) {
     createGameMutation.mutate({
       ...formData,
       playerId: 1,
-      gameType: "friendly",
-      matchFormat: "11v11",
+      gameType: tournament ? "tournament" : "friendly",
+      matchFormat: tournament?.matchFormat || "11v11",
+      tournamentId: tournament?.id || null,
       homeAway: "away",
       venue: formData.venue || null,
       teamScore: parseInt(formData.teamScore),
@@ -102,12 +104,27 @@ export default function GameForm({ trigger, onSuccess }: GameFormProps) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto bg-white z-[9998]">
         <DialogHeader>
-          <DialogTitle>Add New Game</DialogTitle>
+          <DialogTitle>{tournament ? `Add Game to ${tournament.name}` : 'Add New Game'}</DialogTitle>
           <DialogDescription>
-            Record your match performance and track your football progress
+            {tournament 
+              ? `Record a game from the ${tournament.name} tournament`
+              : 'Record your match performance and track your football progress'
+            }
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
+          {tournament && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+              <div className="flex items-center gap-2 text-blue-800 font-medium">
+                <Trophy className="w-4 h-4" />
+                Tournament: {tournament.name}
+              </div>
+              <div className="text-sm text-blue-600 mt-1">
+                Match Format: {tournament.matchFormat} • Venue: {tournament.venue}
+              </div>
+            </div>
+          )}
+
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="opponent">Opponent</Label>
@@ -115,6 +132,7 @@ export default function GameForm({ trigger, onSuccess }: GameFormProps) {
                 id="opponent"
                 value={formData.opponent}
                 onChange={(e) => setFormData({ ...formData, opponent: e.target.value })}
+                placeholder="Team/Player name"
                 required
               />
             </div>
@@ -134,9 +152,9 @@ export default function GameForm({ trigger, onSuccess }: GameFormProps) {
             <Label htmlFor="venue">Venue</Label>
             <Input
               id="venue"
-              value={formData.venue}
+              value={formData.venue || tournament?.venue || ""}
               onChange={(e) => setFormData({ ...formData, venue: e.target.value })}
-              placeholder="Playing venue"
+              placeholder={tournament?.venue || "Playing venue"}
             />
           </div>
 

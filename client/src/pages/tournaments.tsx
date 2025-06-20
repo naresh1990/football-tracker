@@ -2,12 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Upload, Eye, Edit, Trophy } from "lucide-react";
+import { Plus, Upload, Eye, Edit, Trophy, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
 import { formatDate } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import TournamentForm from "@/components/forms/tournament-form";
 import TournamentPointsForm from "@/components/tournament/tournament-points-form";
+import GameForm from "@/components/forms/game-form";
 
 export default function Tournaments() {
   const playerId = 1;
@@ -153,7 +154,16 @@ export default function Tournaments() {
                 </div>
               </div>
               
-              <div className="flex gap-3 pt-4 border-t border-gray-100">
+              <div className="flex gap-2 pt-4 border-t border-gray-100">
+                <GameForm 
+                  tournament={tournament}
+                  trigger={
+                    <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      Add Game
+                    </Button>
+                  }
+                />
                 <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
                   <Eye className="w-4 h-4 mr-2" />
                   View Details
@@ -163,7 +173,7 @@ export default function Tournaments() {
                   trigger={
                     <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
                       <Upload className="w-4 h-4 mr-2" />
-                      Upload Points Table
+                      Points Table
                     </Button>
                   }
                 />

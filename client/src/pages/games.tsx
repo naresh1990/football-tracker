@@ -19,6 +19,10 @@ export default function Games() {
     queryKey: ["/api/games", { playerId }],
   });
 
+  const { data: tournaments } = useQuery({
+    queryKey: ["/api/tournaments", { playerId }],
+  });
+
   const deleteGameMutation = useMutation({
     mutationFn: (gameId: number) => apiRequest("DELETE", `/api/games/${gameId}`),
     onSuccess: () => {
