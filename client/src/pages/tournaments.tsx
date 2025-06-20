@@ -158,14 +158,25 @@ export default function Tournaments() {
                   <Eye className="w-4 h-4 mr-2" />
                   View Details
                 </Button>
-                <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
-                  <Upload className="w-4 h-4 mr-2" />
-                  Upload Points Table
-                </Button>
-                <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
-                  <Edit className="w-4 h-4 mr-2" />
-                  Edit
-                </Button>
+                <TournamentPointsForm 
+                  tournament={tournament}
+                  trigger={
+                    <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                      <Upload className="w-4 h-4 mr-2" />
+                      Upload Points Table
+                    </Button>
+                  }
+                />
+                <TournamentForm 
+                  mode="edit"
+                  tournament={tournament}
+                  trigger={
+                    <Button variant="ghost" size="sm" className="flex-1 justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                      <Edit className="w-4 h-4 mr-2" />
+                      Edit
+                    </Button>
+                  }
+                />
               </div>
             </div>
           ))

@@ -13,21 +13,23 @@ import { useToast } from "@/hooks/use-toast";
 interface TournamentFormProps {
   trigger?: React.ReactNode;
   onSuccess?: () => void;
+  tournament?: any; // For editing existing tournament
+  mode?: 'create' | 'edit';
 }
 
-export default function TournamentForm({ trigger, onSuccess }: TournamentFormProps) {
+export default function TournamentForm({ trigger, onSuccess, tournament, mode = 'create' }: TournamentFormProps) {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    venue: "",
-    startDate: "",
-    endDate: "",
-    format: "",
-    matchFormat: "",
-    status: "upcoming",
-    clubId: "",
-    totalTeams: ""
+    name: tournament?.name || "",
+    description: tournament?.description || "",
+    venue: tournament?.venue || "",
+    startDate: tournament?.startDate ? new Date(tournament.startDate).toISOString().split('T')[0] : "",
+    endDate: tournament?.endDate ? new Date(tournament.endDate).toISOString().split('T')[0] : "",
+    format: tournament?.format || "",
+    matchFormat: tournament?.matchFormat || "",
+    status: tournament?.status || "upcoming",
+    clubId: tournament?.clubId?.toString() || "",
+    totalTeams: tournament?.totalTeams?.toString() || ""
   });
 
   const { toast } = useToast();
@@ -36,6 +38,43 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
   // Fetch clubs for dropdown
   const { data: clubs } = useQuery({
     queryKey: ["/api/clubs"],
+  });
+
+  const tournamentMutation = useMutation({
+    mutationFn: (data: any) => mode === 'edit' 
+      ? apiRequest("PUT", `/api/tournaments/${tournament.id}`, data)
+      : apiRequest("POST", "/api/tournaments", data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/tournaments"] });
+      toast({
+        title: "Success",
+        description: mode === 'edit' ? "Tournament updated successfully" : "Tournament added successfully",
+      });
+      setOpen(false);
+      if (mode === 'create') {
+        setFormData({
+          name: "",
+          description: "",
+          venue: "",
+          startDate: "",
+          endDate: "",
+          format: "",
+          matchFormat: "",
+          status: "upcoming",
+          clubId: "",
+          totalTeams: ""
+        });
+      }
+      onSuccess?.();
+    },
+    onError: (error: any) => {
+      console.error("Tournament mutation error:", error);
+      toast({
+        title: "Error",
+        description: error?.response?.data?.details || `Failed to ${mode} tournament`,
+        variant: "destructive",
+      });
+    },
   });
 
   const createTournamentMutation = useMutation({
@@ -96,7 +135,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
     };
     
     console.log("Tournament data being sent:", tournamentData);
-    createTournamentMutation.mutate(tournamentData);
+    tournamentMutation.mutate(tournamentData);
   };
 
   return (
@@ -257,10 +296,13 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
             </Button>
             <Button
               type="submit"
-              disabled={createTournamentMutation.isPending || !formData.clubId}
+              disabled={tournamentMutation.isPending || !formData.clubId}
               className="flex-1 bg-yellow-500 hover:bg-yellow-600"
             >
-              {createTournamentMutation.isPending ? "Adding..." : "Add Tournament"}
+              {tournamentMutation.isPending 
+                ? (mode === 'edit' ? "Updating..." : "Adding...") 
+                : (mode === 'edit' ? "Update Tournament" : "Add Tournament")
+              }
             </Button>
           </div>
         </form>
