@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Edit, Trash2, Check, X, Calendar, MapPin, Users, Clock, Goal, Circle, Trophy, Star, Award } from "lucide-react";
+import { Plus, Edit, Trash2, Check, X, Calendar, MapPin, Users, Clock, Goal, Circle, Trophy, Star, Award, ChevronDown, ChevronUp } from "lucide-react";
 import { formatDate, getGameResult } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { queryClient } from "@/lib/queryClient";
@@ -15,6 +15,7 @@ import EditGameForm from "@/components/forms/edit-game-form";
 export default function Games() {
   const playerId = 1;
   const { toast } = useToast();
+  const [expandedGames, setExpandedGames] = useState<Record<number, boolean>>({});
 
   const { data: games, isLoading } = useQuery({
     queryKey: ["/api/games", { playerId }],
