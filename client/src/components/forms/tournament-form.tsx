@@ -22,17 +22,10 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
     description: "",
     startDate: "",
     endDate: "",
-    location: "",
     format: "",
-    ageGroup: "",
     status: "upcoming",
     clubId: "",
-    currentPosition: "",
-    totalGames: "",
-    gamesPlayed: "",
-    points: "",
-    goalsScored: "",
-    goalsConceded: ""
+    totalTeams: ""
   });
 
   const { toast } = useToast();
@@ -60,17 +53,10 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
         description: "",
         startDate: "",
         endDate: "",
-        location: "",
         format: "",
-        ageGroup: "",
         status: "upcoming",
         clubId: "",
-        currentPosition: "",
-        totalGames: "",
-        gamesPlayed: "",
-        points: "",
-        goalsScored: "",
-        goalsConceded: ""
+        totalTeams: ""
       });
       onSuccess?.();
     },
@@ -91,12 +77,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
       clubId: parseInt(formData.clubId) || null,
       startDate: formData.startDate ? new Date(formData.startDate).toISOString() : null,
       endDate: formData.endDate ? new Date(formData.endDate).toISOString() : null,
-      currentPosition: parseInt(formData.currentPosition) || null,
-      totalGames: parseInt(formData.totalGames) || 0,
-      gamesPlayed: parseInt(formData.gamesPlayed) || 0,
-      points: parseInt(formData.points) || 0,
-      goalsScored: parseInt(formData.goalsScored) || 0,
-      goalsConceded: parseInt(formData.goalsConceded) || 0,
+      totalTeams: parseInt(formData.totalTeams) || null,
     });
   };
 
@@ -179,15 +160,6 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
             </div>
           </div>
 
-          <div>
-            <Label htmlFor="location">Location</Label>
-            <Input
-              id="location"
-              value={formData.location}
-              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-            />
-          </div>
-
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="format">Format</Label>
@@ -204,12 +176,14 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
               </Select>
             </div>
             <div>
-              <Label htmlFor="ageGroup">Age Group</Label>
+              <Label htmlFor="totalTeams">Total Teams</Label>
               <Input
-                id="ageGroup"
-                value={formData.ageGroup}
-                onChange={(e) => setFormData({ ...formData, ageGroup: e.target.value })}
-                placeholder="e.g., U10, U12"
+                id="totalTeams"
+                type="number"
+                min="2"
+                value={formData.totalTeams}
+                onChange={(e) => setFormData({ ...formData, totalTeams: e.target.value })}
+                placeholder="e.g., 8, 16"
               />
             </div>
           </div>
@@ -228,71 +202,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
             </Select>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
-            <div>
-              <Label htmlFor="currentPosition">Current Position</Label>
-              <Input
-                id="currentPosition"
-                type="number"
-                min="1"
-                value={formData.currentPosition}
-                onChange={(e) => setFormData({ ...formData, currentPosition: e.target.value })}
-              />
-            </div>
-            <div>
-              <Label htmlFor="gamesPlayed">Games Played</Label>
-              <Input
-                id="gamesPlayed"
-                type="number"
-                min="0"
-                value={formData.gamesPlayed}
-                onChange={(e) => setFormData({ ...formData, gamesPlayed: e.target.value })}
-              />
-            </div>
-            <div>
-              <Label htmlFor="totalGames">Total Games</Label>
-              <Input
-                id="totalGames"
-                type="number"
-                min="0"
-                value={formData.totalGames}
-                onChange={(e) => setFormData({ ...formData, totalGames: e.target.value })}
-              />
-            </div>
-          </div>
 
-          <div className="grid grid-cols-3 gap-4">
-            <div>
-              <Label htmlFor="points">Points</Label>
-              <Input
-                id="points"
-                type="number"
-                min="0"
-                value={formData.points}
-                onChange={(e) => setFormData({ ...formData, points: e.target.value })}
-              />
-            </div>
-            <div>
-              <Label htmlFor="goalsScored">Goals Scored</Label>
-              <Input
-                id="goalsScored"
-                type="number"
-                min="0"
-                value={formData.goalsScored}
-                onChange={(e) => setFormData({ ...formData, goalsScored: e.target.value })}
-              />
-            </div>
-            <div>
-              <Label htmlFor="goalsConceded">Goals Conceded</Label>
-              <Input
-                id="goalsConceded"
-                type="number"
-                min="0"
-                value={formData.goalsConceded}
-                onChange={(e) => setFormData({ ...formData, goalsConceded: e.target.value })}
-              />
-            </div>
-          </div>
 
           <div className="flex gap-2 pt-4">
             <Button

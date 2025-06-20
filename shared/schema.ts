@@ -48,10 +48,8 @@ export const tournaments = pgTable("tournaments", {
   status: text("status").notNull(), // 'upcoming', 'active', 'completed'
   format: text("format"), // 'league', 'knockout', 'group'
   totalTeams: integer("total_teams"),
-  currentPosition: integer("current_position"),
-  points: integer("points").default(0),
-  gamesPlayed: integer("games_played").default(0),
-  totalGames: integer("total_games"),
+  currentPosition: integer("current_position"), // extracted from points table
+  points: integer("points").default(0), // extracted from points table
   pointsTableImage: text("points_table_image"),
 });
 
