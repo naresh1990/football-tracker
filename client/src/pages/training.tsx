@@ -90,12 +90,6 @@ export default function Training() {
         setSelectedEvent(updatedSession);
       }
       
-      // Debounced query invalidation to prevent rapid refetches
-      setTimeout(() => {
-        queryClient.invalidateQueries({ queryKey: ["/api/training"] });
-        queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
-      }, 100);
-      
       toast({
         title: "Attendance Updated",
         description: "Training session attendance has been updated successfully.",
@@ -121,12 +115,6 @@ export default function Training() {
       if (selectedEvent && updatedSession) {
         setSelectedEvent(updatedSession);
       }
-      
-      // Debounced query invalidation to prevent rapid refetches
-      setTimeout(() => {
-        queryClient.invalidateQueries({ queryKey: ["/api/training"] });
-        queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
-      }, 100);
       
       toast({
         title: "Feedback updated",
@@ -155,11 +143,8 @@ export default function Training() {
       setShowEventDetails(false);
       setSelectedEvent(null);
       
-      // Debounced query invalidation to prevent rapid refetches
-      setTimeout(() => {
-        queryClient.invalidateQueries({ queryKey: ["/api/training"] });
-        queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
-      }, 100);
+      queryClient.invalidateQueries({ queryKey: ["/api/training"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
       
       toast({
         title: "Session Deleted",
@@ -176,10 +161,8 @@ export default function Training() {
   });
 
   const updateAttendance = (id: number, attendance: string) => {
-    if (isUpdating) return; // Prevent multiple simultaneous updates
-    setIsUpdating(true);
+    if (updateAttendanceMutation.isPending) return; // Prevent multiple simultaneous updates
     updateAttendanceMutation.mutate({ id, attendance });
-    setTimeout(() => setIsUpdating(false), 1000); // Reset after 1 second
   };
 
   const deleteSession = (id: number) => {

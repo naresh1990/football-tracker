@@ -75,11 +75,13 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
         endDate: ""
       });
       
-      // Force query invalidation for new training sessions
-      queryClient.invalidateQueries({ queryKey: ["/api/training"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
-      
       onSuccess?.();
+      
+      // Delayed query invalidation after form is closed
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ["/api/training"] });
+        queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
+      }, 500);
     },
     onError: () => {
       toast({
