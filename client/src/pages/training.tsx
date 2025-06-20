@@ -446,6 +446,148 @@ export default function Training() {
           </div>
         </motion.div>
 
+        {/* Attendance Statistics */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-green-700">Completed</p>
+                    <p className="text-2xl font-bold text-green-800">{sessions?.filter(s => s.attendance === 'completed').length || 0}</p>
+                    <p className="text-xs text-green-600">{sessions?.length > 0 ? Math.round((sessions.filter(s => s.attendance === 'completed').length / sessions.length) * 100) : 0}% attendance</p>
+                  </div>
+                  <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+                    <CheckCircle2 className="w-5 h-5 text-white" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-blue-700">Pending</p>
+                    <p className="text-2xl font-bold text-blue-800">{sessions?.filter(s => s.attendance === 'pending' || !s.attendance).length || 0}</p>
+                    <p className="text-xs text-blue-600">{sessions?.length > 0 ? Math.round((sessions.filter(s => s.attendance === 'pending' || !s.attendance).length / sessions.length) * 100) : 0}% scheduled</p>
+                  </div>
+                  <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-white" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <Card className="bg-gradient-to-br from-red-50 to-pink-50 border-red-200">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-red-700">Missed</p>
+                    <p className="text-2xl font-bold text-red-800">{sessions?.filter(s => s.attendance === 'missed').length || 0}</p>
+                    <p className="text-xs text-red-600">{sessions?.length > 0 ? Math.round((sessions.filter(s => s.attendance === 'missed').length / sessions.length) * 100) : 0}% missed</p>
+                  </div>
+                  <div className="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
+                    <X className="w-5 h-5 text-white" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <Card className="bg-gradient-to-br from-yellow-50 to-amber-50 border-yellow-200">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-yellow-700">Cancelled</p>
+                    <p className="text-2xl font-bold text-yellow-800">{sessions?.filter(s => s.attendance === 'cancelled').length || 0}</p>
+                    <p className="text-xs text-yellow-600">{sessions?.length > 0 ? Math.round((sessions.filter(s => s.attendance === 'cancelled').length / sessions.length) * 100) : 0}% cancelled</p>
+                  </div>
+                  <div className="w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center">
+                    <CalendarIcon className="w-5 h-5 text-white" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+
+        {/* Overall Attendance Summary */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mb-8"
+        >
+          <Card className="bg-gradient-to-r from-slate-50 to-gray-50 border-slate-200">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-gray-800">
+                <Activity className="w-5 h-5 text-blue-600" />
+                Training Attendance Overview
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-gray-900 mb-1">{sessions?.length || 0}</div>
+                  <div className="text-sm text-gray-600">Total Sessions</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-green-600 mb-1">
+                    {sessions?.length > 0 ? Math.round((sessions.filter(s => s.attendance === 'completed').length / sessions.length) * 100) : 0}%
+                  </div>
+                  <div className="text-sm text-gray-600">Attendance Rate</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-blue-600 mb-1">
+                    {sessions?.length > 0 ? Math.round((sessions.filter(s => s.attendance === 'pending' || !s.attendance).length / sessions.length) * 100) : 0}%
+                  </div>
+                  <div className="text-sm text-gray-600">Upcoming Sessions</div>
+                </div>
+              </div>
+              
+              {/* Progress Bar */}
+              <div className="mt-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-gray-700">Attendance Progress</span>
+                  <span className="text-sm text-gray-500">
+                    {sessions?.filter(s => s.attendance === 'completed').length || 0} of {sessions?.length || 0} completed
+                  </span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div 
+                    className="bg-gradient-to-r from-green-500 to-emerald-500 h-3 rounded-full transition-all duration-300"
+                    style={{ 
+                      width: `${sessions?.length > 0 ? Math.round((sessions.filter(s => s.attendance === 'completed').length / sessions.length) * 100) : 0}%` 
+                    }}
+                  ></div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
         {/* Legend */}
         <motion.div
           className="flex justify-end items-center mb-6 gap-4"
