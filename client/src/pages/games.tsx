@@ -225,7 +225,7 @@ export default function Games() {
                             className="flex items-center gap-1 bg-green-100 px-3 py-1 rounded-lg cursor-help relative group"
                             title="Goals scored by Darshil in this game"
                           >
-                            <Goal className="w-4 h-4 text-green-600" />
+                            <Target className="w-4 h-4 text-green-600" />
                             <span className="text-green-700 font-semibold">{game.playerGoals}</span>
                             <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-50">
                               Goals scored by Darshil
