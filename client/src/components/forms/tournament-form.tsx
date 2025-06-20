@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
+import { Plus, Upload, X } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
@@ -31,6 +31,25 @@ export default function TournamentForm({ trigger, onSuccess, tournament, mode = 
     clubId: tournament?.clubId?.toString() || "",
     totalTeams: tournament?.totalTeams?.toString() || ""
   });
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string>(tournament?.logo || "");
+
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setLogoFile(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setLogoPreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeLogo = () => {
+    setLogoFile(null);
+    setLogoPreview("");
+  };
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -41,9 +60,30 @@ export default function TournamentForm({ trigger, onSuccess, tournament, mode = 
   });
 
   const tournamentMutation = useMutation({
-    mutationFn: (data: any) => mode === 'edit' 
-      ? apiRequest("PUT", `/api/tournaments/${tournament.id}`, data)
-      : apiRequest("POST", "/api/tournaments", data),
+    mutationFn: async (data: any) => {
+      // Upload logo if present
+      let logoPath = tournament?.logo || "";
+      if (logoFile) {
+        const logoFormData = new FormData();
+        logoFormData.append("logo", logoFile);
+        
+        const logoResponse = await fetch("/api/upload/tournament-logo", {
+          method: "POST",
+          body: logoFormData,
+        });
+        
+        if (logoResponse.ok) {
+          const result = await logoResponse.json();
+          logoPath = result.filePath;
+        }
+      }
+      
+      const tournamentData = { ...data, logo: logoPath };
+      
+      return mode === 'edit' 
+        ? apiRequest("PUT", `/api/tournaments/${tournament.id}`, tournamentData)
+        : apiRequest("POST", "/api/tournaments", tournamentData);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/tournaments"] });
       toast({
@@ -168,6 +208,43 @@ export default function TournamentForm({ trigger, onSuccess, tournament, mode = 
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
             />
+          </div>
+
+          {/* Tournament Logo Upload */}
+          <div>
+            <Label htmlFor="logo">Tournament Logo</Label>
+            <div className="space-y-2">
+              {logoPreview ? (
+                <div className="relative w-24 h-24 mx-auto">
+                  <img
+                    src={logoPreview}
+                    alt="Tournament logo preview"
+                    className="w-24 h-24 object-cover rounded-full border-2 border-gray-200"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="absolute -top-2 -right-2 h-6 w-6 p-0 bg-red-500 hover:bg-red-600 text-white rounded-full"
+                    onClick={removeLogo}
+                  >
+                    <X className="w-3 h-3" />
+                  </Button>
+                </div>
+              ) : (
+                <div className="w-24 h-24 mx-auto bg-gray-100 rounded-full flex items-center justify-center border-2 border-dashed border-gray-300">
+                  <Upload className="w-8 h-8 text-gray-400" />
+                </div>
+              )}
+              <Input
+                id="logo"
+                type="file"
+                accept="image/*"
+                onChange={handleLogoChange}
+                className="text-sm"
+              />
+              <p className="text-xs text-gray-500">Upload a logo for the tournament (optional)</p>
+            </div>
           </div>
 
           <div>

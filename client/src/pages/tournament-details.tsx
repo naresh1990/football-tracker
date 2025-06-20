@@ -124,8 +124,18 @@ export default function TournamentDetails() {
             <div className="flex justify-between items-start">
               <div className="flex items-start gap-4">
                 {/* Tournament/Club Logo */}
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Trophy className="w-8 h-8 text-white" />
+                <div className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-2 border-gray-200">
+                  {tournament.logo ? (
+                    <img 
+                      src={tournament.logo} 
+                      alt={`${tournament.name} logo`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
+                      <Trophy className="w-8 h-8 text-white" />
+                    </div>
+                  )}
                 </div>
                 <div>
                   <CardTitle className="text-2xl font-bold text-gray-900 mb-2">

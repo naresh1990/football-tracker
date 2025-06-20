@@ -55,6 +55,7 @@ export const tournaments = pgTable("tournaments", {
   currentPosition: integer("current_position"), // extracted from points table
   points: integer("points").default(0), // extracted from points table
   pointsTableImage: text("points_table_image"),
+  logo: text("logo"), // tournament logo image path
 });
 
 // Training sessions
