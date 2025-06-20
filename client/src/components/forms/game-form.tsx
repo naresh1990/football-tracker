@@ -37,8 +37,12 @@ export default function GameForm({ trigger, onSuccess, tournament }: GameFormPro
   const queryClient = useQueryClient();
 
   const createGameMutation = useMutation({
-    mutationFn: (data: any) => apiRequest("POST", "/api/games", data),
-    onSuccess: () => {
+    mutationFn: (data: any) => {
+      console.log("Mutation function called with data:", data);
+      return apiRequest("POST", "/api/games", data);
+    },
+    onSuccess: (response) => {
+      console.log("Game created successfully:", response);
       queryClient.invalidateQueries({ queryKey: ["/api/games"] });
       queryClient.invalidateQueries({ queryKey: ["/api/games/recent"] });
       queryClient.invalidateQueries({ queryKey: ["/api/stats/summary"] });
@@ -63,7 +67,8 @@ export default function GameForm({ trigger, onSuccess, tournament }: GameFormPro
       });
       onSuccess?.();
     },
-    onError: () => {
+    onError: (error) => {
+      console.error("Game creation failed:", error);
       toast({
         title: "Error",
         description: "Failed to add game",

@@ -8,17 +8,28 @@ async function throwIfResNotOk(res: Response) {
 }
 
 export async function apiRequest(
+  method: string,
   url: string,
-  options?: RequestInit,
-): Promise<Response> {
-  const res = await fetch(url, {
+  data?: any,
+): Promise<any> {
+  const options: RequestInit = {
+    method,
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    ...options,
-  });
+  };
 
+  if (data && (method === "POST" || method === "PUT" || method === "PATCH")) {
+    options.body = JSON.stringify(data);
+  }
+
+  console.log(`API Request: ${method} ${url}`, data);
+  
+  const res = await fetch(url, options);
   await throwIfResNotOk(res);
-  return res;
+  
+  const result = await res.json();
+  console.log(`API Response: ${method} ${url}`, result);
+  return result;
 }
 
 type UnauthorizedBehavior = "returnNull" | "throw";
