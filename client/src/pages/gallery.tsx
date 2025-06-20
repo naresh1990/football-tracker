@@ -35,6 +35,8 @@ export default function Gallery() {
   const [photoCaptions, setPhotoCaptions] = useState<{[key: string]: string}>({});
   const [linkedSession, setLinkedSession] = useState<string>('');
   const [filterBySession, setFilterBySession] = useState<string>('all');
+  const [editingPhoto, setEditingPhoto] = useState<any>(null);
+  const [editCaption, setEditCaption] = useState<string>('');
   
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -107,10 +109,41 @@ export default function Gallery() {
         description: "Photo has been removed from gallery",
       });
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Delete error:', error);
       toast({
         title: "Delete failed", 
         description: "Failed to delete photo. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Edit photo mutation
+  const editMutation = useMutation({
+    mutationFn: async ({ photoId, caption }: { photoId: number, caption: string }) => {
+      return apiRequest(`/api/gallery/${photoId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ caption }),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/gallery"] });
+      setEditingPhoto(null);
+      setEditCaption('');
+      toast({
+        title: "Photo updated",
+        description: "Photo caption has been updated",
+      });
+    },
+    onError: (error) => {
+      console.error('Edit error:', error);
+      toast({
+        title: "Update failed", 
+        description: "Failed to update photo. Please try again.",
         variant: "destructive",
       });
     },
@@ -283,17 +316,33 @@ export default function Gallery() {
                             />
                             <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300" />
                           </div>
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDelete(photo.id);
-                            }}
-                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-8 h-8 p-0"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
+                          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-1">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setEditingPhoto(photo);
+                                setEditCaption(photo.caption || '');
+                              }}
+                              className="w-8 h-8 p-0 bg-blue-500 hover:bg-blue-600 text-white border-blue-500"
+                            >
+                              <FileText className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (window.confirm('Are you sure you want to delete this photo?')) {
+                                  handleDelete(photo.id);
+                                }
+                              }}
+                              className="w-8 h-8 p-0"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
                           {(photo.caption || photo.uploadedAt || photo.trainingSessionId) && (
                             <div className="p-4 space-y-2">
                               {photo.caption && (
@@ -469,14 +518,34 @@ export default function Gallery() {
                     <Calendar className="w-4 h-4" />
                     {moment.tz(selectedPhoto.uploadedAt, 'Asia/Kolkata').format('MMMM DD, YYYY [at] h:mm A')}
                   </span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleDelete(selectedPhoto.id)}
-                    className="text-red-600 hover:text-red-700"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setEditingPhoto(selectedPhoto);
+                        setEditCaption(selectedPhoto.caption || '');
+                        setSelectedPhoto(null);
+                      }}
+                      className="text-blue-600 hover:text-blue-700"
+                    >
+                      <FileText className="w-4 h-4 mr-1" />
+                      Edit
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        if (window.confirm('Are you sure you want to delete this photo?')) {
+                          handleDelete(selectedPhoto.id);
+                        }
+                      }}
+                      className="text-red-600 hover:text-red-700"
+                    >
+                      <Trash2 className="w-4 h-4 mr-1" />
+                      Delete
+                    </Button>
+                  </div>
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
@@ -515,7 +584,68 @@ export default function Gallery() {
           </Dialog>
         )}
 
-
+        {/* Edit Photo Dialog */}
+        {editingPhoto && (
+          <Dialog open={!!editingPhoto} onOpenChange={() => setEditingPhoto(null)}>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <FileText className="w-5 h-5" />
+                  Edit Photo Caption
+                </DialogTitle>
+                <DialogDescription>
+                  Update the caption for this photo.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="relative">
+                  <img
+                    src={`/uploads/${editingPhoto.filename}`}
+                    alt={editingPhoto.caption || editingPhoto.originalName}
+                    className="w-full max-h-48 object-contain rounded-lg"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="edit-caption">Caption</Label>
+                  <Textarea
+                    id="edit-caption"
+                    placeholder="Enter photo caption..."
+                    value={editCaption}
+                    onChange={(e) => setEditCaption(e.target.value)}
+                    rows={3}
+                    className="mt-1"
+                  />
+                </div>
+              </div>
+              <div className="flex gap-3 pt-4">
+                <Button
+                  variant="outline"
+                  onClick={() => setEditingPhoto(null)}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={() => editMutation.mutate({ photoId: editingPhoto.id, caption: editCaption })}
+                  disabled={editMutation.isPending}
+                  className="flex-1 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
+                >
+                  {editMutation.isPending ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <FileText className="w-4 h-4 mr-2" />
+                      Save Changes
+                    </>
+                  )}
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
     </div>
   );

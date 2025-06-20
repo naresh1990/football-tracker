@@ -894,6 +894,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.put("/api/gallery/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { caption } = req.body;
+      
+      const photo = await storage.updateGalleryPhoto(id, { caption });
+      
+      if (photo) {
+        res.json(photo);
+      } else {
+        res.status(404).json({ error: "Photo not found" });
+      }
+    } catch (error) {
+      console.error("Error updating photo:", error);
+      res.status(500).json({ error: "Failed to update photo" });
+    }
+  });
+
   app.delete("/api/gallery/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);

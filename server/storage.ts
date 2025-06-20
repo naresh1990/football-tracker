@@ -90,6 +90,7 @@ export interface IStorage {
   getAllGalleryPhotos(): Promise<GalleryPhoto[]>;
   getGalleryPhotos(playerId: number): Promise<GalleryPhoto[]>;
   createGalleryPhoto(data: InsertGalleryPhoto): Promise<GalleryPhoto>;
+  updateGalleryPhoto(id: number, data: Partial<InsertGalleryPhoto>): Promise<GalleryPhoto | undefined>;
   deleteGalleryPhoto(id: number): Promise<boolean>;
 }
 
