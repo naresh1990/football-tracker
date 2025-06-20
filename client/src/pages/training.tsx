@@ -781,9 +781,9 @@ export default function Training() {
 
         {/* Photo Upload Modal */}
         <Dialog open={showPhotoUpload} onOpenChange={setShowPhotoUpload}>
-          <DialogContent className="sm:max-w-2xl h-[85vh] p-0 gap-0">
-            <div className="flex flex-col h-full">
-              <DialogHeader className="flex-shrink-0 p-6 pb-4">
+          <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-hidden p-0">
+            <div className="flex flex-col max-h-[90vh]">
+              <DialogHeader className="flex-shrink-0 p-6 pb-4 border-b">
                 <DialogTitle className="flex items-center gap-2">
                   <Upload className="w-5 h-5" />
                   Upload Session Photos
@@ -793,8 +793,8 @@ export default function Training() {
                 </DialogDescription>
               </DialogHeader>
               
-              <div className="flex-1 overflow-y-auto px-6">
-                <div className="space-y-4 pb-4">
+              <div className="flex-1 min-h-0 overflow-y-scroll px-6 py-4" style={{scrollbarWidth: 'thin'}}>
+                <div className="space-y-4">
                   <div>
                     <Label htmlFor="session-photos-upload">Select Photos</Label>
                     <Input
