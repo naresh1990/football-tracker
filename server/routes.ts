@@ -193,6 +193,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.patch("/api/tournaments/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const validatedData = insertTournamentSchema.partial().parse(req.body);
+      const tournament = await storage.updateTournament(id, validatedData);
+      if (!tournament) {
+        return res.status(404).json({ error: "Tournament not found" });
+      }
+      res.json(tournament);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid tournament data" });
+    }
+  });
+
   app.post("/api/tournaments/:id/points-table", upload.single('pointsTable'), async (req, res) => {
     try {
       const id = parseInt(req.params.id);

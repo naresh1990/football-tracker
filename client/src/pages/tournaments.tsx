@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { formatDate } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import TournamentForm from "@/components/forms/tournament-form";
+import TournamentPointsForm from "@/components/tournament/tournament-points-form";
 
 export default function Tournaments() {
   const playerId = 1;
