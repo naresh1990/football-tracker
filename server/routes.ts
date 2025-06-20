@@ -113,11 +113,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/games", async (req, res) => {
     try {
+      console.log("Received game data:", req.body);
       const validatedData = insertGameSchema.parse(req.body);
+      console.log("Validated game data:", validatedData);
       const game = await storage.createGame(validatedData);
+      console.log("Created game:", game);
       res.status(201).json(game);
     } catch (error) {
-      res.status(400).json({ error: "Invalid game data" });
+      console.error("Game creation error:", error);
+      if (error instanceof Error) {
+        console.error("Error details:", error.message);
+      }
+      res.status(400).json({ error: "Invalid game data", details: error instanceof Error ? error.message : "Unknown error" });
     }
   });
 
