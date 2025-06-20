@@ -4,7 +4,7 @@ import { useRoute } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Plus, Calendar, MapPin, Users, Trophy, Edit, Upload, Trash2, Goal, Circle, Clock, Award, Star } from "lucide-react";
+import { ArrowLeft, Plus, Calendar, MapPin, Users, Trophy, Edit, Upload, Trash2, Goal, Circle, Clock, Award, Star, ChevronDown, ChevronUp } from "lucide-react";
 import { formatDate, getGameResult } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
@@ -202,11 +202,13 @@ export default function TournamentDetails() {
                 <div className="grid gap-4">
                   {stageGames.map((game: any) => {
                     const result = getGameResult(game.teamScore, game.opponentScore);
+                    const [isExpanded, setIsExpanded] = useState(false);
+                    
                     return (
                       <Card key={game.id} className="bg-white/90 backdrop-blur-sm border border-gray-200 hover:bg-white hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden">
                         <CardContent className="p-0">
                           {/* Header with Tournament Logo */}
-                          <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 border-b border-gray-100">
+                          <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-3">
                                 <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
@@ -244,7 +246,15 @@ export default function TournamentDetails() {
                                 </div>
                               </div>
                               
-                              <div className="flex gap-1">
+                              <div className="flex items-center gap-1">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => setIsExpanded(!isExpanded)}
+                                  className="h-8 w-8 p-0"
+                                >
+                                  {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                                </Button>
                                 <EditGameForm game={game} tournament={tournament} />
                                 <Button
                                   variant="ghost"
@@ -263,47 +273,50 @@ export default function TournamentDetails() {
                             </div>
                           </div>
 
-                          <div className="p-4">
-                            {/* Performance Stats */}
-                            <div className="grid grid-cols-4 gap-4 mb-4">
-                              <div className="text-center p-3 bg-green-50 rounded-lg">
-                                <Goal className="w-5 h-5 text-green-600 mx-auto mb-1" />
-                                <div className="text-xl font-bold text-green-800">{game.playerGoals}</div>
-                                <div className="text-xs text-green-600">Goals</div>
+                          {/* Collapsible Content */}
+                          {isExpanded && (
+                            <div className="p-4 border-t border-gray-100">
+                              {/* Performance Stats */}
+                              <div className="grid grid-cols-4 gap-4 mb-4">
+                                <div className="text-center p-3 bg-green-50 rounded-lg">
+                                  <Goal className="w-5 h-5 text-green-600 mx-auto mb-1" />
+                                  <div className="text-xl font-bold text-green-800">{game.playerGoals}</div>
+                                  <div className="text-xs text-green-600">Goals</div>
+                                </div>
+                                <div className="text-center p-3 bg-blue-50 rounded-lg">
+                                  <Circle className="w-5 h-5 text-blue-600 mx-auto mb-1" />
+                                  <div className="text-xl font-bold text-blue-800">{game.playerAssists}</div>
+                                  <div className="text-xs text-blue-600">Assists</div>
+                                </div>
+                                <div className="text-center p-3 bg-purple-50 rounded-lg">
+                                  <Clock className="w-5 h-5 text-purple-600 mx-auto mb-1" />
+                                  <div className="text-xl font-bold text-purple-800">{game.minutesPlayed}</div>
+                                  <div className="text-xs text-purple-600">Minutes</div>
+                                </div>
+                                <div className="text-center p-3 bg-orange-50 rounded-lg">
+                                  <Star className="w-5 h-5 text-orange-600 mx-auto mb-1" />
+                                  <div className="text-xl font-bold text-orange-800">{game.rating || 'N/A'}</div>
+                                  <div className="text-xs text-orange-600">Rating</div>
+                                </div>
                               </div>
-                              <div className="text-center p-3 bg-blue-50 rounded-lg">
-                                <Circle className="w-5 h-5 text-blue-600 mx-auto mb-1" />
-                                <div className="text-xl font-bold text-blue-800">{game.playerAssists}</div>
-                                <div className="text-xs text-blue-600">Assists</div>
-                              </div>
-                              <div className="text-center p-3 bg-purple-50 rounded-lg">
-                                <Clock className="w-5 h-5 text-purple-600 mx-auto mb-1" />
-                                <div className="text-xl font-bold text-purple-800">{game.minutesPlayed}</div>
-                                <div className="text-xs text-purple-600">Minutes</div>
-                              </div>
-                              <div className="text-center p-3 bg-orange-50 rounded-lg">
-                                <Star className="w-5 h-5 text-orange-600 mx-auto mb-1" />
-                                <div className="text-xl font-bold text-orange-800">{game.rating || 'N/A'}</div>
-                                <div className="text-xs text-orange-600">Rating</div>
-                              </div>
-                            </div>
 
-                            {/* Match Details */}
-                            <div className="flex items-center gap-4 text-sm text-gray-600 border-t pt-3">
-                              <div className="flex items-center gap-1">
-                                <Calendar className="w-4 h-4" />
-                                {formatDate(game.date)}
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <MapPin className="w-4 h-4" />
-                                {game.venue || tournament.venue || 'TBD'}
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <Award className="w-4 h-4" />
-                                {game.positionPlayed || 'N/A'}
+                              {/* Match Details */}
+                              <div className="flex items-center gap-4 text-sm text-gray-600 border-t pt-3">
+                                <div className="flex items-center gap-1">
+                                  <Calendar className="w-4 h-4" />
+                                  {formatDate(game.date)}
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <MapPin className="w-4 h-4" />
+                                  {game.venue || tournament.venue || 'TBD'}
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Award className="w-4 h-4" />
+                                  {game.positionPlayed || 'N/A'}
+                                </div>
                               </div>
                             </div>
-                          </div>
+                          )}
                         </CardContent>
                       </Card>
                     );
