@@ -4,7 +4,7 @@ import { useRoute } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Plus, Calendar, MapPin, Users, Trophy, Edit, Upload, Trash2, Target, Circle, Clock, Award, Star } from "lucide-react";
+import { ArrowLeft, Plus, Calendar, MapPin, Users, Trophy, Edit, Upload, Trash2, Goal, Circle, Clock, Award, Star } from "lucide-react";
 import { formatDate, getGameResult } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
@@ -265,7 +265,7 @@ export default function TournamentDetails() {
                             {/* Performance Stats */}
                             <div className="grid grid-cols-4 gap-4 mb-4">
                               <div className="text-center p-3 bg-green-50 rounded-lg">
-                                <Target className="w-5 h-5 text-green-600 mx-auto mb-1" />
+                                <Goal className="w-5 h-5 text-green-600 mx-auto mb-1" />
                                 <div className="text-xl font-bold text-green-800">{game.playerGoals}</div>
                                 <div className="text-xs text-green-600">Goals</div>
                               </div>

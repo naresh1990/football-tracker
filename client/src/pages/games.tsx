@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Edit, Trash2, Check, X, Calendar, MapPin, Users, Clock, Target, Circle, Trophy, Star, Award } from "lucide-react";
+import { Plus, Edit, Trash2, Check, X, Calendar, MapPin, Users, Clock, Goal, Circle, Trophy, Star, Award } from "lucide-react";
 import { formatDate, getGameResult } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { queryClient } from "@/lib/queryClient";
@@ -177,7 +177,7 @@ export default function Games() {
                     {/* Darshil's Performance Stats */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                       <div className="text-center p-3 bg-green-50 rounded-lg">
-                        <Target className="w-5 h-5 text-green-600 mx-auto mb-1" />
+                        <Goal className="w-5 h-5 text-green-600 mx-auto mb-1" />
                         <div className="text-lg font-bold text-green-600">{game.playerGoals}</div>
                         <div className="text-xs text-gray-600">Goals</div>
                       </div>
@@ -229,7 +229,7 @@ export default function Games() {
                             className="flex items-center gap-1 bg-green-100 px-3 py-1 rounded-lg cursor-help relative group"
                             title="Goals scored by Darshil in this game"
                           >
-                            <Target className="w-4 h-4 text-green-600" />
+                            <Goal className="w-4 h-4 text-green-600" />
                             <span className="text-green-700 font-semibold">{game.playerGoals}</span>
                             <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-50">
                               Goals scored by Darshil
