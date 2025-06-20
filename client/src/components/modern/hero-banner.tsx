@@ -283,7 +283,7 @@ export default function HeroBanner({ player, activeClub, squadMembers, onQuickAd
                       animate={{ scale: 1 }}
                       transition={{ delay: 1.4, type: "spring", stiffness: 200 }}
                     >
-                      <div className="text-3xl font-bold text-blue-300 mb-1">{stats?.winRate || 0}%</div>
+                      <div className="text-3xl font-bold text-blue-300 mb-1">{stats?.winRate || "0%"}</div>
                       <div className="text-blue-200 text-sm font-medium">Win Rate</div>
                     </motion.div>
                   </div>
