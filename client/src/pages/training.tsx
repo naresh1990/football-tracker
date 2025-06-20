@@ -30,6 +30,7 @@ import {
 import { motion } from "framer-motion";
 import TrainingForm from "@/components/forms/training-form";
 import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 import EmptyState from "@/components/ui/empty-state";
 import {
   DropdownMenu,
@@ -77,17 +78,14 @@ export default function Training() {
   });
 
   const updateAttendanceMutation = useMutation({
-    mutationFn: async ({ id, attendance }: { id: number; attendance: string }) => {
-      const response = await fetch(`/api/training/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+    mutationFn: ({ id, attendance }: { id: number; attendance: string }) => 
+      apiRequest(`/api/training/${id}`, {
+        method: "PUT",
         body: JSON.stringify({ attendance }),
-      });
-      if (!response.ok) throw new Error('Failed to update attendance');
-      return response.json();
-    },
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/training"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
       toast({
         title: "Attendance Updated",
         description: "Training session attendance has been updated successfully.",
