@@ -40,6 +40,7 @@ export default function GameForm({ trigger, onSuccess, tournament }: GameFormPro
     mutationFn: (data: any) => apiRequest("POST", "/api/games", data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/games"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/games/recent"] });
       queryClient.invalidateQueries({ queryKey: ["/api/stats/summary"] });
       toast({
         title: "Success",
