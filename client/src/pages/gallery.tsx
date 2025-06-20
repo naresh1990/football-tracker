@@ -168,45 +168,69 @@ export default function Gallery() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
-        {/* Header */}
-        <motion.div
-          className="text-center space-y-4"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="flex items-center justify-center gap-3">
-            <Camera className="w-8 h-8 text-blue-600" />
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
-              Session Gallery
-            </h1>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Gallery</h1>
+            <p className="text-gray-600">Your football journey in photos</p>
           </div>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Capture and share your football moments, organized by date with optional training session links
-          </p>
-          
-          <Button
-            onClick={() => setShowUploadDialog(true)}
-            className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-6 py-3"
-          >
-            <Plus className="w-5 h-5 mr-2" />
-            Upload Photos
-          </Button>
-        </motion.div>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Label htmlFor="session-filter" className="text-sm font-medium text-gray-700">Filter by:</Label>
+              <Select value={filterBySession} onValueChange={setFilterBySession}>
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder="All photos" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All photos ({photos.length})</SelectItem>
+                  <SelectItem value="no-session">Unlinked photos ({photos.filter((p: any) => !p.trainingSessionId).length})</SelectItem>
+                  {sessionsWithPhotos.map((session: any) => {
+                    const photoCount = photos.filter((p: any) => p.trainingSessionId === session.id).length;
+                    return (
+                      <SelectItem key={session.id} value={session.id.toString()}>
+                        {session.type} - {moment.tz(session.date, 'Asia/Kolkata').format('MMM DD')} ({photoCount})
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
+            </div>
+            <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
+              <DialogTrigger asChild>
+                <Button className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Upload Photos
+                </Button>
+              </DialogTrigger>
+            </Dialog>
+          </div>
+        </div>
 
-        {photos.length === 0 ? (
+        {filteredPhotos.length === 0 ? (
           <EmptyState
-            icon={ImageIcon}
-            title="No photos yet"
-            description="Start building your football photo collection by uploading your first photos"
+            icon={<ImageIcon className="w-16 h-16 text-gray-400" />}
+            title={filterBySession === 'all' ? "No photos yet" : "No photos found"}
+            description={filterBySession === 'all' 
+              ? "Start building your gallery by uploading your first photos"
+              : "No photos found for the selected filter"
+            }
             action={
-              <Button
-                onClick={() => setShowUploadDialog(true)}
-                className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Upload Your First Photo
-              </Button>
+              filterBySession === 'all' ? (
+                <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
+                  <DialogTrigger asChild>
+                    <Button className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white">
+                      <Camera className="w-4 h-4 mr-2" />
+                      Upload Photos
+                    </Button>
+                  </DialogTrigger>
+                </Dialog>
+              ) : (
+                <Button 
+                  variant="outline"
+                  onClick={() => setFilterBySession('all')}
+                >
+                  Show All Photos
+                </Button>
+              )
             }
           />
         ) : (
