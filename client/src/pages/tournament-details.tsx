@@ -23,6 +23,7 @@ export default function TournamentDetails() {
 
   const { data: games } = useQuery({
     queryKey: ["/api/games", { playerId: 1 }],
+    enabled: !!tournamentId,
   });
 
   // Filter games for this tournament

@@ -27,6 +27,8 @@ export default function Games() {
     mutationFn: (gameId: number) => apiRequest("DELETE", `/api/games/${gameId}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/games"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/games/recent"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/stats/summary"] });
       toast({
         title: "Success",
         description: "Game deleted successfully",
