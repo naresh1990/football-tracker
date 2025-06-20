@@ -1270,6 +1270,16 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
+  async updateGalleryPhoto(id: number, data: Partial<InsertGalleryPhoto>): Promise<GalleryPhoto | undefined> {
+    try {
+      const [updated] = await db.update(galleryPhotos).set(data).where(eq(galleryPhotos.id, id)).returning();
+      return updated || undefined;
+    } catch (error) {
+      console.error("Error updating gallery photo:", error);
+      return undefined;
+    }
+  }
+
   async deleteGalleryPhoto(id: number): Promise<boolean> {
     try {
       const [deleted] = await db.delete(galleryPhotos).where(eq(galleryPhotos.id, id)).returning();
