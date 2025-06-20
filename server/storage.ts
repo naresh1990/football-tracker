@@ -1008,6 +1008,10 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(games).where(eq(games.playerId, playerId)).orderBy(desc(games.date));
   }
 
+  async getGamesByTournament(tournamentId: number): Promise<Game[]> {
+    return await db.select().from(games).where(eq(games.tournamentId, tournamentId)).orderBy(desc(games.date));
+  }
+
   async getRecentGames(playerId: number, limit = 5): Promise<Game[]> {
     return await db.select().from(games).where(eq(games.playerId, playerId)).orderBy(desc(games.date)).limit(limit);
   }
