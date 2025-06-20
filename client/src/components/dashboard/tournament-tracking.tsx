@@ -16,6 +16,48 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
     queryKey: ["/api/tournaments", { playerId }],
   });
 
+  const { data: games = [] } = useQuery({
+    queryKey: ['/api/games'],
+  });
+
+  // Calculate aggregated tournament data same as tournament details page
+  const tournamentsWithStats = tournaments?.map((tournament: any) => {
+    const tournamentGames = games.filter((game: any) => game.tournamentId === tournament.id);
+    
+    // Calculate points (3 for win, 1 for draw, 0 for loss)
+    const points = tournamentGames.reduce((sum: number, game: any) => {
+      if (game.teamScore > game.opponentScore) return sum + 3; // Win
+      if (game.teamScore === game.opponentScore) return sum + 1; // Draw
+      return sum; // Loss
+    }, 0);
+    
+    // Calculate match record
+    const wins = tournamentGames.filter((game: any) => game.teamScore > game.opponentScore).length;
+    const draws = tournamentGames.filter((game: any) => game.teamScore === game.opponentScore).length;
+    const losses = tournamentGames.filter((game: any) => game.teamScore < game.opponentScore).length;
+    
+    // Calculate team goals
+    const teamGoalsScored = tournamentGames.reduce((sum: number, game: any) => sum + (game.teamScore || 0), 0);
+    const goalsConceded = tournamentGames.reduce((sum: number, game: any) => sum + (game.opponentScore || 0), 0);
+    
+    // Calculate Darshil's stats
+    const playerGoalsScored = tournamentGames.reduce((sum: number, game: any) => sum + (game.playerGoals || 0), 0);
+    const playerAssists = tournamentGames.reduce((sum: number, game: any) => sum + (game.playerAssists || 0), 0);
+    
+    return {
+      ...tournament,
+      points,
+      wins,
+      draws,
+      losses,
+      teamGoalsScored,
+      goalsConceded,
+      playerGoalsScored,
+      playerAssists,
+      gamesPlayed: tournamentGames.length
+    };
+  }) || [];
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'active': return 'bg-green-100 text-green-800';
@@ -52,7 +94,7 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
                 <p className="text-gray-500">No tournaments found</p>
               </div>
             ) : (
-              tournaments?.map((tournament: any) => (
+              tournamentsWithStats?.map((tournament: any) => (
                 <div key={tournament.id} className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300">
                   {/* Header */}
                   <div className="flex justify-between items-start mb-4">
