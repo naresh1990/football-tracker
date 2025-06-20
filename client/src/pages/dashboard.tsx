@@ -51,21 +51,6 @@ const itemVariants = {
 
 export default function Dashboard() {
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
-  
-  // Collapsible sections state
-  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({
-    training: false,
-    tournaments: false,
-    recentGames: false,
-    coachFeedback: false,
-  });
-
-  const toggleSection = (section: string) => {
-    setCollapsedSections(prev => ({
-      ...prev,
-      [section]: !prev[section]
-    }));
-  };
   const playerId = 1; // Define playerId variable
 
   // Fetch player data
@@ -103,6 +88,37 @@ export default function Dashboard() {
   const { data: squadMembers } = useQuery({
     queryKey: ["/api/squad"],
   });
+
+  // Fetch tournaments to check for active ones
+  const { data: tournaments } = useQuery({
+    queryKey: ["/api/tournaments", { playerId }],
+  });
+
+  // Check if there are active tournaments
+  const activeTournaments = tournaments?.filter((tournament: any) => 
+    tournament.status !== 'completed'
+  ) || [];
+
+  // Fetch coach feedback to check if any exists
+  const { data: coachFeedback } = useQuery({
+    queryKey: ["/api/coach-feedback", { playerId }],
+  });
+
+  // Collapsible sections state - auto-collapse sections with no data
+  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({
+    training: false,
+    tournaments: false, // Will be updated after data loads
+    recentGames: false,
+    coachFeedback: false, // Will be updated after data loads
+    teamProfile: false,
+  });
+
+  const toggleSection = (section: string) => {
+    setCollapsedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
 
   if (playerLoading || statsLoading || activeClubLoading) {
     return (
@@ -281,7 +297,26 @@ export default function Dashboard() {
                   className="overflow-hidden"
                 >
                   <div className="p-6 m-4 bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-xl shadow-sm">
-                    <TournamentTracking playerId={playerId} />
+                    {activeTournaments?.length > 0 ? (
+                      <TournamentTracking playerId={playerId} />
+                    ) : (
+                      <div className="text-center py-12">
+                        <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-400 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                          <Trophy className="w-10 h-10 text-white" />
+                        </div>
+                        <h3 className="text-xl font-semibold text-gray-800 mb-2">No Active Tournaments</h3>
+                        <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                          Ready to join a tournament? Create or register for one to start tracking your competitive journey.
+                        </p>
+                        <button 
+                          onClick={() => setIsQuickAddOpen(true)}
+                          className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        >
+                          <Plus className="w-5 h-5 inline mr-2" />
+                          Add Tournament
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               )}
@@ -318,7 +353,24 @@ export default function Dashboard() {
                   className="overflow-hidden"
                 >
                   <div className="p-6 m-4 bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-xl shadow-sm">
-                    <CoachFeedback playerId={playerId} />
+                    {coachFeedback?.length > 0 ? (
+                      <CoachFeedback playerId={playerId} />
+                    ) : (
+                      <div className="text-center py-12">
+                        <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                          <MessageSquare className="w-10 h-10 text-white" />
+                        </div>
+                        <h3 className="text-xl font-semibold text-gray-800 mb-2">No Coach Feedback Yet</h3>
+                        <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                          Your coaches haven't provided any feedback yet. Keep up the great work and check back soon!
+                        </p>
+                        <div className="bg-purple-100 border border-purple-200 rounded-lg p-4 max-w-md mx-auto">
+                          <p className="text-purple-800 text-sm font-medium">
+                            💡 Tip: Ask your coach for feedback after training sessions to track your progress
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               )}
