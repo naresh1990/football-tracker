@@ -15,9 +15,12 @@ interface RecentGamesProps {
 }
 
 export default function RecentGames({ playerId }: RecentGamesProps) {
-  const { data: games, isLoading } = useQuery({
-    queryKey: ["/api/games/recent", { playerId, limit: 3 }],
+  const { data: allGames, isLoading } = useQuery({
+    queryKey: ["/api/games/recent", { playerId }],
   });
+
+  // Limit to last 3 games
+  const games = allGames ? allGames.slice(0, 3) : [];
 
   if (isLoading) {
     return (
