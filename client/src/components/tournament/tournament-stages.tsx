@@ -57,7 +57,6 @@ export default function TournamentStages({ tournament }: TournamentStagesProps) 
 
       {stageOrder.map(stage => {
         const stageGames = gamesByStage[stage];
-        console.log(`Stage ${stage} games:`, stageGames);
         if (!stageGames || stageGames.length === 0) return null;
 
         return (
