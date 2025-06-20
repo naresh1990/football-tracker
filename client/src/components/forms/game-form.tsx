@@ -30,6 +30,7 @@ export default function GameForm({ trigger, onSuccess, tournament }: GameFormPro
     positionPlayed: "",
     minutesPlayed: "",
     rating: "",
+    pointsEarned: "",
     notes: ""
   });
 
@@ -93,6 +94,7 @@ export default function GameForm({ trigger, onSuccess, tournament }: GameFormPro
       playerGoals: parseInt(formData.playerGoals) || 0,
       playerAssists: parseInt(formData.playerAssists) || 0,
       minutesPlayed: parseInt(formData.minutesPlayed) || 0,
+      pointsEarned: parseInt(formData.pointsEarned) || 0,
       date: formData.date, // Send as string, let server transform it
     };
     
@@ -267,14 +269,27 @@ export default function GameForm({ trigger, onSuccess, tournament }: GameFormPro
             </div>
           </div>
 
-          <div>
-            <Label htmlFor="rating">Performance Rating (1-10)</Label>
-            <Input
-              id="rating"
-              value={formData.rating}
-              onChange={(e) => setFormData({ ...formData, rating: e.target.value })}
-              placeholder="e.g., 8.5/10"
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="rating">Performance Rating (1-10)</Label>
+              <Input
+                id="rating"
+                value={formData.rating}
+                onChange={(e) => setFormData({ ...formData, rating: e.target.value })}
+                placeholder="e.g., 8.5/10"
+              />
+            </div>
+            <div>
+              <Label htmlFor="pointsEarned">Points Earned</Label>
+              <Input
+                id="pointsEarned"
+                type="number"
+                min="0"
+                value={formData.pointsEarned}
+                onChange={(e) => setFormData({ ...formData, pointsEarned: e.target.value })}
+                placeholder="3 for win, 1 for draw, 0 for loss"
+              />
+            </div>
           </div>
 
           <div>
