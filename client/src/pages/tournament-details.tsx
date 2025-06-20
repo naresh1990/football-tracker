@@ -122,23 +122,29 @@ export default function TournamentDetails() {
         <Card className="mb-8">
           <CardHeader>
             <div className="flex justify-between items-start">
-              <div>
-                <CardTitle className="text-2xl font-bold text-gray-900 mb-2">
-                  {tournament.name}
-                </CardTitle>
-                <p className="text-gray-600 mb-4">{tournament.description}</p>
-                <div className="flex items-center gap-4 text-sm text-gray-600">
-                  <div className="flex items-center gap-1">
-                    <Calendar className="w-4 h-4" />
-                    {tournament.startDate ? formatDate(tournament.startDate) : 'TBD'}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <MapPin className="w-4 h-4" />
-                    {tournament.venue || 'TBD'}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Users className="w-4 h-4" />
-                    {tournament.matchFormat || 'TBD'}
+              <div className="flex items-start gap-4">
+                {/* Tournament/Club Logo */}
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Trophy className="w-8 h-8 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-2xl font-bold text-gray-900 mb-2">
+                    {tournament.name}
+                  </CardTitle>
+                  <p className="text-gray-600 mb-4">{tournament.description}</p>
+                  <div className="flex items-center gap-4 text-sm text-gray-600">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-4 h-4" />
+                      {tournament.startDate ? formatDate(tournament.startDate) : 'TBD'}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <MapPin className="w-4 h-4" />
+                      {tournament.venue || 'TBD'}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Users className="w-4 h-4" />
+                      {tournament.matchFormat || 'TBD'}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -174,7 +180,7 @@ export default function TournamentDetails() {
             <GameForm 
               tournament={tournament}
               trigger={
-                <Button>
+                <Button className="text-[#ffffff]">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Game
                 </Button>
@@ -195,7 +201,7 @@ export default function TournamentDetails() {
               >
                 <div className="flex items-center gap-3">
                   <h3 className="text-lg font-semibold text-gray-900">{stageLabels[stage]}</h3>
-                  <Badge variant="secondary" className="text-xs">
+                  <Badge variant="secondary" className="text-xs text-[#ffffff]">
                     {stageGames.length} {stageGames.length === 1 ? 'game' : 'games'}
                   </Badge>
                 </div>
@@ -346,7 +352,7 @@ export default function TournamentDetails() {
               <GameForm 
                 tournament={tournament}
                 trigger={
-                  <Button>
+                  <Button className="text-[#ffffff]">
                     <Plus className="w-4 h-4 mr-2" />
                     Add First Game
                   </Button>
