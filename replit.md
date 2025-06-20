@@ -102,6 +102,22 @@ This is a comprehensive football player tracking application built for monitorin
 
 ## Recent Changes
 
+- June 20, 2025: Modified statistics to show only data from active club for current season (2025-26)
+  - Updated stats summary API to filter games by current season period (starting June 1st)
+  - Season highlights now reflect performance only within active club context
+  - Ensures statistics are relevant to current club membership and season performance
+- June 20, 2025: Added inline tournament position editing functionality
+  - Users can click on position number to edit tournament standing directly
+  - Added save/cancel controls with proper data type conversion for position updates
+  - Enhanced tournament cards with hover edit icons and smooth editing experience
+- June 20, 2025: Implemented dynamic points calculation from tournament games
+  - Points section now aggregates actual points earned from all tournament games
+  - Replaced static tournament data with calculated statistics from game results
+  - Enhanced tournament cards show real win/loss records, goal counts, and points totals
+- June 20, 2025: Added Points Earned field to game forms
+  - Both Add Game and Edit Game forms now include points earned input field
+  - Supports tournament point tracking (3 for win, 1 for draw, 0 for loss)
+  - Properly integrated with form validation and database storage
 - June 20, 2025: Restructured gallery system by removing session gallery from training popups
   - Removed Session Gallery section completely from training session popups for cleaner interface
   - Enhanced main Gallery page with date-based organization showing photos grouped by upload date
