@@ -181,7 +181,7 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
                   </div>
 
                   {/* Action Button */}
-                  <Link href={`/tournaments/${tournament.id}`}>
+                  <Link href={`/tournament/${tournament.id}`}>
                     <Button className="w-full bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm">
                       <Eye className="w-4 h-4 mr-2" />
                       View Tournament Details
