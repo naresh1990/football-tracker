@@ -69,15 +69,15 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
                   transition={{ delay: 0.1 * index, duration: 0.5 }}
                   className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 hover:bg-white/90 transition-all duration-300 border border-white/50 shadow-sm"
                 >
-                  {/* Compact horizontal layout */}
-                  <div className="flex items-center">
-                    {/* Left side - Tournament info and opponent */}
-                    <div className="flex items-center gap-3 flex-1">
-                      <div className={`w-10 h-10 ${resultBg} rounded-xl flex items-center justify-center`}>
+                  {/* Compact horizontal layout with consistent positioning */}
+                  <div className="grid grid-cols-12 items-center gap-4">
+                    {/* Left side - Tournament info and opponent (4 columns) */}
+                    <div className="col-span-4 flex items-center gap-3">
+                      <div className={`w-10 h-10 ${resultBg} rounded-xl flex items-center justify-center flex-shrink-0`}>
                         {React.createElement(resultIcon, { className: `${resultColor} w-5 h-5` })}
                       </div>
-                      <div>
-                        <div className="text-sm font-medium text-gray-900">
+                      <div className="min-w-0">
+                        <div className="text-sm font-medium text-gray-900 truncate">
                           vs {game.opponent}
                         </div>
                         <div className="flex items-center gap-2 text-xs text-gray-600">
@@ -88,8 +88,8 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
                       </div>
                     </div>
 
-                    {/* Center - Score */}
-                    <div className="flex items-center gap-4 px-6">
+                    {/* Center - Score (4 columns) */}
+                    <div className="col-span-4 flex items-center justify-center gap-4">
                       <div className="text-center">
                         <div className="text-xs text-gray-500 mb-1">Darshil's Team</div>
                         <div className="text-2xl font-bold text-gray-900">{game.teamScore}</div>
@@ -101,8 +101,8 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
                       </div>
                     </div>
 
-                    {/* Right side - Result, stats and date */}
-                    <div className="flex items-center gap-3 flex-shrink-0">
+                    {/* Right side - Result, stats and date (4 columns) */}
+                    <div className="col-span-4 flex items-center justify-end gap-3">
                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                         result === 'win' ? 'bg-green-500 text-white' : 
                         result === 'loss' ? 'bg-red-500 text-white' : 
@@ -126,7 +126,7 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
                       )}
 
                       {/* Date */}
-                      <div className="text-sm text-gray-500 ml-2">
+                      <div className="text-sm text-gray-500">
                         {formatShortDate(game.date)}
                       </div>
                     </div>
