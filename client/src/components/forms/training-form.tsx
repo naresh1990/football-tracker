@@ -74,6 +74,11 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
         recurringDays: [],
         endDate: ""
       });
+      
+      // Force query invalidation for new training sessions
+      queryClient.invalidateQueries({ queryKey: ["/api/training"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
+      
       onSuccess?.();
     },
     onError: () => {
