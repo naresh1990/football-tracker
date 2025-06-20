@@ -13,6 +13,7 @@ import GameForm from "@/components/forms/game-form";
 import EditGameForm from "@/components/forms/edit-game-form";
 import TournamentForm from "@/components/forms/tournament-form";
 import TournamentPointsForm from "@/components/tournament/tournament-points-form";
+import TournamentLogoUpload from "@/components/tournament/tournament-logo-upload";
 
 export default function TournamentDetails() {
   const [, params] = useRoute("/tournament/:id");
@@ -166,6 +167,15 @@ export default function TournamentDetails() {
                     <Button variant="outline">
                       <Edit className="w-4 h-4 mr-2" />
                       Edit Tournament
+                    </Button>
+                  }
+                />
+                <TournamentLogoUpload 
+                  tournament={tournament}
+                  trigger={
+                    <Button variant="outline">
+                      <Upload className="w-4 h-4 mr-2" />
+                      Edit Logo
                     </Button>
                   }
                 />
