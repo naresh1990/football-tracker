@@ -70,15 +70,15 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
                   className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 hover:bg-white/90 transition-all duration-300 border border-white/50 shadow-sm"
                 >
                   {/* Compact horizontal layout */}
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center">
                     {/* Left side - Tournament info and opponent */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 flex-1">
                       <div className={`w-10 h-10 ${resultBg} rounded-xl flex items-center justify-center`}>
                         {React.createElement(resultIcon, { className: `${resultColor} w-5 h-5` })}
                       </div>
                       <div>
-                        <div className="flex items-center gap-2 text-sm font-medium text-gray-900">
-                          <span>vs {game.opponent}</span>
+                        <div className="text-sm font-medium text-gray-900">
+                          vs {game.opponent}
                         </div>
                         <div className="flex items-center gap-2 text-xs text-gray-600">
                           <span>Blue Cubs Bangalore 2024</span>
@@ -89,20 +89,20 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
                     </div>
 
                     {/* Center - Score */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-4 px-6">
                       <div className="text-center">
-                        <div className="text-sm text-gray-500">Darshil's Team</div>
+                        <div className="text-xs text-gray-500 mb-1">Darshil's Team</div>
                         <div className="text-2xl font-bold text-gray-900">{game.teamScore}</div>
                       </div>
-                      <div className="text-gray-400 font-semibold">VS</div>
+                      <div className="text-sm text-gray-400 font-medium">VS</div>
                       <div className="text-center">
-                        <div className="text-sm text-gray-500">{game.opponent}</div>
+                        <div className="text-xs text-gray-500 mb-1">{game.opponent}</div>
                         <div className="text-2xl font-bold text-gray-900">{game.opponentScore}</div>
                       </div>
                     </div>
 
-                    {/* Right side - Result and stats */}
-                    <div className="flex items-center gap-3">
+                    {/* Right side - Result, stats and date */}
+                    <div className="flex items-center gap-3 flex-shrink-0">
                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                         result === 'win' ? 'bg-green-500 text-white' : 
                         result === 'loss' ? 'bg-red-500 text-white' : 
@@ -112,23 +112,21 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
                       </span>
                       
                       {/* Player stats */}
-                      <div className="flex items-center gap-2">
-                        {game.playerGoals > 0 && (
-                          <div className="flex items-center gap-1 bg-green-100 px-2 py-1 rounded-lg">
-                            <Goal className="w-3 h-3 text-green-600" />
-                            <span className="text-green-700 font-semibold text-sm">{game.playerGoals}</span>
-                          </div>
-                        )}
-                        {game.playerAssists > 0 && (
-                          <div className="flex items-center gap-1 bg-orange-100 px-2 py-1 rounded-lg">
-                            <Circle className="w-3 h-3 text-orange-600" />
-                            <span className="text-orange-700 font-semibold text-sm">{game.playerAssists}</span>
-                          </div>
-                        )}
-                      </div>
+                      {game.playerGoals > 0 && (
+                        <div className="flex items-center gap-1 bg-green-100 px-2 py-1 rounded-lg">
+                          <Goal className="w-3 h-3 text-green-600" />
+                          <span className="text-green-700 font-semibold text-sm">{game.playerGoals}</span>
+                        </div>
+                      )}
+                      {game.playerAssists > 0 && (
+                        <div className="flex items-center gap-1 bg-orange-100 px-2 py-1 rounded-lg">
+                          <Circle className="w-3 h-3 text-orange-600" />
+                          <span className="text-orange-700 font-semibold text-sm">{game.playerAssists}</span>
+                        </div>
+                      )}
 
                       {/* Date */}
-                      <div className="text-sm text-gray-500">
+                      <div className="text-sm text-gray-500 ml-2">
                         {formatShortDate(game.date)}
                       </div>
                     </div>
