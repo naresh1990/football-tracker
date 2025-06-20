@@ -10,6 +10,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import GameForm from "@/components/forms/game-form";
+import EditGameForm from "@/components/forms/edit-game-form";
 
 export default function Games() {
   const playerId = 1;
@@ -127,17 +128,22 @@ export default function Games() {
                         )}
                       </div>
                       <div className="flex gap-1">
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                          <Edit className="w-4 h-4" />
-                        </Button>
+                        <EditGameForm 
+                          game={game} 
+                          tournament={tournament} 
+                        />
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-8 w-8 p-0"
-                          onClick={() => deleteGameMutation.mutate(game.id)}
+                          className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
+                          onClick={() => {
+                            if (window.confirm("Are you sure you want to delete this game?")) {
+                              deleteGameMutation.mutate(game.id);
+                            }
+                          }}
                           disabled={deleteGameMutation.isPending}
                         >
-                          <Trash2 className="w-4 h-4 text-red-500" />
+                          <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
                     </div>
