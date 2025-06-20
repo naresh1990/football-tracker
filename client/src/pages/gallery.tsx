@@ -181,7 +181,7 @@ export default function Gallery() {
                 <SelectTrigger className="w-48">
                   <SelectValue placeholder="All photos" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white shadow-lg border rounded-md">
                   <SelectItem value="all">All photos ({photos.length})</SelectItem>
                   <SelectItem value="no-session">Unlinked photos ({photos.filter((p: any) => !p.trainingSessionId).length})</SelectItem>
                   {sessionsWithPhotos.map((session: any) => {
