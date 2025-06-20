@@ -93,37 +93,40 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
                       <div className="text-xs text-blue-100">Position</div>
                     </div>
                     <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
-                      <div className="text-2xl font-bold text-white">{tournament.points || 0}</div>
+                      <div className="text-2xl font-bold text-white">{tournament.totalPoints || 0}</div>
                       <div className="text-xs text-blue-100">Points</div>
                     </div>
-                    <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
-                      <div className="text-2xl font-bold text-white">{tournament.wins || 0}</div>
-                      <div className="text-xs text-blue-100">Wins</div>
+                    <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
+                      <div className="text-xs text-blue-100 mb-2">Darshil's Stats</div>
+                      <div className="flex justify-between items-center">
+                        <div className="text-center">
+                          <div className="text-lg font-bold text-white">{tournament.playerGoals || 0}</div>
+                          <div className="text-xs text-green-200">Goals</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-lg font-bold text-white">{tournament.playerAssists || 0}</div>
+                          <div className="text-xs text-orange-200">Assists</div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
-                      <div className="text-2xl font-bold text-white">{tournament.goalCount || 0}</div>
-                      <div className="text-xs text-blue-100">Goals</div>
-                    </div>
-                  </div>
-
-                  {/* Additional Stats Row */}
-                  <div className="grid grid-cols-3 gap-4 mb-6">
-                    <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
-                      <div className="text-lg font-bold text-white">{tournament.gamesPlayed || 0}</div>
-                      <div className="text-xs text-blue-100">Games Played</div>
-                    </div>
-                    <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
-                      <div className="text-lg font-bold text-white">{tournament.losses || 0}</div>
-                      <div className="text-xs text-blue-100">Losses</div>
-                    </div>
-                    <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
-                      <div className="text-lg font-bold text-white">{tournament.draws || 0}</div>
-                      <div className="text-xs text-blue-100">Draws</div>
+                    <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
+                      <div className="text-xs text-blue-100 mb-2">Match Record</div>
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-green-300">{tournament.totalWins || 0}W</span>
+                        <span className="text-gray-300">{tournament.totalDraws || 0}D</span>
+                        <span className="text-red-300">{tournament.totalLosses || 0}L</span>
+                      </div>
+                      <div className="text-center mt-1">
+                        <span className="text-xs text-blue-200">{tournament.totalGames || 0} Games</span>
+                      </div>
                     </div>
                   </div>
 
                   {/* Action Button */}
-                  <Button className="w-full bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm">
+                  <Button 
+                    className="w-full bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm"
+                    onClick={() => window.location.href = `/tournaments/${tournament.id}`}
+                  >
                     <Eye className="w-4 h-4 mr-2" />
                     View Tournament Details
                   </Button>
