@@ -102,6 +102,12 @@ This is a comprehensive football player tracking application built for monitorin
 
 ## Recent Changes
 
+- June 20, 2025: Updated all statistics displays to show Darshil's complete career data without club filtering
+  - Changed dashboard, hero banner, and statistics page to use `/api/stats/all-time` instead of filtered data
+  - Fixed field mapping from `winRate` to `winPercentage` for consistency across components
+  - Statistics now correctly display: 5 goals, 2 assists, 5 games, 100% win rate
+  - Updated hero banner to use Darshil's actual squad member profile picture from database
+  - Fixed coach feedback display by correctly fetching training sessions with feedback data
 - June 20, 2025: Modified statistics to show only data from active club for current season (2025-26)
   - Updated stats summary API to filter games by current season period (starting June 1st)
   - Season highlights now reflect performance only within active club context
