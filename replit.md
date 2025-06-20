@@ -102,6 +102,12 @@ This is a comprehensive football player tracking application built for monitorin
 
 ## Recent Changes
 
+- June 20, 2025: Enhanced training session photo upload to support multiple photos at once
+  - Users can now select multiple photos simultaneously using file input
+  - Each photo can have individual captions with a scrollable interface
+  - Batch upload with progress indication shows count of photos being uploaded
+  - All photos are uploaded concurrently for better performance
+  - Enhanced UI with photo file details (name, size) for better user experience
 - June 19, 2025: Enhanced Gallery with training session integration and cross-linking functionality
   - Training session photos now automatically appear in main gallery with session references
   - Added trainingSessionId field to gallery photos for linking back to sessions

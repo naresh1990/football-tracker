@@ -63,8 +63,8 @@ export default function Training() {
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   const [feedbackText, setFeedbackText] = useState('');
   const [showPhotoUpload, setShowPhotoUpload] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
-  const [photoCaption, setPhotoCaption] = useState('');
+  const [selectedPhotos, setSelectedPhotos] = useState<File[]>([]);
+  const [photoCaptions, setPhotoCaptions] = useState<{[key: string]: string}>({});
   const playerId = 1;
   
   const [view, setView] = useState(Views.MONTH);  
@@ -132,41 +132,45 @@ export default function Training() {
     },
   });
 
-  // Photo upload mutation
-  const uploadPhotoMutation = useMutation({
-    mutationFn: async (data: { photo: File; caption: string; sessionId: number }) => {
-      const formData = new FormData();
-      formData.append('photo', data.photo);
-      formData.append('playerId', '1');
-      formData.append('caption', data.caption);
-      formData.append('sessionId', data.sessionId.toString());
-      
-      const response = await fetch('/api/training/gallery', {
-        method: 'POST',
-        body: formData,
+  // Multiple photos upload mutation
+  const uploadPhotosMutation = useMutation({
+    mutationFn: async (data: { photos: File[]; captions: {[key: string]: string}; sessionId: number }) => {
+      const uploadPromises = data.photos.map(async (photo) => {
+        const formData = new FormData();
+        formData.append('photo', photo);
+        formData.append('playerId', '1');
+        formData.append('caption', data.captions[photo.name] || '');
+        formData.append('sessionId', data.sessionId.toString());
+        
+        const response = await fetch('/api/training/gallery', {
+          method: 'POST',
+          body: formData,
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Upload failed for ${photo.name}`);
+        }
+        
+        return response.json();
       });
       
-      if (!response.ok) {
-        throw new Error('Upload failed');
-      }
-      
-      return response.json();
+      return Promise.all(uploadPromises);
     },
-    onSuccess: () => {
+    onSuccess: (results) => {
       queryClient.invalidateQueries({ queryKey: ["/api/training"] });
       queryClient.invalidateQueries({ queryKey: ["/api/gallery"] });
       setShowPhotoUpload(false);
-      setSelectedPhoto(null);
-      setPhotoCaption('');
+      setSelectedPhotos([]);
+      setPhotoCaptions({});
       toast({
-        title: "Photo uploaded",
-        description: "Photo has been added to both the training session and main gallery",
+        title: "Photos uploaded",
+        description: `${results.length} photo(s) have been added to both the training session and main gallery`,
       });
     },
-    onError: () => {
+    onError: (error) => {
       toast({
         title: "Upload failed",
-        description: "Failed to upload photo. Please try again.",
+        description: error.message || "Failed to upload photos. Please try again.",
         variant: "destructive",
       });
     },
@@ -777,63 +781,87 @@ export default function Training() {
 
         {/* Photo Upload Modal */}
         <Dialog open={showPhotoUpload} onOpenChange={setShowPhotoUpload}>
-          <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+          <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <Upload className="w-5 h-5" />
-                Upload Session Photo
+                Upload Session Photos
               </DialogTitle>
               <DialogDescription>
-                Add a photo to this training session with an optional caption.
+                Add multiple photos to this training session with individual captions.
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 p-1">
               <div>
-                <Label htmlFor="session-photo-upload">Select Photo</Label>
+                <Label htmlFor="session-photos-upload">Select Photos</Label>
                 <Input
-                  id="session-photo-upload"
+                  id="session-photos-upload"
                   type="file"
                   accept="image/*"
+                  multiple
                   onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      if (file.type.startsWith('image/')) {
-                        setSelectedPhoto(file);
-                      } else {
-                        toast({
-                          title: "Invalid file type",
-                          description: "Please select an image file",
-                          variant: "destructive",
-                        });
-                      }
+                    const files = Array.from(e.target.files || []);
+                    const validFiles = files.filter(file => file.type.startsWith('image/'));
+                    
+                    if (validFiles.length !== files.length) {
+                      toast({
+                        title: "Invalid file types",
+                        description: "Some files were skipped. Please select only image files.",
+                        variant: "destructive",
+                      });
                     }
+                    
+                    setSelectedPhotos(validFiles);
+                    // Initialize captions for new photos
+                    const newCaptions: {[key: string]: string} = {};
+                    validFiles.forEach(file => {
+                      newCaptions[file.name] = '';
+                    });
+                    setPhotoCaptions(newCaptions);
                   }}
                   className="mt-1"
                 />
-                {selectedPhoto && (
+                {selectedPhotos.length > 0 && (
                   <p className="text-sm text-green-600 mt-1">
-                    Selected: {selectedPhoto.name}
+                    Selected: {selectedPhotos.length} photo(s)
                   </p>
                 )}
               </div>
-              <div>
-                <Label htmlFor="session-caption">Caption (optional)</Label>
-                <Textarea
-                  id="session-caption"
-                  placeholder="Add a caption for your training photo..."
-                  value={photoCaption}
-                  onChange={(e) => setPhotoCaption(e.target.value)}
-                  className="mt-1"
-                  rows={3}
-                />
-              </div>
+              
+              {selectedPhotos.length > 0 && (
+                <div className="space-y-3 max-h-60 overflow-y-auto">
+                  <Label className="text-sm font-medium">Photo Captions</Label>
+                  {selectedPhotos.map((photo, index) => (
+                    <div key={`${photo.name}-${index}`} className="border rounded-lg p-3 space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        <span className="text-sm font-medium truncate">{photo.name}</span>
+                        <span className="text-xs text-gray-500">
+                          ({(photo.size / 1024 / 1024).toFixed(1)} MB)
+                        </span>
+                      </div>
+                      <Textarea
+                        placeholder={`Caption for ${photo.name} (optional)...`}
+                        value={photoCaptions[photo.name] || ''}
+                        onChange={(e) => setPhotoCaptions(prev => ({
+                          ...prev,
+                          [photo.name]: e.target.value
+                        }))}
+                        rows={2}
+                        className="text-sm"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+              
               <div className="flex gap-3">
                 <Button
                   variant="outline"
                   onClick={() => {
                     setShowPhotoUpload(false);
-                    setSelectedPhoto(null);
-                    setPhotoCaption('');
+                    setSelectedPhotos([]);
+                    setPhotoCaptions({});
                   }}
                   className="flex-1"
                 >
@@ -841,26 +869,26 @@ export default function Training() {
                 </Button>
                 <Button 
                   onClick={() => {
-                    if (selectedPhoto && selectedEvent) {
-                      uploadPhotoMutation.mutate({
-                        photo: selectedPhoto,
-                        caption: photoCaption,
+                    if (selectedPhotos.length > 0 && selectedEvent) {
+                      uploadPhotosMutation.mutate({
+                        photos: selectedPhotos,
+                        captions: photoCaptions,
                         sessionId: selectedEvent.id,
                       });
                     }
                   }}
-                  disabled={uploadPhotoMutation.isPending || !selectedPhoto}
+                  disabled={uploadPhotosMutation.isPending || selectedPhotos.length === 0}
                   className="flex-1 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
                 >
-                  {uploadPhotoMutation.isPending ? (
+                  {uploadPhotosMutation.isPending ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                      Uploading...
+                      Uploading {selectedPhotos.length} photo(s)...
                     </>
                   ) : (
                     <>
                       <Upload className="w-4 h-4 mr-2" />
-                      Upload Photo
+                      Upload {selectedPhotos.length > 0 ? selectedPhotos.length : ''} Photo{selectedPhotos.length !== 1 ? 's' : ''}
                     </>
                   )}
                 </Button>
