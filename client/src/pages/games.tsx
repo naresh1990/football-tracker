@@ -162,12 +162,12 @@ export default function Games() {
                         <div className="flex flex-col items-center">
                           <div className="text-xl font-bold text-gray-400 mb-2">VS</div>
                           <div className={`px-4 py-2 rounded-xl font-bold text-lg shadow-lg border-2 ${
-                            result === 'Win' ? 'bg-green-600 text-white border-green-700 shadow-green-200' :
-                            result === 'Loss' ? 'bg-red-600 text-white border-red-700 shadow-red-200' :
-                            result === 'Draw' ? 'bg-gray-600 text-white border-gray-700 shadow-gray-200' :
+                            result === 'win' ? 'bg-green-600 text-white border-green-700 shadow-green-200' :
+                            result === 'loss' ? 'bg-red-600 text-white border-red-700 shadow-red-200' :
+                            result === 'draw' ? 'bg-gray-600 text-white border-gray-700 shadow-gray-200' :
                             'bg-gray-500 text-white border-gray-600 shadow-gray-200'
                           }`}>
-                            {result}
+                            {result.charAt(0).toUpperCase() + result.slice(1)}
                           </div>
                         </div>
                         <div className="text-center">
