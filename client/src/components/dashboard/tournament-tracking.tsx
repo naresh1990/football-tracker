@@ -6,6 +6,7 @@ import { Plus, Trophy, Eye, Calendar, Target, Upload, Users, MapPin } from "luci
 import { formatShortDate } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 
 interface TournamentTrackingProps {
   playerId: number;
@@ -180,13 +181,12 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
                   </div>
 
                   {/* Action Button */}
-                  <Button 
-                    className="w-full bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm"
-                    onClick={() => window.location.href = `/tournaments/${tournament.id}`}
-                  >
-                    <Eye className="w-4 h-4 mr-2" />
-                    View Tournament Details
-                  </Button>
+                  <Link href={`/tournaments/${tournament.id}`}>
+                    <Button className="w-full bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm">
+                      <Eye className="w-4 h-4 mr-2" />
+                      View Tournament Details
+                    </Button>
+                  </Link>
                 </div>
               ))
             )}
