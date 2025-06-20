@@ -29,6 +29,7 @@ export default function EditGameForm({ game, tournament }: EditGameFormProps) {
     positionPlayed: "",
     minutesPlayed: "",
     rating: "",
+    pointsEarned: "",
     notes: ""
   });
 
@@ -49,6 +50,7 @@ export default function EditGameForm({ game, tournament }: EditGameFormProps) {
         positionPlayed: game.positionPlayed || "",
         minutesPlayed: game.minutesPlayed?.toString() || "",
         rating: game.rating || "",
+        pointsEarned: game.pointsEarned?.toString() || "",
         notes: game.notes || ""
       });
     }
@@ -89,6 +91,7 @@ export default function EditGameForm({ game, tournament }: EditGameFormProps) {
       playerGoals: parseInt(formData.playerGoals) || 0,
       playerAssists: parseInt(formData.playerAssists) || 0,
       minutesPlayed: parseInt(formData.minutesPlayed) || 0,
+      pointsEarned: parseInt(formData.pointsEarned) || 0,
       date: formData.date,
     };
     
@@ -250,6 +253,17 @@ export default function EditGameForm({ game, tournament }: EditGameFormProps) {
                 value={formData.rating}
                 onChange={(e) => setFormData({ ...formData, rating: e.target.value })}
                 placeholder="Coach rating"
+              />
+            </div>
+            <div>
+              <Label htmlFor="pointsEarned">Points Earned</Label>
+              <Input
+                id="pointsEarned"
+                type="number"
+                min="0"
+                value={formData.pointsEarned}
+                onChange={(e) => setFormData({ ...formData, pointsEarned: e.target.value })}
+                placeholder="3 for win, 1 for draw, 0 for loss"
               />
             </div>
           </div>
