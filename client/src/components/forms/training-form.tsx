@@ -55,8 +55,6 @@ export default function TrainingForm({ trigger, onSuccess }: TrainingFormProps) 
       }
     },
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["/api/training"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
       const sessionsCount = variables.isRecurring ? "sessions" : "session";
       toast({
         title: "Success",

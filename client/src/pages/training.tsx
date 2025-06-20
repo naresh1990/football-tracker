@@ -63,6 +63,7 @@ export default function Training() {
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   const [feedbackText, setFeedbackText] = useState('');
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const playerId = 1;
   
@@ -84,13 +85,16 @@ export default function Training() {
         body: JSON.stringify({ attendance }),
       }),
     onSuccess: (updatedSession) => {
-      queryClient.invalidateQueries({ queryKey: ["/api/training"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
-      
       // Update the selected event state immediately
       if (selectedEvent && updatedSession) {
         setSelectedEvent(updatedSession);
       }
+      
+      // Debounced query invalidation to prevent rapid refetches
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ["/api/training"] });
+        queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
+      }, 100);
       
       toast({
         title: "Attendance Updated",
@@ -113,13 +117,16 @@ export default function Training() {
         body: JSON.stringify({ coachFeedback }),
       }),
     onSuccess: (updatedSession) => {
-      queryClient.invalidateQueries({ queryKey: ["/api/training"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
-      
       // Update the selected event state immediately
       if (selectedEvent && updatedSession) {
         setSelectedEvent(updatedSession);
       }
+      
+      // Debounced query invalidation to prevent rapid refetches
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ["/api/training"] });
+        queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
+      }, 100);
       
       toast({
         title: "Feedback updated",
@@ -145,9 +152,15 @@ export default function Training() {
         method: "DELETE",
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/training"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
       setShowEventDetails(false);
+      setSelectedEvent(null);
+      
+      // Debounced query invalidation to prevent rapid refetches
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ["/api/training"] });
+        queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
+      }, 100);
+      
       toast({
         title: "Session Deleted",
         description: "Training session has been deleted successfully.",
@@ -163,7 +176,10 @@ export default function Training() {
   });
 
   const updateAttendance = (id: number, attendance: string) => {
+    if (isUpdating) return; // Prevent multiple simultaneous updates
+    setIsUpdating(true);
     updateAttendanceMutation.mutate({ id, attendance });
+    setTimeout(() => setIsUpdating(false), 1000); // Reset after 1 second
   };
 
   const deleteSession = (id: number) => {
