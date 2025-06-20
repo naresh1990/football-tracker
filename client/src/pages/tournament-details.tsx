@@ -19,6 +19,7 @@ export default function TournamentDetails() {
   const tournamentId = parseInt(params?.id || "0");
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [expandedGames, setExpandedGames] = useState<Record<number, boolean>>({});
 
   const { data: tournament, isLoading: tournamentLoading } = useQuery({
     queryKey: ["/api/tournaments", tournamentId],
