@@ -101,17 +101,14 @@ export default function Training() {
   });
 
   const updateFeedbackMutation = useMutation({
-    mutationFn: async ({ id, coachFeedback }: { id: number; coachFeedback: string }) => {
-      const response = await fetch(`/api/training/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+    mutationFn: ({ id, coachFeedback }: { id: number; coachFeedback: string }) => 
+      apiRequest(`/api/training/${id}`, {
+        method: "PUT",
         body: JSON.stringify({ coachFeedback }),
-      });
-      if (!response.ok) throw new Error('Failed to update feedback');
-      return response.json();
-    },
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/training"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
       toast({
         title: "Feedback updated",
         description: "Coach feedback has been saved successfully",
@@ -131,15 +128,14 @@ export default function Training() {
 
 
   const deleteSessionMutation = useMutation({
-    mutationFn: async (id: number) => {
-      const response = await fetch(`/api/training/${id}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) throw new Error('Failed to delete session');
-      return response.json();
-    },
+    mutationFn: (id: number) => 
+      apiRequest(`/api/training/${id}`, {
+        method: "DELETE",
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/training"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/training/upcoming"] });
+      setShowEventDetails(false);
       toast({
         title: "Session Deleted",
         description: "Training session has been deleted successfully.",
