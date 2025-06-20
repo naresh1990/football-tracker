@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Edit, Trash2, Check, X, Calendar, MapPin, Users, Clock, Target, HandHeart, Circle, Trophy, Star, Award } from "lucide-react";
+import { Plus, Edit, Trash2, Check, X, Calendar, MapPin, Users, Clock, Target, Circle, Trophy, Star, Award } from "lucide-react";
 import { formatDate, getGameResult } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { queryClient } from "@/lib/queryClient";
@@ -176,19 +176,23 @@ export default function Games() {
 
                     {/* Darshil's Performance Stats */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                      <div className="text-center p-3 bg-blue-50 rounded-lg">
-                        <div className="text-lg font-bold text-blue-600">{game.playerGoals}</div>
+                      <div className="text-center p-3 bg-green-50 rounded-lg">
+                        <Target className="w-5 h-5 text-green-600 mx-auto mb-1" />
+                        <div className="text-lg font-bold text-green-600">{game.playerGoals}</div>
                         <div className="text-xs text-gray-600">Goals</div>
                       </div>
-                      <div className="text-center p-3 bg-green-50 rounded-lg">
-                        <div className="text-lg font-bold text-green-600">{game.playerAssists}</div>
+                      <div className="text-center p-3 bg-blue-50 rounded-lg">
+                        <Circle className="w-5 h-5 text-blue-600 mx-auto mb-1" />
+                        <div className="text-lg font-bold text-blue-600">{game.playerAssists}</div>
                         <div className="text-xs text-gray-600">Assists</div>
                       </div>
                       <div className="text-center p-3 bg-purple-50 rounded-lg">
+                        <Clock className="w-5 h-5 text-purple-600 mx-auto mb-1" />
                         <div className="text-lg font-bold text-purple-600">{game.minutesPlayed}</div>
                         <div className="text-xs text-gray-600">Minutes</div>
                       </div>
                       <div className="text-center p-3 bg-orange-50 rounded-lg">
+                        <Star className="w-5 h-5 text-orange-600 mx-auto mb-1" />
                         <div className="text-lg font-bold text-orange-600">{game.rating || 'N/A'}</div>
                         <div className="text-xs text-gray-600">Rating</div>
                       </div>
@@ -234,11 +238,11 @@ export default function Games() {
                         )}
                         {game.playerAssists > 0 && (
                           <div 
-                            className="flex items-center gap-1 bg-orange-100 px-3 py-1 rounded-lg cursor-help relative group"
+                            className="flex items-center gap-1 bg-blue-100 px-3 py-1 rounded-lg cursor-help relative group"
                             title="Assists made by Darshil in this game"
                           >
-                            <Circle className="w-4 h-4 text-orange-600" />
-                            <span className="text-orange-700 font-semibold">{game.playerAssists}</span>
+                            <Circle className="w-4 h-4 text-blue-600" />
+                            <span className="text-blue-700 font-semibold">{game.playerAssists}</span>
                             <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-50">
                               Assists made by Darshil
                             </div>
