@@ -183,8 +183,12 @@ export default function Gallery() {
     photos.some((photo: any) => photo.trainingSessionId === session.id)
   );
 
-  const handleDelete = (photoId: number) => {
-    deleteMutation.mutate(photoId);
+  const handleDelete = async (photoId: number) => {
+    try {
+      await deleteMutation.mutateAsync(photoId);
+    } catch (error) {
+      console.error('Failed to delete photo:', error);
+    }
   };
 
   if (isLoading) {
@@ -327,7 +331,7 @@ export default function Gallery() {
                               }}
                               className="w-8 h-8 p-0 bg-blue-500 hover:bg-blue-600 text-white border-blue-500"
                             >
-                              <FileText className="w-4 h-4" />
+                              <Edit className="w-4 h-4" />
                             </Button>
                             <Button
                               variant="destructive"
@@ -529,7 +533,7 @@ export default function Gallery() {
                       }}
                       className="text-blue-600 hover:text-blue-700"
                     >
-                      <FileText className="w-4 h-4 mr-1" />
+                      <Edit className="w-4 h-4 mr-1" />
                       Edit
                     </Button>
                     <Button
@@ -590,7 +594,7 @@ export default function Gallery() {
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
-                  <FileText className="w-5 h-5" />
+                  <Edit className="w-5 h-5" />
                   Edit Photo Caption
                 </DialogTitle>
                 <DialogDescription>
@@ -637,7 +641,7 @@ export default function Gallery() {
                     </>
                   ) : (
                     <>
-                      <FileText className="w-4 h-4 mr-2" />
+                      <Edit className="w-4 h-4 mr-2" />
                       Save Changes
                     </>
                   )}
