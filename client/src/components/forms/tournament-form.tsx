@@ -20,6 +20,7 @@ export default function TournamentForm({ trigger, onSuccess }: TournamentFormPro
   const [formData, setFormData] = useState({
     name: "",
     description: "",
+    venue: "",
     startDate: "",
     endDate: "",
     format: "",

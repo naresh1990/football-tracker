@@ -43,6 +43,7 @@ export const tournaments = pgTable("tournaments", {
   clubId: integer("club_id"), // linked to club
   name: text("name").notNull(),
   description: text("description"),
+  venue: text("venue"), // tournament venue/location
   startDate: timestamp("start_date"),
   endDate: timestamp("end_date"),
   status: text("status").notNull(), // 'upcoming', 'active', 'completed'
