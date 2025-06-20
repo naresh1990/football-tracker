@@ -12,7 +12,7 @@ export default function Statistics() {
   });
 
   const { data: stats, isLoading: statsLoading } = useQuery({
-    queryKey: ["/api/stats/summary", { playerId }],
+    queryKey: ["/api/stats/all-time", { playerId }],
   });
 
   if (gamesLoading || statsLoading) {
@@ -150,10 +150,10 @@ export default function Statistics() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Win Rate</p>
-                  <p className="text-2xl font-bold text-orange-600">{stats?.winRate || 0}%</p>
+                  <p className="text-2xl font-bold text-orange-600">{stats?.winPercentage || 0}%</p>
                   <div className="flex items-center mt-2">
                     <TrendingUp className="w-4 h-4 text-orange-500 mr-1" />
-                    <span className="text-xs text-orange-600">{stats?.totalGames > 0 ? `${stats.winRate}% success` : 'No games yet'}</span>
+                    <span className="text-xs text-orange-600">{stats?.totalGames > 0 ? `${stats.winPercentage}% success` : 'No games yet'}</span>
                   </div>
                 </div>
                 <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">

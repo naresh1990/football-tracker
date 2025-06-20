@@ -49,9 +49,9 @@ interface HeroBannerProps {
 export default function HeroBanner({ player, activeClub, squadMembers, onQuickAdd }: HeroBannerProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Fetch real stats data
+  // Fetch all-time stats data (no club/season filtering)
   const { data: stats } = useQuery({
-    queryKey: ["/api/stats/summary"],
+    queryKey: ["/api/stats/all-time"],
     staleTime: 0,
     cacheTime: 0,
   });
@@ -287,7 +287,7 @@ export default function HeroBanner({ player, activeClub, squadMembers, onQuickAd
                       animate={{ scale: 1 }}
                       transition={{ delay: 1.4, type: "spring", stiffness: 200 }}
                     >
-                      <div className="text-3xl font-bold text-blue-300 mb-1">{stats?.winRate || "0%"}</div>
+                      <div className="text-3xl font-bold text-blue-300 mb-1">{stats?.winPercentage || 0}%</div>
                       <div className="text-blue-200 text-sm font-medium">Win Rate</div>
                     </motion.div>
                   </div>
