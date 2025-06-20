@@ -28,6 +28,7 @@ export interface IStorage {
   updateGame(id: number, game: Partial<InsertGame>): Promise<Game | undefined>;
   deleteGame(id: number): Promise<boolean>;
   getGamesByPlayer(playerId: number): Promise<Game[]>;
+  getGamesByTournament(tournamentId: number): Promise<Game[]>;
   getRecentGames(playerId: number, limit?: number): Promise<Game[]>;
 
   // Tournament methods

@@ -160,8 +160,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const playerId = 1; // Default to Darshil's ID
       const tournaments = await storage.getTournamentsByPlayer(playerId);
-      res.json(tournaments);
+      
+      // Fetch game counts and stats for each tournament
+      const tournamentsWithStats = await Promise.all(
+        tournaments.map(async (tournament) => {
+          const games = await storage.getGamesByTournament(tournament.id);
+          const totalGames = games.length;
+          const wins = games.filter(game => game.teamScore > game.opponentScore).length;
+          const goalsScored = games.reduce((sum, game) => sum + (game.teamScore || 0), 0);
+          const goalsConceded = games.reduce((sum, game) => sum + (game.opponentScore || 0), 0);
+          const winRate = totalGames > 0 ? Math.round((wins / totalGames) * 100) + '%' : '0%';
+          
+          return {
+            ...tournament,
+            gamesPlayed: totalGames,
+            totalGames: totalGames,
+            goalsScored,
+            goalsConceded,
+            winRate
+          };
+        })
+      );
+      
+      res.json(tournamentsWithStats);
     } catch (error) {
+      console.error("Error fetching tournaments with stats:", error);
       res.status(500).json({ error: "Failed to fetch tournaments" });
     }
   });
