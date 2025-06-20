@@ -153,24 +153,27 @@ export default function Games() {
                     </div>
 
                     {/* Fixture Result */}
-                    <div className="flex items-center justify-between mb-4 p-4 bg-gray-50 rounded-lg">
-                      <div className="flex items-center gap-4">
+                    <div className="flex items-center justify-center mb-4 p-4 bg-gray-50 rounded-lg">
+                      <div className="flex items-center gap-6">
                         <div className="text-center">
                           <div className="text-sm font-medium text-gray-600 mb-1">Darshil's Team</div>
-                          <div className="text-2xl font-bold text-gray-900">{game.teamScore}</div>
+                          <div className="text-3xl font-bold text-gray-900">{game.teamScore}</div>
                         </div>
-                        <div className="text-xl font-bold text-gray-400">VS</div>
+                        <div className="flex flex-col items-center">
+                          <div className="text-xl font-bold text-gray-400 mb-2">VS</div>
+                          <div className={`px-4 py-2 rounded-xl font-bold text-lg shadow-lg border-2 ${
+                            result === 'Win' ? 'bg-green-500 text-white border-green-600 shadow-green-200' :
+                            result === 'Loss' ? 'bg-red-500 text-white border-red-600 shadow-red-200' :
+                            result === 'Draw' ? 'bg-yellow-500 text-white border-yellow-600 shadow-yellow-200' :
+                            'bg-gray-500 text-white border-gray-600 shadow-gray-200'
+                          }`}>
+                            {result}
+                          </div>
+                        </div>
                         <div className="text-center">
                           <div className="text-sm font-medium text-gray-600 mb-1">{game.opponent}</div>
-                          <div className="text-2xl font-bold text-gray-900">{game.opponentScore}</div>
+                          <div className="text-3xl font-bold text-gray-900">{game.opponentScore}</div>
                         </div>
-                      </div>
-                      <div className={`px-3 py-2 rounded-lg font-semibold text-sm ${
-                        result === 'Win' ? 'bg-green-100 text-green-800' :
-                        result === 'Loss' ? 'bg-red-100 text-red-800' :
-                        'bg-yellow-100 text-yellow-800'
-                      }`}>
-                        {result}
                       </div>
                     </div>
 
