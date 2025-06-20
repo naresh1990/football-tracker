@@ -80,7 +80,7 @@ export default function Training() {
 
   const updateAttendanceMutation = useMutation({
     mutationFn: ({ id, attendance }: { id: number; attendance: string }) => 
-      apiRequest(`/api/training/${id}`, {
+      apiRequest(`/api/training/${id}/attendance`, {
         method: "PUT",
         body: JSON.stringify({ attendance }),
       }),
