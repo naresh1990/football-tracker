@@ -74,38 +74,58 @@ export default function TournamentTracking({ playerId }: TournamentTrackingProps
                   <div className="flex items-center gap-4 mb-6 text-blue-100">
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4" />
-                      <span className="text-sm">September 8, 2024</span>
+                      <span className="text-sm">{formatShortDate(tournament.startDate)}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Users className="w-4 h-4" />
-                      <span className="text-sm">5v5</span>
+                      <span className="text-sm">{tournament.matchFormat || '5v5'}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Target className="w-4 h-4" />
+                      <span className="text-sm">{tournament.venue}</span>
                     </div>
                   </div>
 
                   {/* Stats Grid */}
                   <div className="grid grid-cols-4 gap-4 mb-6">
                     <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
-                      <div className="text-2xl font-bold text-white">{tournament.currentPosition || '1'}</div>
+                      <div className="text-2xl font-bold text-white">{tournament.currentPosition || '-'}</div>
                       <div className="text-xs text-blue-100">Position</div>
                     </div>
                     <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
-                      <div className="text-2xl font-bold text-white">{tournament.points}</div>
+                      <div className="text-2xl font-bold text-white">{tournament.points || 0}</div>
                       <div className="text-xs text-blue-100">Points</div>
                     </div>
                     <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
-                      <div className="text-2xl font-bold text-white">{tournament.gamesPlayed}</div>
-                      <div className="text-xs text-blue-100">Teams</div>
+                      <div className="text-2xl font-bold text-white">{tournament.wins || 0}</div>
+                      <div className="text-xs text-blue-100">Wins</div>
                     </div>
                     <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
-                      <div className="text-2xl font-bold text-white">League</div>
-                      <div className="text-xs text-blue-100">Format</div>
+                      <div className="text-2xl font-bold text-white">{tournament.goalCount || 0}</div>
+                      <div className="text-xs text-blue-100">Goals</div>
+                    </div>
+                  </div>
+
+                  {/* Additional Stats Row */}
+                  <div className="grid grid-cols-3 gap-4 mb-6">
+                    <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
+                      <div className="text-lg font-bold text-white">{tournament.gamesPlayed || 0}</div>
+                      <div className="text-xs text-blue-100">Games Played</div>
+                    </div>
+                    <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
+                      <div className="text-lg font-bold text-white">{tournament.losses || 0}</div>
+                      <div className="text-xs text-blue-100">Losses</div>
+                    </div>
+                    <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
+                      <div className="text-lg font-bold text-white">{tournament.draws || 0}</div>
+                      <div className="text-xs text-blue-100">Draws</div>
                     </div>
                   </div>
 
                   {/* Action Button */}
                   <Button className="w-full bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm">
                     <Eye className="w-4 h-4 mr-2" />
-                    View Details
+                    View Tournament Details
                   </Button>
                 </div>
               ))
