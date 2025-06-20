@@ -20,9 +20,10 @@ export default function CoachFeedback({ playerId }: CoachFeedbackProps) {
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Filter sessions that have coach feedback
+  // Filter sessions that have coach feedback and sort by date (most recent first)
   const feedbackSessions = sessions?.filter((session: any) => session.coachFeedback) || [];
-  const recentFeedback = feedbackSessions.slice(0, 3); // Show last 3 feedback items
+  const sortedFeedback = feedbackSessions.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const recentFeedback = sortedFeedback.slice(0, 3); // Show last 3 feedback items
   
   const nextSlide = () => {
     if (upcomingSessions?.length) {
