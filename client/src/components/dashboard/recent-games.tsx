@@ -62,107 +62,78 @@ export default function RecentGames({ playerId }: RecentGamesProps) {
               const cardBg = 'bg-white/80';
 
               return (
-                <TooltipProvider key={game.id}>
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 * index, duration: 0.5 }}
-                    className={`p-6 ${cardBg} backdrop-blur-sm rounded-2xl hover:bg-white/70 transition-all duration-300 border border-white/50 shadow-sm`}
-                  >
-                    {/* Header with result and opponent */}
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center space-x-4">
-                        <div className={`w-16 h-16 ${resultBg} rounded-2xl flex items-center justify-center shadow-md`}>
-                          {React.createElement(resultIcon, { className: `${resultColor} w-7 h-7` })}
-                        </div>
-                        <div>
-                          <p className="font-bold text-gray-900 text-xl">{game.opponent}</p>
-                          <div className="flex items-center gap-2 text-sm text-gray-600">
-                            <Calendar className="w-3 h-3" />
-                            <span>{formatShortDate(game.date)}</span>
-                          </div>
-                        </div>
+                <motion.div
+                  key={game.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 * index, duration: 0.5 }}
+                  className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 hover:bg-white/90 transition-all duration-300 border border-white/50 shadow-sm"
+                >
+                  {/* Compact horizontal layout */}
+                  <div className="flex items-center justify-between">
+                    {/* Left side - Tournament info and opponent */}
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 ${resultBg} rounded-xl flex items-center justify-center`}>
+                        {React.createElement(resultIcon, { className: `${resultColor} w-5 h-5` })}
                       </div>
-                      <div className="text-right">
-                        <p className="font-black text-gray-900 text-3xl mb-1">
-                          {game.teamScore}-{game.opponentScore}
-                        </p>
-                        <span className={`text-sm font-semibold px-2 py-1 rounded-lg ${
-                          result === 'win' ? 'bg-green-100 text-green-700' : 
-                          result === 'loss' ? 'bg-red-100 text-red-700' : 
-                          'bg-gray-100 text-gray-700'
-                        }`}>
-                          {result === 'win' ? 'Victory' : result === 'loss' ? 'Defeat' : 'Draw'}
-                        </span>
+                      <div>
+                        <div className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                          <span>vs {game.opponent}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-gray-600">
+                          <span>Blue Cubs Bangalore 2024</span>
+                          <span>•</span>
+                          <span>5v5</span>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Game Details */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-6 text-sm text-gray-600">
-                        <div className="flex items-center gap-1">
-                          <MapPin className="w-3 h-3" />
-                          <span>{game.venue || 'Home'}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Users className="w-3 h-3" />
-                          <span>{game.gameType || 'League'}</span>
-                        </div>
-                        {game.duration && (
-                          <div className="flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            <span>{game.duration} min</span>
-                          </div>
-                        )}
+                    {/* Center - Score */}
+                    <div className="flex items-center gap-3">
+                      <div className="text-center">
+                        <div className="text-sm text-gray-500">Darshil's Team</div>
+                        <div className="text-2xl font-bold text-gray-900">{game.teamScore}</div>
                       </div>
+                      <div className="text-gray-400 font-semibold">VS</div>
+                      <div className="text-center">
+                        <div className="text-sm text-gray-500">{game.opponent}</div>
+                        <div className="text-2xl font-bold text-gray-900">{game.opponentScore}</div>
+                      </div>
+                    </div>
 
-                      {/* Player Performance */}
-                      <div className="flex items-center space-x-3">
+                    {/* Right side - Result and stats */}
+                    <div className="flex items-center gap-3">
+                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        result === 'win' ? 'bg-green-500 text-white' : 
+                        result === 'loss' ? 'bg-red-500 text-white' : 
+                        'bg-gray-500 text-white'
+                      }`}>
+                        {result === 'win' ? 'Win' : result === 'loss' ? 'Loss' : 'Draw'}
+                      </span>
+                      
+                      {/* Player stats */}
+                      <div className="flex items-center gap-2">
                         {game.playerGoals > 0 && (
-                          <div 
-                            className="flex items-center gap-1 bg-green-100 px-3 py-1 rounded-lg cursor-help relative group"
-                            title="Goals scored by Darshil in this game"
-                          >
-                            <Goal className="w-4 h-4 text-green-600" />
-                            <span className="text-green-700 font-semibold">{game.playerGoals}</span>
-                            <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-50">
-                              Goals scored by Darshil
-                            </div>
+                          <div className="flex items-center gap-1 bg-green-100 px-2 py-1 rounded-lg">
+                            <Goal className="w-3 h-3 text-green-600" />
+                            <span className="text-green-700 font-semibold text-sm">{game.playerGoals}</span>
                           </div>
                         )}
                         {game.playerAssists > 0 && (
-                          <div 
-                            className="flex items-center gap-1 bg-orange-100 px-3 py-1 rounded-lg cursor-help relative group"
-                            title="Assists made by Darshil in this game"
-                          >
-                            <Circle className="w-4 h-4 text-orange-600" />
-                            <span className="text-orange-700 font-semibold">{game.playerAssists}</span>
-                            <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-50">
-                              Assists made by Darshil
-                            </div>
+                          <div className="flex items-center gap-1 bg-orange-100 px-2 py-1 rounded-lg">
+                            <Circle className="w-3 h-3 text-orange-600" />
+                            <span className="text-orange-700 font-semibold text-sm">{game.playerAssists}</span>
                           </div>
                         )}
-                        {game.playerGoals === 0 && game.playerAssists === 0 && (
-                          <span className="text-xs text-gray-500 italic">No goals or assists</span>
-                        )}
+                      </div>
+
+                      {/* Date */}
+                      <div className="text-sm text-gray-500">
+                        {formatShortDate(game.date)}
                       </div>
                     </div>
-
-                    {/* Additional game info if available */}
-                    {(game.positionPlayed || game.minutesPlayed) && (
-                      <div className="mt-4 pt-4 border-t border-gray-200/50">
-                        <div className="flex items-center gap-4 text-xs text-gray-600">
-                          {game.positionPlayed && (
-                            <span>Position: <span className="font-medium">{game.positionPlayed}</span></span>
-                          )}
-                          {game.minutesPlayed && (
-                            <span>Minutes: <span className="font-medium">{game.minutesPlayed}'</span></span>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </motion.div>
-                </TooltipProvider>
+                  </div>
+                </motion.div>
               );
             })}
           </div>
