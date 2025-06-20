@@ -19,10 +19,6 @@ export default function TournamentStages({ tournament }: TournamentStagesProps) 
   // Filter games for this tournament
   const tournamentGames = games?.filter((game: any) => game.tournamentId === tournament.id) || [];
   
-  console.log('Tournament component - Tournament ID:', tournament.id);
-  console.log('Tournament component - All games:', games);
-  console.log('Tournament component - Tournament games:', tournamentGames);
-
   // Group games by stage
   const gamesByStage = tournamentGames.reduce((acc: any, game: any) => {
     const stage = game.tournamentStage || 'unassigned';
@@ -32,8 +28,6 @@ export default function TournamentStages({ tournament }: TournamentStagesProps) 
     acc[stage].push(game);
     return acc;
   }, {});
-  
-  console.log('Tournament component - Games by stage:', gamesByStage);
 
   const stageOrder = ['league', 'knockout', 'round-of-16', 'quarter-final', 'semi-final', 'final', 'unassigned'];
   const stageLabels: { [key: string]: string } = {
@@ -63,6 +57,7 @@ export default function TournamentStages({ tournament }: TournamentStagesProps) 
 
       {stageOrder.map(stage => {
         const stageGames = gamesByStage[stage];
+        console.log(`Stage ${stage} games:`, stageGames);
         if (!stageGames || stageGames.length === 0) return null;
 
         return (
@@ -130,7 +125,7 @@ export default function TournamentStages({ tournament }: TournamentStagesProps) 
         );
       })}
 
-      {Object.keys(gamesByStage).length === 0 && (
+      {(!gamesByStage || Object.keys(gamesByStage).length === 0) && (
         <div className="text-center py-12">
           <Trophy className="w-12 h-12 text-gray-400 mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-gray-900 mb-2">No games added yet</h3>
