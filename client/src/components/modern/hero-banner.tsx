@@ -108,7 +108,11 @@ export default function HeroBanner({ player, activeClub, squadMembers, onQuickAd
           >
             <div className="flex flex-col items-center space-y-6">
               <Avatar className="w-32 h-48 sm:w-36 sm:h-56 ring-4 ring-white/40 rounded-3xl shadow-2xl">
-                <AvatarImage src={darshilPhoto} alt={player.name} className="object-cover rounded-3xl" />
+                <AvatarImage 
+                  src={squadMembers?.find(member => member.name === 'Darshil Podishetty')?.profilePicture || darshilPhoto} 
+                  alt={player.name} 
+                  className="object-cover rounded-3xl" 
+                />
                 <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-3xl h-full w-full flex items-center justify-center">
                   {player.name.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
