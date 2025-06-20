@@ -245,33 +245,7 @@ export default function TournamentDetails() {
                             </div>
                           </div>
 
-                          {/* Match Result */}
                           <div className="p-4">
-                            <div className="flex items-center justify-center mb-4">
-                              <div className="flex items-center gap-6">
-                                <div className="text-center">
-                                  <div className="text-sm font-medium text-gray-600 mb-1">Darshil's Team</div>
-                                  <div className="text-3xl font-bold text-gray-900">{game.teamScore}</div>
-                                </div>
-                                <div className="flex flex-col items-center">
-                                  <div className="text-lg font-bold text-gray-400 mb-1">VS</div>
-                                  <div className={`px-4 py-2 rounded-xl font-bold text-lg shadow-lg border-2 mb-1 ${
-                                    getGameResult(game.teamScore, game.opponentScore) === 'Win' ? 'bg-green-500 text-white border-green-600 shadow-green-200' :
-                                    getGameResult(game.teamScore, game.opponentScore) === 'Loss' ? 'bg-red-500 text-white border-red-600 shadow-red-200' :
-                                    getGameResult(game.teamScore, game.opponentScore) === 'Draw' ? 'bg-yellow-500 text-white border-yellow-600 shadow-yellow-200' :
-                                    'bg-gray-500 text-white border-gray-600 shadow-gray-200'
-                                  }`}>
-                                    {getGameResult(game.teamScore, game.opponentScore)}
-                                  </div>
-                                  <div className="text-xs text-gray-500">{game.matchFormat || tournament.matchFormat}</div>
-                                </div>
-                                <div className="text-center">
-                                  <div className="text-sm font-medium text-gray-600 mb-1">{game.opponent}</div>
-                                  <div className="text-3xl font-bold text-gray-900">{game.opponentScore}</div>
-                                </div>
-                              </div>
-                            </div>
-
                             {/* Performance Stats */}
                             <div className="grid grid-cols-4 gap-4 mb-4">
                               <div className="text-center p-3 bg-green-50 rounded-lg">
