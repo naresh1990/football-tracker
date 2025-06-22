@@ -393,7 +393,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const id = parseInt(req.params.id);
       const { attendance } = req.body;
       
-      if (!["completed", "missed", "cancelled"].includes(attendance)) {
+      console.log(`Updating attendance for training session ${id} to ${attendance}`);
+      
+      if (!["completed", "missed", "cancelled", "pending"].includes(attendance)) {
+        console.log(`Invalid attendance status: ${attendance}`);
         return res.status(400).json({ error: "Invalid attendance status" });
       }
 
@@ -403,12 +406,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
       
       if (!session) {
+        console.log(`Training session ${id} not found`);
         return res.status(404).json({ error: "Training session not found" });
       }
       
+      console.log(`Successfully updated training session ${id}`);
       res.json(session);
     } catch (error) {
-      res.status(400).json({ error: "Failed to update attendance" });
+      console.error("Error updating attendance:", error);
+      res.status(500).json({ error: "Failed to update attendance", details: error.message });
     }
   });
 

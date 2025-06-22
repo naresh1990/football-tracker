@@ -79,26 +79,35 @@ export default function Training() {
   });
 
   const updateAttendanceMutation = useMutation({
-    mutationFn: ({ id, attendance }: { id: number; attendance: string }) => 
-      apiRequest(`/api/training/${id}/attendance`, {
-        method: "PUT",
-        body: JSON.stringify({ attendance }),
-      }),
+    mutationFn: async ({ id, attendance }: { id: number; attendance: string }) => {
+      try {
+        console.log('API Request:', `/api/training/${id}/attendance`, { attendance });
+        const response = await apiRequest("PUT", `/api/training/${id}/attendance`, { attendance });
+        return response;
+      } catch (error) {
+        console.error('API request failed:', error);
+        throw error;
+      }
+    },
     onSuccess: (updatedSession) => {
       // Update the selected event state immediately
       if (selectedEvent && updatedSession) {
         setSelectedEvent(updatedSession);
       }
       
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ["/api/training"] });
+      
       toast({
         title: "Attendance Updated",
         description: "Training session attendance has been updated successfully.",
       });
     },
-    onError: () => {
+    onError: (error: any) => {
+      console.error('Attendance update error:', error);
       toast({
-        title: "Error",
-        description: "Failed to update attendance. Please try again.",
+        title: "Error", 
+        description: error?.message || "Failed to update attendance. Please try again.",
         variant: "destructive",
       });
     },
@@ -106,10 +115,7 @@ export default function Training() {
 
   const updateFeedbackMutation = useMutation({
     mutationFn: ({ id, coachFeedback }: { id: number; coachFeedback: string }) => 
-      apiRequest(`/api/training/${id}`, {
-        method: "PUT",
-        body: JSON.stringify({ coachFeedback }),
-      }),
+      apiRequest("PUT", `/api/training/${id}`, { coachFeedback }),
     onSuccess: (updatedSession) => {
       // Update the selected event state immediately
       if (selectedEvent && updatedSession) {
@@ -136,9 +142,7 @@ export default function Training() {
 
   const deleteSessionMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/training/${id}`, {
-        method: "DELETE",
-      }),
+      apiRequest("DELETE", `/api/training/${id}`, undefined),
     onSuccess: () => {
       setShowEventDetails(false);
       setSelectedEvent(null);
