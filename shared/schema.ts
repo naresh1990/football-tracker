@@ -57,39 +57,6 @@ export const tournaments = pgTable("tournaments", {
   points: integer("points").default(0), // extracted from points table
   pointsTableImage: text("points_table_image"),
   logo: text("logo"), // tournament logo image path
-  bracketData: text("bracket_data"), // JSON string for bracket structure
-});
-
-// Tournament Brackets
-export const tournamentBrackets = pgTable("tournament_brackets", {
-  id: serial("id").primaryKey(),
-  tournamentId: integer("tournament_id").notNull(),
-  round: text("round").notNull(), // 'round-of-16', 'quarter-final', 'semi-final', 'final'
-  matchNumber: integer("match_number").notNull(),
-  team1: text("team1"),
-  team2: text("team2"),
-  team1Score: integer("team1_score"),
-  team2Score: integer("team2_score"),
-  winner: text("winner"),
-  status: text("status").default("pending"), // 'pending', 'in-progress', 'completed'
-  scheduledDate: timestamp("scheduled_date"),
-  venue: text("venue"),
-  nextMatchId: integer("next_match_id"), // ID of the next match the winner advances to
-});
-export const tournamentBrackets = pgTable("tournament_brackets", {
-  id: serial("id").primaryKey(),
-  tournamentId: integer("tournament_id").notNull(),
-  round: text("round").notNull(), // 'round-of-16', 'quarter-final', 'semi-final', 'final'
-  matchNumber: integer("match_number").notNull(),
-  team1: text("team1"),
-  team2: text("team2"),
-  team1Score: integer("team1_score"),
-  team2Score: integer("team2_score"),
-  winner: text("winner"),
-  status: text("status").default("pending"), // 'pending', 'in-progress', 'completed'
-  scheduledDate: timestamp("scheduled_date"),
-  venue: text("venue"),
-  nextMatchId: integer("next_match_id"), // ID of the next match the winner advances to
 });
 
 // Training sessions
