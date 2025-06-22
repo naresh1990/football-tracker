@@ -9,8 +9,9 @@ import {
   Coach, InsertCoach,
   CoachingStaff, InsertCoachingStaff,
   GalleryPhoto, InsertGalleryPhoto,
+  TournamentBracket, InsertTournamentBracket,
   players, games, tournaments, trainingSessions,
-  coachFeedback, squadMembers, clubs, coaches, coachingStaff, galleryPhotos
+  coachFeedback, squadMembers, clubs, coaches, coachingStaff, galleryPhotos, tournamentBrackets
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, gte } from "drizzle-orm";
